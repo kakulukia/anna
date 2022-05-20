@@ -47,7 +47,7 @@
 
 
 <div class="px-3 mt-5 mb-3">
-    <h1 class="h2">All Trainings</h1>
+    <h1 class="h2">Alle Trainings</h1>
 </div>
 {% include 'inc/msgs.inc.html' %}
 
@@ -88,7 +88,7 @@
                     </div>
 
                     {% with all_modules=training.get_all_modules %}
-                    <h6>Modules ({{ all_modules.count }})</h6>
+                    <h6>Module ({{ all_modules.count }})</h6>
 
                     <div id="all-modules">
                         {% for module in all_modules %}
@@ -103,7 +103,7 @@
                                     </div>
 
                                     <div class="col-sm-3">
-                                        {{ all_media.count }} lessons
+                                       {{ all_media.count }} Kurs{{ all_media.count|pluralize:"e" }}  
                                     </div>
                                 </div>
                                 
@@ -130,7 +130,7 @@
                     {% if allowed %}
                         <a href="{% url 'all_modules' training.id %}" class="btn w-100  theme-primary-btn">Open training</a>
                     {% else %}
-                        <a data-bs-toggle="modal" data-bs-target="#request-access" class="btn w-100  theme-outline-primary-btn">Request access</a>
+                        <a data-bs-toggle="modal" data-bs-target="#request-access" class="btn w-100  theme-outline-primary-btn">Zugriff anfordern</a>
                     {% endif %}
                 </div>
             </div>

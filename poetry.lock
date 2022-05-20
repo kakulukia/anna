@@ -139,6 +139,14 @@ django = "*"
 user-agents = "*"
 
 [[package]]
+name = "html2text"
+version = "2020.1.16"
+description = "Turn HTML into equivalent Markdown-structured text."
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[[package]]
 name = "jmespath"
 version = "1.0.0"
 description = "JSON Matching Expressions"
@@ -258,7 +266,7 @@ ua-parser = ">=0.10.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "3.10.4"
-content-hash = "f0a3c5aa719588fc39901a58a626613ecb12a9e04e1e9d1c3003cad72728309a"
+content-hash = "4c4e8d0f0c7bf7354ac8a827adcf92cc9482b9e782702c7eefcf2e46752565a3"
 
 [metadata.files]
 asgiref = [
@@ -300,6 +308,10 @@ django-storages = [
 django-user-agents = [
     {file = "django-user_agents-0.4.0.tar.gz", hash = "sha256:cda8ae2146cee30e6867a07943f56ecc570b4391d725ab5309901a8b3e4a3514"},
     {file = "django_user_agents-0.4.0-py3-none-any.whl", hash = "sha256:cd9d9f7158b23c5237b2dacb0bc4fffdf77fefe1d2633b5814d3874288ebdb5d"},
+]
+html2text = [
+    {file = "html2text-2020.1.16-py3-none-any.whl", hash = "sha256:c7c629882da0cf377d66f073329ccf34a12ed2adf0169b9285ae4e63ef54c82b"},
+    {file = "html2text-2020.1.16.tar.gz", hash = "sha256:e296318e16b059ddb97f7a8a1d6a5c1d7af4544049a01e261731d2d5cc277bbb"},
 ]
 jmespath = [
     {file = "jmespath-1.0.0-py3-none-any.whl", hash = "sha256:e8dcd576ed616f14ec02eed0005c85973b5890083313860136657e24784e4c04"},

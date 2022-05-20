@@ -1,5 +1,6 @@
 from distutils.command.upload import upload
 from pydoc import describe
+from tabnanny import verbose
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User, auth
@@ -22,11 +23,19 @@ class UploadPrivate(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
     file = models.FileField(storage=PrivateMediaStorage())
 
+    class Meta:
+        verbose_name = 'Privat hochladen'
+        verbose_name_plural = 'Privat hochladen'
+
 
 class ZoomLink(models.Model):
     link = models.URLField()
-    to_show = models.BooleanField(default=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    to_show = models.BooleanField(default=True, verbose_name='Zeigen')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Nutzer')
+
+    class Meta:
+        verbose_name = 'Zoom Linke'
+        verbose_name_plural = 'Zomm Linkes'
 
 # Custom Model for the Device
 
@@ -122,9 +131,13 @@ def delete_session(sender, instance, *args, **kwargs):
 class Training(models.Model):
     name = models.CharField(max_length=50)
     description = QuillField(null=True, blank=True)
-    thumbnail = models.ImageField(storage=PrivateMediaStorage())
+    thumbnail = models.ImageField(storage=PrivateMediaStorage(), verbose_name='Vorschaubild')
     created_at = models.DateTimeField(auto_now_add=True)
-
+    
+    class Meta:
+        verbose_name = 'Training'
+        verbose_name_plural = 'Trainings'
+    
     def __str__(self):
         return self.name
 
@@ -160,14 +173,18 @@ class Training(models.Model):
 # Model for the Modules
 class Module(models.Model):
     name = models.CharField(max_length=50)
-    description = models.TextField()
-    thumbnail = models.ImageField(storage=PrivateMediaStorage())
+    description = models.TextField(verbose_name='Beschreibung')
+    thumbnail = models.ImageField(storage=PrivateMediaStorage(), verbose_name='Vorschaubild')
     training = models.ForeignKey(Training, on_delete=models.CASCADE)
     prev = models.ForeignKey('self', on_delete=models.CASCADE,
-                             related_name='mod_prev', null=True, blank=True)
+                             related_name='mod_prev', null=True, blank=True, verbose_name='Vor')
     next = models.ForeignKey('self', on_delete=models.CASCADE,
-                             related_name='mod_next', null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+                             related_name='mod_next', null=True, blank=True, verbose_name='Nach')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Erstellt am')
+
+    class Meta:
+        verbose_name = 'Modul'
+        verbose_name_plural = 'Module'    
 
     def get_short_description(self):
         limit = 150
@@ -197,16 +214,16 @@ class Module(models.Model):
 # Model for the Media
 class Media(models.Model):
     name = models.CharField(max_length=50)
-    description = models.TextField()
-    thumbnail = models.ImageField(storage=PrivateMediaStorage())
-    file = models.FileField(storage=PrivateMediaStorage())
+    description = models.TextField(verbose_name='Beschreibung')
+    thumbnail = models.ImageField(storage=PrivateMediaStorage(), verbose_name='Vorschaubild')
+    file = models.FileField(storage=PrivateMediaStorage(), verbose_name='Datei')
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
     prev = models.ForeignKey('self', on_delete=models.CASCADE,
-                             related_name='file_prev', null=True, blank=True)
+                             related_name='file_prev', null=True, blank=True, verbose_name='Vor')
     next = models.ForeignKey('self', on_delete=models.CASCADE,
-                             related_name='file_next', null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
+                             related_name='file_next', null=True, blank=True, verbose_name='Nach')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Erstellt am')
+        
     def __str__(self):
         return self.name
 
@@ -218,17 +235,26 @@ class Media(models.Model):
 
     class Meta:
         ordering = ('id',)
+        verbose_name = 'Medien'
+        verbose_name_plural = 'Medien'
+
 
 # Model for giving the access to the user
 
 
 class Access(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    training = models.ForeignKey(Training, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Nutzer')
+    training = models.ForeignKey(Training, on_delete=models.CASCADE, verbose_name='Training')
     created_at = models.DateTimeField(default=timezone.now, editable=False)
+
+    class Meta:
+        verbose_name = 'Zugriff'
+        verbose_name_plural = 'Zugriffe'
 
 
 class Completed(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    media = models.ForeignKey(Media, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Nutzer')
+    media = models.ForeignKey(Media, on_delete=models.CASCADE, verbose_name='Medien')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Erstellt am')
+    class Meta:
+        verbose_name = 'Abgeschlossen'

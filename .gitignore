@@ -6,6 +6,9 @@ env/
 *.log
 *.pot
 *.pyc
-__pycache__
 .direnv
 .venv
+*.sqlite3
+.sqlite3
+db.sqlite3
+__pycache__

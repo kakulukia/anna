@@ -29,17 +29,17 @@
             <!-- <iframe style="width: 100%; height: 25rem; border-radius: 4px 4px 0px 0px;"
                 src="{{ first_media.file }}"></iframe> -->
             <!-- <video style="width: 100%; height: 25rem; border-radius: 4px 4px 0px 0px;" controls id="video">
-                <source src="{{ MEDIA_URL }}{{ first_media.file }}">
+                <source src="{{ first_media.file }}">
             </video> -->
             <!-- DYNAMIC VIDEO FROM AWS S3 -->
 
             {% if media.get_file_type == 'audio' %}
             <div style="width: 100%; height: 25rem; border-radius: 4px 4px 0px 0px;">
-                <img src="{{ MEDIA_URL }}{{ media.thumbnail }}" alt="">
+                <img src="{{ media.thumbnail.url }}" alt="">
                 <div>
                     <audio controls style="width: 100%;" class="mt-3">
-                        <source src="{{ MEDIA_URL }}{{ media.file }}" type="audio/ogg">
-                        <source src="{{ MEDIA_URL }}{{ media.file }}" type="audio/mpeg">
+                        <source src="{{ media.file.url }}" type="audio/ogg">
+                        <source src="{{ media.file.url }}" type="audio/mpeg">
                         Your browser does not support the audio element.
                     </audio>
                 </div>
@@ -47,7 +47,7 @@
             </div>
             {% else %}
             <video style="width: 100%; height: 25rem; border-radius: 4px 4px 0px 0px;" controls id="video">
-                <source src="{{ MEDIA_URL }}{{ media.file }}">
+                <source src="{{ media.file.url }}">
             </video>
 
             {% endif %}
@@ -117,7 +117,7 @@
                             </p>
                         </div>
                         <div>
-                            <img src="{{ MEDIA_URL }}{{ media.thumbnail }}" class="img-fluid" alt="video-thumbnail"
+                            <img src="{{ media.thumbnail.url }}" class="img-fluid" alt="video-thumbnail"
                                 style="width: 10rem; border-radius: 10px;">
                         </div>
                         <div>

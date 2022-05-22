@@ -17,6 +17,22 @@
       </ul>
       <form class="d-flex mt-2">
         {% if user.is_authenticated %}
+     
+
+          {% if user.is_superuser %}
+          <a class="nav-link p-2 d-flex align-items-center bg-white border theme-secondary-text"
+            href="{% url 'progress' %}" rel="noopener" style="user-select: auto;">
+            <i class="material-icons" style="font-size: 25px; margin-right: 10px;">donut_large</i>
+            Progress
+          </a>
+
+          <a class="nav-link p-2 d-flex align-items-center bg-white border theme-secondary-text" href="/admin"
+            rel="noopener" style="user-select: auto;">
+            <i class="material-icons" style="font-size: 25px; margin-right: 10px;">admin_panel_settings</i>
+            Dashboard
+          </a>
+
+          {% endif %}
       
           {% if ZOOM_LINK and ZOOM_LINK.to_show %}
           <a 

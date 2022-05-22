@@ -10,6 +10,7 @@ from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django_quill.fields import QuillField
 from webapp.storages import PrivateMediaStorage
+from django.core.validators import RegexValidator
 # from django.contrib import admin
 
 # Create your models here.
@@ -17,6 +18,30 @@ from webapp.storages import PrivateMediaStorage
 # python manage.py makemigrations
 # python manage.py migrate
 # python manage.py runserver
+
+
+class Contact_Info(models.Model):
+    phone_regex = RegexValidator(
+        regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."
+    )
+    phone_number = models.CharField(
+        validators=[phone_regex], max_length=16, blank=True)  # Validators should be a list
+    address = models.CharField(max_length=255)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Contact Info"
+        verbose_name_plural = "Contact Info"
+
+
+class Validity(models.Model):
+    start_date = models.DateField()
+    end_date = models.DateField()
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Validity"
+        verbose_name_plural = "Validity"
 
 
 class UploadPrivate(models.Model):
@@ -36,6 +61,10 @@ class ZoomLink(models.Model):
     class Meta:
         verbose_name = 'Zoom Linke'
         verbose_name_plural = 'Zomm Linkes'
+
+    class Meta:
+        verbose_name = "Zoom Link"
+        verbose_name_plural = "Zoom Link"
 
 # Custom Model for the Device
 
@@ -154,7 +183,11 @@ class Training(models.Model):
         for i in completed_ids:
             if i in all_medias:
                 completed += 1
-        return int((completed / all_medias.count()) * 100)
+
+        media_count = all_medias.count()
+        if media_count == 0:
+            return 0
+        return int((completed / media_count) * 100)
 
     def get_short_description(self):
         from html2text import html2text
@@ -193,6 +226,9 @@ class Module(models.Model):
             return description[0: limit] + "..."
         return description
 
+    def get_all_media_objects(self):
+        return Media.objects.filter(module=self)
+
     def get_all_media(self):
         all_media = Media.objects.filter(
             module=self).values_list("name", flat=True)
@@ -205,7 +241,11 @@ class Module(models.Model):
         for i in completed_ids:
             if i in all_medias:
                 completed += 1
-        return int((completed / all_medias.count()) * 100)
+
+        media_count = all_medias.count()
+        if media_count == 0:
+            return 0
+        return int((completed / media_count) * 100)
 
     def __str__(self):
         return self.name

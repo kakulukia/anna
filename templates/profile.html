@@ -13,8 +13,35 @@
     
 <div class="px-3 my-5">
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-7 d-flex align-items-center">
             <h1 class="h2 my-0">Mein Profil</h1>
+        </div>
+
+        <div class="col-sm-12 col-md-12 col-xl-5 d-flex justify-content-end">
+            {% if validity %}
+            <div class="d-flex align-items-center border p-3 radius-10">
+                <span class="material-icons" style="font-size: 35px;">
+                    date_range
+                </span>
+
+                <div style="margin-left: 15px;" class="d-flex align-items-center">
+                    <div>
+                        Start Date
+                        <h5 class="mb-0">{{ validity.start_date }}</h5>
+                    </div>
+                    
+                    <span class="material-icons mx-4">
+                        trending_flat
+                    </span>
+                    
+                    <div>
+                        End Date
+                        <h5 class="mb-0">{{ validity.end_date }}</h5>
+                    </div>
+                </div>
+
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -39,7 +66,7 @@
 <div>
 
     <div class="row px-3 mb-4">
-        <div class="col-sm-8">
+        <div class="col-sm-12 col-md-12 col-xl-8">
             <div class="card google-shadow" style="border-radius: 5px;">
                 <div class="card-header bg-white card-separator d-flex align-items-center" style="background-color: #cccccc;">
                     <h5 class="my-2">Angemeldete Trainigs</h5>
@@ -114,7 +141,7 @@
 
         </div>
 
-        <div class="col-sm-4">
+        <div class="col-sm-12 col-md-12 col-xl-4">
             <div>
                 <div class="card google-shadow" style="border-radius: 5px;">
                     <div class="card-header bg-white card-separator">

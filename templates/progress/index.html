@@ -1,0 +1,76 @@
+{% extends 'inc/dashboard_base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_messages %}
+{% bootstrap_javascript %}
+{% block title %}Dashboard{% endblock title %}
+{% block content %}
+
+
+
+<div class="px-3 mt-5 mb-3">
+    <h1 class="h2">Training progress</h1>
+</div>
+
+{% include 'inc/msgs.inc.html' %}
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-sm-12 col-md-12 col-xl-8 py-3">
+            <div class="card">
+                <div class="card-body text-center d-flex align-items-center justify-content-center"
+                    style="height: 300px;">
+                    <div>
+                        <span class="material-icons text-secondary" style="font-size: 60px;">
+                            touch_app
+                        </span>
+                        <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">Select any customer to see progress</h4>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-sm-12 col-md-12 col-xl-4 py-3">
+            <div class="card text-left">
+                <div class="card-body">
+                    <h4 class="card-title">Customers</h4>
+                    <div style="max-height: 80vh; overflow-y: auto; padding-right: 7px;">
+                        {% for single_user in users %}
+                        <a href="{% url 'progress-training' single_user.user.id %}">
+                            <div
+                                class="card text-left mt-2 hover {% if single_user.user.id == current_user.id %}bg-light{% endif %}">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <i class="material-icons text-secondary"
+                                            style="font-size: 45px;">account_circle</i>
+                                        <div class="px-2">
+                                            <div>
+                                                <h6 class="mb-2 text-dark">{{ single_user.user.first_name }}
+                                                    {{ single_user.user.last_name }} <span
+                                                        class="badge badge-pill badge-success bg-success">{{ single_user.count }}
+                                                        trainings</span>
+                                                </h6>
+                                                <p class="mb-0 text-dark">{{ single_user.user.email }}</p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+</div>
+{% endblock content %}

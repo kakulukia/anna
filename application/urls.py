@@ -74,6 +74,17 @@ urlpatterns = [
     path('trainings/<int:training_id>/modules/<int:module_id>/medias/<int:media_id>/',
          views.media, name='single_media'),
 
+    path('progress/',
+         views.progress, name="progress"),
+
+
+    path('progress/customer/<id>/trainings/',
+         views.progress_trainings, name="progress-training"),
+
+
+    path('progress/customer/<id>/trainings/<training_id>/modules/',
+         views.progress_modules, name="progress-module")
+
 ]
 
 urlpatterns = urlpatterns + \

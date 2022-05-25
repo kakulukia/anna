@@ -1,0 +1,84 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white google-shadow " style="user-select: auto; border-radius: 0px 0px 20px 20px;">
+  <div class="container">
+    <a href="{% url 'trainings' %}">
+      <img src="{% static 'img/mylogo.png' %}" style="width:250px" alt="Logo">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+        </li>
+        
+      </ul>
+      <form class="d-flex mt-2">
+        {% if user.is_authenticated %}
+     
+
+          {% if user.is_superuser %}
+          <a class="nav-link p-2 d-flex align-items-center bg-white border theme-secondary-text"
+            href="{% url 'progress' %}" rel="noopener" style="user-select: auto;">
+            <i class="material-icons" style="font-size: 25px; margin-right: 10px;">donut_large</i>
+            Progress
+          </a>
+
+          <a class="nav-link p-2 d-flex align-items-center bg-white border theme-secondary-text" href="/admin"
+            rel="noopener" style="user-select: auto;">
+            <i class="material-icons" style="font-size: 25px; margin-right: 10px;">admin_panel_settings</i>
+            Dashboard
+          </a>
+
+          {% endif %}
+      
+          {% if ZOOM_LINK and ZOOM_LINK.to_show %}
+          <a 
+            class="nav-link p-2 d-flex align-items-center bg-white border theme-secondary-text" 
+            target="_blank" 
+            href="{{ ZOOM_LINK.link }}"
+            rel="noopener" style="user-select: auto;">
+            <i class="material-icons" style="font-size: 25px; margin-right: 10px;">video_camera_back</i>
+            Join meeting
+          </a>
+          {% endif %}
+
+         
+
+
+
+          <a class="nav-link p-2 d-flex align-items-center bg-white border theme-secondary-text" href="{% url 'profile' %}" rel="noopener"
+            style="user-select: auto;">
+            <i class="material-icons" style="font-size: 25px; margin-right: 10px;">account_circle</i> 
+            Profile
+          </a>
+       
+        
+        
+          <a class="nav-link d-flex align-items-center p-2 bg-white border theme-secondary-text" href="{% url 'logout' %}" rel="noopener"
+            style="user-select: auto;">
+            <i class="material-icons" style="font-size: 25px; margin-right: 10px;">logout</i>
+            Logout
+          </a>
+
+        
+        
+        
+        
+        
+        {% else %}
+          <a class="nav-link p-2" href="{% url 'signin' %}" rel="noopener" style="user-select: auto;">
+            <button type="button" name="" id="" class="btn bg-white btn-block">Login</button>
+          </a>
+        
+        
+        
+        {% endif %}
+        <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button> -->
+      </form>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,126 @@
+{% extends 'inc/dashboard_base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_messages %}
+{% bootstrap_javascript %}
+{% block title %}Dashboard{% endblock title %}
+{% block content %}
+
+
+
+<div class="px-3 mt-5 mb-3">
+    <h1 class="h2">Training progress of <span class="theme-secondary-text">{{current_user.first_name}} {{current_user.last_name}}</span></h1>
+</div>
+
+{% include 'inc/msgs.inc.html' %}
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-sm-12 col-md-12 col-xl-8 py-3">
+            {% if not trainings %}
+            <div class="card">
+                <div class="card-body text-center d-flex align-items-center justify-content-center"
+                    style="height: 300px;">
+                    <div>
+                        <img src="{% static 'img/notfound.png' %}" style="width: 150px;" alt="">
+                        <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">This customer doesn't have access to any Training</h4>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% for single_training in trainings %}
+
+                <div class="card mb-3" {% if training == single_training %}style="box-shadow: 5px 5px 5px #cccccc;" {% endif %}>
+                    <div class="row g-0">
+                       
+                        <div class="col-md-4 d-flex align-items-center thumbnail">
+                            <a href="{% url 'progress-module' current_user.id single_training.id %}" class="h-100 w-100">
+                                <div style="background-image: url({{ single_training.thumbnail.url }}); 
+                                        background-size: cover;
+                                        background-repeat:   no-repeat;
+                                        background-position: center center; 
+                                        width: 100%; 
+                                        height: 100%">
+                
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <a href="{% url 'all_modules' single_training.id %}" class="text-dark">
+                                            <h5 class="card-title">{{ single_training.name }}</h5>
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-2 d-flex justify-content-end">
+                                       
+                                    </div>
+                                </div>
+                                <p class="card-text mb-0">{{ single_training.get_short_description }}</p>
+                                <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
+                
+                                <div class="row">
+                                    <div class="col-sm-6 pt-3">
+                                        <a href="{% url 'progress-module' current_user.id single_training.id %}"
+                                            class="btn theme-secondary-btn">Click to see module progress</a>
+                                    </div>
+                                    <div class="col-sm-6 pt-3 d-flex align-items-center justify-content-end">
+                                        <div class="">
+                                            <div class="progress mb-1" style="height: 0.35rem; width: 9rem; border-radius: 0.95rem;">
+                                                <div class="progress-bar bg-success" style="width: {{single_training.progress}}%;"
+                                                    role="progressbar" aria-valuenow="{{ single_training.progress }}" aria-valuemin="0"
+                                                    aria-valuemax="100"></div>
+                                            </div>
+                                            <p class="py-0 my-0">{{ single_training.progress }}% completed</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}
+        </div>
+
+        <div class="col-sm-12 col-md-12 col-xl-4 py-3">
+            <div class="card text-left">
+              <div class="card-body" >
+                <h4 class="card-title">Customers</h4>
+                    <div style="max-height: 80vh; overflow-y: auto; padding-right: 7px;">
+                        {% for single_user in users %}
+                        <a href="{% url 'progress-training' single_user.user.id %}">
+                        <div class="card text-left mt-2 hover {% if single_user.user.id == current_user.id %}bg-light{% endif %}">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <i class="material-icons text-secondary" style="font-size: 45px;">account_circle</i>
+                                    <div class="px-2">
+                                        <div>
+                                            <h6 class="mb-2 text-dark">{{ single_user.user.first_name }} {{ single_user.user.last_name }} <span
+                                                    class="badge badge-pill badge-success bg-success">{{ single_user.count }} trainings</span>
+                                            </h6>
+                                            <p class="mb-0 text-dark">{{ single_user.user.email }}</p>
+                                        </div>
+                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+
+              </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+</div>
+{% endblock content %}

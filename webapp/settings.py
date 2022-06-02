@@ -15,6 +15,8 @@ from decouple import config as env
 # import memcached
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from my_secrets import secrets
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -22,10 +24,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = secrets.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG', cast=bool, default=True)
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -43,10 +45,11 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'storages',
     'django_quill',
+    'django_secrets',
     # adding django-agents to the installed apps
     'django_user_agents',
-    'django.contrib.sites', #flatpages app 
-    'django.contrib.flatpages', #flatpages app 
+    'django.contrib.sites', #flatpages app
+    'django.contrib.flatpages', #flatpages app
 ]
 
 # Adding Cache Backend for django-user-agents for rapid parsing
@@ -171,12 +174,12 @@ BOOTSTRAP5 = {
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # -------------------------AWS S3 CONFIGURATION---------------------------#
-AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+AWS_ACCESS_KEY_ID = secrets.AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY = secrets.AWS_SECRET_ACCESS_KEY
+AWS_STORAGE_BUCKET_NAME = secrets.AWS_STORAGE_BUCKET_NAME
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
-AWS_DEFAULT_ACL = env('AWS_DEFAULT_ACL')
+AWS_DEFAULT_ACL = secrets.AWS_DEFAULT_ACL
 
 #--------------- static files configuration for production ------------------#
 # AWS_LOCATION = 'static'

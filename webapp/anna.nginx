@@ -1,0 +1,17 @@
+server {
+	listen 80;
+	server_name anna.liebendgern.de;
+	client_max_body_size 1G;
+
+  location = /favicon.ico { access_log off; log_not_found off; }
+
+  location / {
+    include proxy_params;
+	  proxy_pass http://unix:/tmp/gunicorn.sock;
+  }
+
+  location /static/ {
+    alias /home/ubuntu/myproject/mamaanywhere/staticfiles/;
+    try_files $uri =404;
+  }
+}

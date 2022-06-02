@@ -109,7 +109,7 @@ django = ">=3.0"
 
 [[package]]
 name = "django-secrets"
-version = "1.2.2"
+version = "1.2.3"
 description = ""
 category = "main"
 optional = false
@@ -353,8 +353,8 @@ django-quill-editor = [
     {file = "django_quill_editor-0.1.40-py3-none-any.whl", hash = "sha256:276bf3e344531c923b82012f04cec8373c3239d9f7124d4f2bce5f8c5f2b5749"},
 ]
 django-secrets = [
-    {file = "django_secrets-1.2.2-py3-none-any.whl", hash = "sha256:ce031bdbe87a721177a7c09e7bf4295a0875bfffe07d6d82685be2be4a754490"},
-    {file = "django_secrets-1.2.2.tar.gz", hash = "sha256:bbb3277c8441a39b0c1cf8133e271c43b0e981610b52a122d2de21d13520bc1a"},
+    {file = "django_secrets-1.2.3-py3-none-any.whl", hash = "sha256:7fe6360120795af9740cfdd86b6e5af8c2424268ab80f8c74159069819012c17"},
+    {file = "django_secrets-1.2.3.tar.gz", hash = "sha256:88eb9db8436e513269255aa74d3914887442bebad9a9cbf5b61f7139f1b46875"},
 ]
 django-storages = [
     {file = "django-storages-1.12.3.tar.gz", hash = "sha256:a475edb2f0f04c4f7e548919a751ecd50117270833956ed5bd585c0575d2a5e7"},

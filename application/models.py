@@ -164,8 +164,8 @@ class Training(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:
-        verbose_name = 'Training'
-        verbose_name_plural = 'Trainings'
+        verbose_name = 'Kurs'
+        verbose_name_plural = 'Kurse'
     
     def __str__(self):
         return self.name
@@ -216,8 +216,8 @@ class Module(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Erstellt am')
 
     class Meta:
-        verbose_name = 'Modul'
-        verbose_name_plural = 'Module'    
+        verbose_name = 'Kapitel'
+        verbose_name_plural = 'Kapitel'    
 
     def get_short_description(self):
         limit = 150
@@ -275,8 +275,8 @@ class Media(models.Model):
 
     class Meta:
         ordering = ('id',)
-        verbose_name = 'Medien'
-        verbose_name_plural = 'Medien'
+        verbose_name = 'Lektion'
+        verbose_name_plural = 'Lektionen'
 
 
 # Model for giving the access to the user
@@ -284,7 +284,7 @@ class Media(models.Model):
 
 class Access(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Nutzer')
-    training = models.ForeignKey(Training, on_delete=models.CASCADE, verbose_name='Training')
+    training = models.ForeignKey(Training, on_delete=models.CASCADE, verbose_name='Kurs',)
     created_at = models.DateTimeField(default=timezone.now, editable=False)
 
     class Meta:

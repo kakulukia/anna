@@ -44,7 +44,9 @@ INSTALLED_APPS = [
     'storages',
     'django_quill',
     # adding django-agents to the installed apps
-    'django_user_agents'
+    'django_user_agents',
+    'django.contrib.sites', #flatpages app 
+    'django.contrib.flatpages', #flatpages app 
 ]
 
 # Adding Cache Backend for django-user-agents for rapid parsing

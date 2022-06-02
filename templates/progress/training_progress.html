@@ -10,7 +10,7 @@
 
 
 <div class="px-3 mt-5 mb-3">
-    <h1 class="h2">Training progress of <span class="theme-secondary-text">{{current_user.first_name}} {{current_user.last_name}}</span></h1>
+    <h1 class="h2">Kursfortschritt von <span class="theme-secondary-text">{{current_user.first_name}} {{current_user.last_name}}</span></h1>
 </div>
 
 {% include 'inc/msgs.inc.html' %}
@@ -24,7 +24,7 @@
                     style="height: 300px;">
                     <div>
                         <img src="{% static 'img/notfound.png' %}" style="width: 150px;" alt="">
-                        <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">This customer doesn't have access to any Training</h4>
+                        <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">Dieser Kunde hat sich in kein Training eingeragen</h4>
                     </div>
                 </div>
             </div>
@@ -65,7 +65,7 @@
                                 <div class="row">
                                     <div class="col-sm-6 pt-3">
                                         <a href="{% url 'progress-module' current_user.id single_training.id %}"
-                                            class="btn theme-secondary-btn">Click to see module progress</a>
+                                            class="btn theme-secondary-btn">Hier geht's zum Fortschritt</a>
                                     </div>
                                     <div class="col-sm-6 pt-3 d-flex align-items-center justify-content-end">
                                         <div class="">
@@ -74,7 +74,7 @@
                                                     role="progressbar" aria-valuenow="{{ single_training.progress }}" aria-valuemin="0"
                                                     aria-valuemax="100"></div>
                                             </div>
-                                            <p class="py-0 my-0">{{ single_training.progress }}% completed</p>
+                                            <p class="py-0 my-0">{{ single_training.progress }}% abgeschlossen</p>
                                         </div>
                                     </div>
 

@@ -11,7 +11,7 @@ server {
   }
 
   location /static/ {
-    alias /opt/www/ann/staticfiles/;
+    alias /opt/www/anna/staticfiles/;
     try_files $uri =404;
   }
 }

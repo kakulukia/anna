@@ -11,7 +11,7 @@ server {
   }
 
   location /static/ {
-    alias /home/ubuntu/myproject/mamaanywhere/staticfiles/;
+    alias /opt/www/ann/staticfiles/;
     try_files $uri =404;
   }
 }

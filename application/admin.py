@@ -97,11 +97,16 @@ class UserAdmin(BaseUserAdmin):
     )
 
 
+@admin.register(Page)
+class PageAdmin(admin.ModelAdmin):
+    ...
+
+
 # Re-register UserAdmin
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
 
-admin.site.site_header = 'Mamaanywhere'
+admin.site.site_header = 'Anna'
 admin.site.site_title = 'Training platform'
 admin.site.index_title = 'Admin'

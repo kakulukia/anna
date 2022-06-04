@@ -11,8 +11,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-from decouple import config as env
-# import memcached
+
+from icecream import install
+install()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from my_secrets import secrets

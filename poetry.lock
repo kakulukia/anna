@@ -314,6 +314,20 @@ optional = false
 python-versions = ">=3.5"
 
 [[package]]
+name = "icecream"
+version = "2.1.2"
+description = "Never use print() to debug again; inspect variables, expressions, and program execution with a single, simple function call."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+asttokens = ">=2.0.1"
+colorama = ">=0.3.9"
+executing = ">=0.3.1"
+pygments = ">=2.2.0"
+
+[[package]]
 name = "ipdb"
 version = "0.13.9"
 description = "IPython-enabled pdb"
@@ -677,7 +691,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "3.10.4"
-content-hash = "f800bd6a111a1b8e674d995cc9edf9342dd1a2928a6d49670880d6312f7560da"
+content-hash = "b1d029ef452a9fd5e048d922f77bfe13182d456eaee00ad163658188f4476dfe"
 
 [metadata.files]
 appnope = [
@@ -852,6 +866,10 @@ gunicorn = [
 html2text = [
     {file = "html2text-2020.1.16-py3-none-any.whl", hash = "sha256:c7c629882da0cf377d66f073329ccf34a12ed2adf0169b9285ae4e63ef54c82b"},
     {file = "html2text-2020.1.16.tar.gz", hash = "sha256:e296318e16b059ddb97f7a8a1d6a5c1d7af4544049a01e261731d2d5cc277bbb"},
+]
+icecream = [
+    {file = "icecream-2.1.2-py2.py3-none-any.whl", hash = "sha256:04b9cea4d9931cf6960db0430ebf11fa34464ce7152e384ddf50f96d25b201b4"},
+    {file = "icecream-2.1.2.tar.gz", hash = "sha256:09300b2d1c678712410cbd47c95198eb1b580f66f311a554ccd6b9e758ece0ee"},
 ]
 ipdb = [
     {file = "ipdb-0.13.9.tar.gz", hash = "sha256:951bd9a64731c444fd907a5ce268543020086a697f6be08f7cc2c9a752a278c5"},

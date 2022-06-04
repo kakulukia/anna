@@ -1,0 +1,10 @@
+{% extends 'inc/dashboard_base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_messages %}
+{% bootstrap_javascript %}
+{% block title %}{{ title }}{% endblock title %}
+{% block content %}
+  {{ content }}
+{% endblock content %}

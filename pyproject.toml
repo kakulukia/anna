@@ -21,6 +21,9 @@ html2text = "^2020.1.16"
 gunicorn = "^20.1.0"
 django-secrets = "^1.2.2"
 django-extensions = "^3.1.5"
+ipdb = "^0.13.9"
+colorama = "^0.4.4"
+fabric3 = {git = "https://github.com/kakulukia/fabric3.git"}
 
 
 [build-system]

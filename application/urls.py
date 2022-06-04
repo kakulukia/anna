@@ -56,22 +56,22 @@ urlpatterns = [
          views.delete_user_device, name='delete_device'),
 
     # Path to All trainings Page
-    path('trainings/', views.all_trainings, name='trainings'),
+    path('kurse/', views.all_trainings, name='trainings'),
 
     # Path to (Single training - with all modules) Page
-    path('trainings/<int:training_id>/modules/',
+    path('kurse/<int:training_id>/modules/',
          views.all_modules, name='all_modules'),
 
     # Path to (Single training - with all modules) Page
-    path('trainings/<int:training_id>/',
+    path('kurse/<int:training_id>/',
          views.resume_all_modules, name='resume_all_modules'),
 
     # Path to (Single training - with single module - with all videos) Page
-    path('trainings/<int:training_id>/modules/<int:module_id>/medias/',
+    path('kurse/<int:training_id>/modules/<int:module_id>/medias/',
          views.media, name='media'),
 
     # Path to (Single training - with single module - with single media) Page
-    path('trainings/<int:training_id>/modules/<int:module_id>/medias/<int:media_id>/',
+    path('kurse/<int:training_id>/modules/<int:module_id>/medias/<int:media_id>/',
          views.media, name='single_media'),
 
     path('progress/',

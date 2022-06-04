@@ -140,15 +140,12 @@ AUTHENTICATION_BACKENDS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'de'
+LANGUAGE_CODE = 'de-de'
 
-TIME_ZONE = 'Asia/Karachi'
-# TIME_ZONE = 'Asia/Kolkata'
+TIME_ZONE = 'Europe/Berlin'
 
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = False
 
 
@@ -268,13 +265,18 @@ JAZZMIN_SETTINGS = {
     "navigation_expanded": True,
 
     # Hide these apps when generating side menu e.g (auth)
-    "hide_apps": ['Sites', 'auth'],
+    "hide_apps": ['Sites', 'auth', ],
 
     # Hide these models when generating side menu (e.g auth.user)
-    "hide_models": [],
+    "hide_models": ['application.Completed', 'application.access'],
 
     # List of apps (and/or models) to base side menu ordering off of (does not need to contain all apps/models)
-    "order_with_respect_to": ["auth",],
+    "order_with_respect_to": [
+        "application.training",
+        "application.module",
+        "application.media",
+        "application.page",
+    ],
 
     # Custom links to append to app groups, keyed on app name
     "custom_links": {
@@ -292,6 +294,12 @@ JAZZMIN_SETTINGS = {
         "auth": "fas fa-users-cog",
         "auth.user": "fas fa-user",
         "auth.Group": "fas fa-users",
+        "application.training": "fas fa-solid fa-rocket",
+        "application.module": "fas fa-solid fa-book",
+        "application.media": "fas fa-bookmark",
+
+        "application.page": "far fa-file-alt",
+
     },
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",
@@ -321,9 +329,9 @@ JAZZMIN_SETTINGS = {
     # - vertical_tabs
     # - collapsible
     # - carousel
-    "changeform_format": "horizontal_tabs",
+    # "changeform_format": "horizontal_tabs",
     # override change forms on a per modeladmin basis
-    "changeform_format_overrides": {"auth.user": "collapsible", "auth.group": "vertical_tabs"},
+    # "changeform_format_overrides": {"auth.user": "collapsible", "auth.group": "vertical_tabs"},
 }
 
 QUILL_CONFIGS = {

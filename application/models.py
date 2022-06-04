@@ -19,8 +19,8 @@ class Contact_Info(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = "Contact Info"
-        verbose_name_plural = "Contact Info"
+        verbose_name = "Kontakt"
+        verbose_name_plural = "Kontakt"
 
 
 class Validity(models.Model):
@@ -29,8 +29,8 @@ class Validity(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = "Validity"
-        verbose_name_plural = "Validity"
+        verbose_name = "Gültigkeit"
+        verbose_name_plural = "Gültigkeit"
 
 
 class UploadPrivate(models.Model):
@@ -48,12 +48,8 @@ class ZoomLink(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Nutzer')
 
     class Meta:
-        verbose_name = 'Zoom Linke'
-        verbose_name_plural = 'Zomm Linkes'
-
-    class Meta:
-        verbose_name = "Zoom Link"
-        verbose_name_plural = "Zoom Link"
+        verbose_name = "ZoomLink"
+        verbose_name_plural = "ZoomLink"
 
 # Custom Model for the Device
 

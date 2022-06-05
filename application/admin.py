@@ -46,11 +46,16 @@ admin.site.register(Access, AccessAdmin)
 admin.site.register(Completed)
 
 
+class AccessInline(admin.StackedInline):
+    model = Access
+    extra = 1
+    max_num = 1
+
+
 class ZoomLinkInline(admin.StackedInline):
     model = ZoomLink
     extra = 1
     max_num = 1
-    verbose_name = 'Zoom link'
 
 
 class ContactInfoInline(admin.StackedInline):
@@ -66,11 +71,12 @@ class ValidityInline(admin.StackedInline):
 
 
 class UserAdmin(BaseUserAdmin):
-    inlines = [ValidityInline, ContactInfoInline, ZoomLinkInline]
+    inlines = [ValidityInline, ContactInfoInline, ZoomLinkInline, AccessInline]
     list_display = ('email', 'first_name', 'last_name',
                     'is_superuser', 'date_joined', 'option')
     list_filter = ('is_staff', 'is_superuser')
     verbose_name = "Customer"
+    actions = None
     # list_display_links = ('see_progress', )
 
     def option(self, obj):
@@ -83,25 +89,34 @@ class UserAdmin(BaseUserAdmin):
         url = reverse('progress-training', args=[user_id])
         element = f'<a href = "{url}" target="_blank" class = "btn btn-outline-primary" > Progress </a>'
         return mark_safe(element)
+    option.short_description = "Fortschritt"
 
     fieldsets = (
         (None,
-            {'fields':
-                ('username', 'password')
-             }
+            {'fields': (
+                'username',
+                'password',
+                'is_active',
+                'is_staff',
+                'is_superuser',
+                'first_name',
+                'last_name',
+                'email'
+            )}
          ),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'email')}),
-        # ('Permissions', {'fields': ('is_active',
-        #  'is_staff', 'is_superuser', 'groups',)}),
-        # ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
 
+
+@admin.register(Page)
+class PageAdmin(admin.ModelAdmin):
+    list_display = ['url', 'title']
+    actions = None
 
 # Re-register UserAdmin
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
 
-admin.site.site_header = 'Mamaanywhere'
+admin.site.site_header = 'Anna'
 admin.site.site_title = 'Training platform'
 admin.site.index_title = 'Admin'

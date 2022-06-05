@@ -3,6 +3,8 @@ import re
 from traceback import print_tb
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.utils.safestring import mark_safe
+
 from .models import *
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
@@ -596,3 +598,12 @@ def single_media(request, training_id, module_id, media_id):
         'medias': medias,
     }
     return render(request, 'single_media.html', context)
+
+
+def render_flatpage(request, url):
+    page = get_object_or_404(Page, url=url)
+
+    title = mark_safe(page.title)
+    content = mark_safe(page.content.html)
+
+    return render(request, 'flatpage.html', {'title': title, 'content': content})

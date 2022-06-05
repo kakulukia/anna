@@ -18,4 +18,8 @@ def main():
 
 
 if __name__ == '__main__':
+
+    from django_secrets.startup import check
+    check()
+
     main()

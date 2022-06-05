@@ -1,9 +1,5 @@
-from distutils.command.upload import upload
-from pydoc import describe
-from tabnanny import verbose
 from django.db import models
-from datetime import datetime
-from django.contrib.auth.models import User, auth
+from django.contrib.auth.models import User
 from django.utils import timezone
 from django.contrib.sessions.models import Session
 from django.db.models.signals import post_delete
@@ -11,13 +7,6 @@ from django.dispatch import receiver
 from django_quill.fields import QuillField
 from webapp.storages import PrivateMediaStorage
 from django.core.validators import RegexValidator
-# from django.contrib import admin
-
-# Create your models here.
-
-# python manage.py makemigrations
-# python manage.py migrate
-# python manage.py runserver
 
 
 class Contact_Info(models.Model):
@@ -30,8 +19,8 @@ class Contact_Info(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = "Contact Info"
-        verbose_name_plural = "Contact Info"
+        verbose_name = "Kontakt"
+        verbose_name_plural = "Kontakt"
 
 
 class Validity(models.Model):
@@ -40,8 +29,8 @@ class Validity(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = "Validity"
-        verbose_name_plural = "Validity"
+        verbose_name = "Gültigkeit"
+        verbose_name_plural = "Gültigkeit"
 
 
 class UploadPrivate(models.Model):
@@ -59,12 +48,8 @@ class ZoomLink(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Nutzer')
 
     class Meta:
-        verbose_name = 'Zoom Linke'
-        verbose_name_plural = 'Zomm Linkes'
-
-    class Meta:
-        verbose_name = "Zoom Link"
-        verbose_name_plural = "Zoom Link"
+        verbose_name = "ZoomLink"
+        verbose_name_plural = "ZoomLink"
 
 # Custom Model for the Device
 
@@ -162,11 +147,11 @@ class Training(models.Model):
     description = QuillField(null=True, blank=True)
     thumbnail = models.ImageField(storage=PrivateMediaStorage(), verbose_name='Vorschaubild')
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
     class Meta:
         verbose_name = 'Kurs'
         verbose_name_plural = 'Kurse'
-    
+
     def __str__(self):
         return self.name
 
@@ -217,7 +202,7 @@ class Module(models.Model):
 
     class Meta:
         verbose_name = 'Kapitel'
-        verbose_name_plural = 'Kapitel'    
+        verbose_name_plural = 'Kapitel'
 
     def get_short_description(self):
         limit = 150
@@ -263,7 +248,7 @@ class Media(models.Model):
     next = models.ForeignKey('self', on_delete=models.CASCADE,
                              related_name='file_next', null=True, blank=True, verbose_name='Nach')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Erstellt am')
-        
+
     def __str__(self):
         return self.name
 
@@ -296,5 +281,17 @@ class Completed(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Nutzer')
     media = models.ForeignKey(Media, on_delete=models.CASCADE, verbose_name='Medien')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Erstellt am')
+
     class Meta:
         verbose_name = 'Abgeschlossen'
+
+
+class Page(models.Model):
+    url = models.CharField("URL", max_length=100, db_index=True)
+    title = models.CharField("Titel", max_length=200)
+    content = QuillField("Inhalt", null=True, blank=True)
+
+    class Meta:
+        verbose_name = "Unterseite"
+        verbose_name_plural = "Unterseiten"
+        ordering = ["url"]

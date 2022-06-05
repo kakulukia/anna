@@ -4,7 +4,7 @@
 {% bootstrap_css %}
 {% bootstrap_messages %}
 {% bootstrap_javascript %}
-{% block title %}Dashboard{% endblock title %}
+{% block title %}Kurse{% endblock title %}
 {% block content %}
 
 
@@ -21,13 +21,13 @@
             <!-- Modal body -->
             <div class="modal-body">
                 <h6 class="mb-3">Contact admin</h6>
-                
+
                 <div class="card mb-2">
                     <div class="card-header">
                         <p class="card-text my-0">admin@training.com</p>
                     </div>
                 </div>
-                
+
                 <div class="card">
                     <div class="card-header">
                         <p class="card-text my-0">+92315246256</p>
@@ -103,10 +103,10 @@
                                     </div>
 
                                     <div class="col-sm-3">
-                                       {{ all_media.count }} Kurs{{ all_media.count|pluralize:"e" }}  
+                                       {{ all_media.count }} Kurs{{ all_media.count|pluralize:"e" }}
                                     </div>
                                 </div>
-                                
+
                             </div>
                             <div id="module-{{ module.id }}" class="collapse" data-bs-parent="#all-modules">
                                 <div class="card-body">
@@ -122,7 +122,7 @@
                         </div>
                         {% endfor %}
 
-                    
+
                     </div>
 
                     {% endwith %}
@@ -152,7 +152,7 @@
             {% endif %}
         </div>
     </div>
-   
+
 
 
 </div>

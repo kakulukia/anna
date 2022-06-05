@@ -4,7 +4,7 @@
 {% bootstrap_css %}
 {% bootstrap_messages %}
 {% bootstrap_javascript %}
-{% block title %}Dashboard{% endblock title %}
+{% block title %}Module{% endblock title %}
 {% block content %}
 
 <div class="px-3 mt-5 mb-3">
@@ -37,8 +37,8 @@
                 <div class="row g-0">
                     <div class="col-md-4 d-flex align-items-center thumbnail">
                         <a href="{% url 'media' training.id single_module.id  %}"  class="h-100 w-100">
-                            <div 
-                                style="background-image: url({{ single_module.thumbnail.url }}); 
+                            <div
+                                style="background-image: url({{ single_module.thumbnail.url }});
                                     background-size: cover;
                                     background-repeat:   no-repeat;
                                     background-position: center center; width:100%; height: 100%">
@@ -54,7 +54,7 @@
                                 </div>
                                 <div class="col-sm-3 d-flex justify-content-end theme-primary-text">
                                     <p style="font-size: 16px" class="mb-0">{{ single_module.get_all_media.count }} lessons</p>
-                                    
+
 
                                 </div>
                             </div>

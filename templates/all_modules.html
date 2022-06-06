@@ -8,8 +8,17 @@
 {% block content %}
 
 <div class="px-3 mt-5 mb-3">
-    <h5 class="text-secondary">All modules</h5>
-    <h1 class="h2">{{ training.name }}</h1>
+  <div id="all-title">
+    <p class="text-secondary d-flex align-items-center course-navigation" style="font-size: 17px;">
+      <a href="{% url 'trainings'  %}">
+          Alle Kurse
+      </a>
+
+      <i class="material-icons mx-2 link-arrow">keyboard_arrow_right</i>
+
+      {{ training }}
+    </p>
+  </div>
 </div>
 
 {% include 'inc/msgs.inc.html' %}
@@ -24,8 +33,7 @@
                     style="height: 300px;">
                     <div>
                         <img src="{% static 'img/notfound.png' %}" style="width: 150px;" alt="">
-                        <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">No module exist in the
-                            record</h4>
+                        <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">Es existiert kein Modul in diesem Kurs</h4>
                     </div>
                 </div>
             </div>
@@ -50,10 +58,10 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-9">
-                                    <h5 class="card-title">Module {{ forloop.counter }} - {{ single_module.name }}</h5>
+                                    <h5 class="card-title">Modul {{ forloop.counter }} - {{ single_module.name }}</h5>
                                 </div>
                                 <div class="col-sm-3 d-flex justify-content-end theme-primary-text">
-                                    <p style="font-size: 16px" class="mb-0">{{ single_module.get_all_media.count }} lessons</p>
+                                    <p style="font-size: 16px" class="mb-0">{{ single_module.get_all_media.count }} Lektion{{ single_module.get_all_media.count|pluralize:"en" }}</p>
 
 
                                 </div>
@@ -64,7 +72,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <a href="{% url 'media' training.id single_module.id  %}"
-                                        class="btn theme-secondary-btn">Open module</a>
+                                        class="btn theme-secondary-btn">Modul öffnen</a>
                                 </div>
                                 <div class="col-sm-6 d-flex align-items-center justify-content-end">
                                     <div class="">

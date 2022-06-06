@@ -15,6 +15,12 @@
     <div class="px-3 mt-5 mb-3">
         <div id="all-title">
             <p class="text-secondary d-flex align-items-center course-navigation" style="font-size: 17px;">
+                <a href="{% url 'trainings'  %}">
+                    Alle Kurse
+                </a>
+
+                <i class="material-icons mx-2 link-arrow">keyboard_arrow_right</i>
+
                 <a href="{% url 'all_modules' training.id  %}">
                     {{ training }}
                 </a>
@@ -26,12 +32,9 @@
                 </a>
 
                 {% if media %}
-                <i class="material-icons mx-2 link-arrow">keyboard_arrow_right</i>
+                  <i class="material-icons mx-2 link-arrow">keyboard_arrow_right</i>
 
-                <a href="{% url 'single_media' training.id module.id module.id %}">
-                    {{ media }}
-                </a>
-
+                  {{ media }}
                 {% endif %}
             </p>
         </div>
@@ -62,8 +65,7 @@
                         style="height: 300px;">
                         <div>
                             <img src="{% static 'img/notfound.png' %}" style="width: 150px;" alt="">
-                            <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">No media is selected to
-                                play</h4>
+                            <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">Keine Lektion ausgewählt</h4>
                         </div>
                     </div>
                 </div>
@@ -141,12 +143,6 @@
                         <h5>{{ module }}</h5>
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="d-flex align-items-center">
-                            </div>
-                            <div>
-                                <a onclick="openFullscreen();">
-                                    <img src="{% static 'img/full-screen-icon.png' %}" alt="full-screen-icon"
-                                        class="img-fluid" style="width: 20px;">
-                                </a>
                             </div>
                         </div>
                     </div>

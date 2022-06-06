@@ -47,7 +47,11 @@
 
 
 <div class="px-3 mt-5 mb-3">
-    <h1 class="h2">Alle Kurse</h1>
+  <div id="all-title">
+    <p class="text-secondary d-flex align-items-center course-navigation" style="font-size: 17px;">
+        Alle Kurse
+    </p>
+  </div>
 </div>
 {% include 'inc/msgs.inc.html' %}
 
@@ -128,7 +132,7 @@
                     {% endwith %}
 
                     {% if allowed %}
-                        <a href="{% url 'all_modules' training.id %}" class="btn w-100  theme-primary-btn">Open training</a>
+                        <a href="{% url 'all_modules' training.id %}" class="btn w-100  theme-primary-btn">Kurs starten</a>
                     {% else %}
                         <a data-bs-toggle="modal" data-bs-target="#request-access" class="btn w-100  theme-outline-primary-btn">Zugriff anfordern</a>
                     {% endif %}

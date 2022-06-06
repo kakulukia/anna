@@ -520,7 +520,8 @@ def media(request, training_id, module_id, media_id=None):
         media = Media.objects.get(id=media_id)
     else:
         media = Media.objects.filter(module=module).first()
-        return main_media(request, media.id)
+        if media:
+            return main_media(request, media.id)
 
     context = {
         'module': module,

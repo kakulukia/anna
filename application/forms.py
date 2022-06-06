@@ -111,10 +111,12 @@ class UserForm(UserCreationForm):
 
 class ResetPasswordForm(forms.Form):
     password = forms.CharField(
+        label='Passwort',
         max_length=20,
         widget=forms.PasswordInput(),
     )
     confirm_password = forms.CharField(
+        label='Passwort wiederholen',
         max_length=20, widget=forms.PasswordInput())
 
     def clean(self):

@@ -49,7 +49,6 @@ admin.site.register(Completed)
 class AccessInline(admin.StackedInline):
     model = Access
     extra = 1
-    max_num = 1
 
 
 class ZoomLinkInline(admin.StackedInline):
@@ -92,16 +91,16 @@ class UserAdmin(BaseUserAdmin):
     option.short_description = "Fortschritt"
 
     fieldsets = (
-        (None,
+        ('Benutzer',
             {'fields': (
+                'first_name',
+                'last_name',
+                'email',
                 'username',
                 'password',
                 'is_active',
                 'is_staff',
                 'is_superuser',
-                'first_name',
-                'last_name',
-                'email'
             )}
          ),
     )

@@ -178,6 +178,7 @@ AWS_STORAGE_BUCKET_NAME = secrets.AWS_STORAGE_BUCKET_NAME
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
 AWS_DEFAULT_ACL = secrets.AWS_DEFAULT_ACL
+AWS_S3_REGION_NAME = "us-east-1"
 
 #--------------- static files configuration for production ------------------#
 # AWS_LOCATION = 'static'

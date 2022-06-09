@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.template.defaultfilters import truncatechars
 from django.utils import timezone
 from django.contrib.sessions.models import Session
 from django.db.models.signals import post_delete
@@ -21,6 +22,9 @@ class Contact_Info(models.Model):
     class Meta:
         verbose_name = "Kontakt"
         verbose_name_plural = "Kontakt"
+
+    def __str__(self):
+        return f'KontaktInfo für {self.user.username}'
 
 
 class Validity(models.Model):
@@ -50,6 +54,9 @@ class ZoomLink(models.Model):
     class Meta:
         verbose_name = "ZoomLink"
         verbose_name_plural = "ZoomLink"
+
+    def __str__(self):
+        return f'{self.user} - {truncatechars(self.link, 30)}'
 
 # Custom Model for the Device
 
@@ -275,6 +282,9 @@ class Access(models.Model):
     class Meta:
         verbose_name = 'Zugriff'
         verbose_name_plural = 'Zugriffe'
+
+    def __str__(self):
+        return self.training.name
 
 
 class Completed(models.Model):

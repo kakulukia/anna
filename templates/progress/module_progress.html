@@ -18,7 +18,7 @@
 <div class="container">
     <div class="row mb-4">
         <div class="col-sm-12 col-md-12 col-xl-8 py-3">
-            
+
             <div class="card">
               <div class="card-body">
                   <div class="row">
@@ -31,7 +31,7 @@
                                 <div class="progress-bar bg-success" style="width: {{training.progress}}%;" role="progressbar"
                                     aria-valuenow="{{ training.progress }}" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
-                            <p class="py-0 my-0">{{ training.progress }}% completed</p>
+                            <p class="py-0 my-0">{{ training.progress }}% abgeschlossen</p>
 
                         </div>
 
@@ -56,17 +56,17 @@
             <div id="all-modules">
 
             {% for single_module in modules %}
-            
+
             <div class="card mb-3">
                 <div class="row g-0">
                     <div class="col-md-4 d-flex align-items-center thumbnail">
-                        <div style="background-image: url({{ single_module.thumbnail.url }}); 
+                        <div style="background-image: url({{ single_module.thumbnail.url }});
                                                         background-size: cover;
                                                         background-repeat:   no-repeat;
                                                         background-position: center center; width:100%; height: 100%">
-        
+
                         </div>
-                    
+
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
@@ -76,13 +76,13 @@
                                 </div>
                                 <div class="col-sm-3 d-flex justify-content-end theme-primary-text">
                                     <p style="font-size: 16px" class="mb-0">{{ single_module.get_all_media.count }} lessons</p>
-            
-            
+
+
                                 </div>
                             </div>
                             <p class="card-text">{{ single_module.get_short_description }}</p>
                             <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
-            
+
                             <div class="row">
                                 <div class="col-sm-6">
                                     <a class="btn theme-secondary-btn" data-bs-toggle="collapse" href="#module-{{ single_module.id }}">Expand</a>
@@ -94,7 +94,7 @@
                                                 role="progressbar" aria-valuenow="{{ single_module.progress }}" aria-valuemin="0"
                                                 aria-valuemax="100"></div>
                                         </div>
-                                        <p class="py-0 my-0">{{ single_module.progress }}% completed</p>
+                                        <p class="py-0 my-0">{{ single_module.progress }}% abgeschlossen</p>
                                     </div>
                                 </div>
                             </div>
@@ -106,53 +106,53 @@
 
 
                 <div class="card-footer text-muted  collapse"  id="module-{{ single_module.id }}" data-bs-parent="#all-modules">
-                    
-                    <div class="row">
-                            
 
-                        {% for current_media in single_module.get_all_media_objects %}   
-                                                 
+                    <div class="row">
+
+
+                        {% for current_media in single_module.get_all_media_objects %}
+
                             <div class="col-sm-6 px-2 mt-2">
                                 <div class="card text-left">
                                   <div class="card-body">
                                       <div class="d-flex align-items-center">
                                         <!-- <img src="{{ current_media.thumbnail.url }}" class="img-fluid small-icon" alt="video-thumbnail" style="width: 6%; margin-right: 13px;"> -->
-                                          
+
                                         <h6 class="card-title my-0" style="width: 95%;">{{ current_media.name }}</h6>
                                         {% if current_media.id in completed_media %}
                                         <i class="material-icons text-success mx-1">check_circle</i>
                                         {% endif %}
 
-                                    
+
                                       </div>
-                                    
+
                                   </div>
                                 </div>
                             </div>
-                            
+
                         {% endfor %}
                     </div>
                 </div>
 
             </div>
-            
+
             {% endfor %}
-            </div>            
+            </div>
 
             {% for single_training in trainings %}
 
                 <div class="card mb-3" {% if training == single_training %}style="box-shadow: 5px 5px 5px #cccccc;" {% endif %}>
                     <div class="row g-0">
-                       
+
                         <div class="col-md-4 d-flex align-items-center thumbnail">
                             <a href="{% url 'progress-module' current_user.id single_training.id %}" class="h-100 w-100">
-                                <div style="background-image: url({{ single_training.thumbnail.url }}); 
+                                <div style="background-image: url({{ single_training.thumbnail.url }});
                                         background-size: cover;
                                         background-repeat:   no-repeat;
-                                        background-position: center center; 
-                                        width: 100%; 
+                                        background-position: center center;
+                                        width: 100%;
                                         height: 100%">
-                
+
                                 </div>
                             </a>
                         </div>
@@ -165,12 +165,12 @@
                                         </a>
                                     </div>
                                     <div class="col-sm-2 d-flex justify-content-end">
-                                       
+
                                     </div>
                                 </div>
                                 <p class="card-text mb-0">{{ single_training.get_short_description }}</p>
                                 <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
-                
+
                                 <div class="row">
                                     <div class="col-sm-6 pt-3">
                                         <a href="{% url 'progress-module' current_user.id single_training.id %}"
@@ -183,7 +183,7 @@
                                                     role="progressbar" aria-valuenow="{{ single_training.progress }}" aria-valuemin="0"
                                                     aria-valuemax="100"></div>
                                             </div>
-                                            <p class="py-0 my-0">{{ single_training.progress }}% completed</p>
+                                            <p class="py-0 my-0">{{ single_training.progress }}% abgeschlossen</p>
                                         </div>
                                     </div>
 
@@ -214,7 +214,7 @@
                                             </h6>
                                             <p class="mb-0 text-dark">{{ single_user.user.email }}</p>
                                         </div>
-                        
+
                                     </div>
                                 </div>
                             </div>

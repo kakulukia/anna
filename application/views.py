@@ -263,7 +263,7 @@ def get_accessed_training(user):
 
 @login_required
 def all_trainings(request):
-    trainings = Training.objects.all()
+    trainings = Training.objects.filter(access__user=request.user)
     accessed_training = get_accessed_training(request.user)
     allowed = None
     training = None
@@ -272,8 +272,7 @@ def all_trainings(request):
         training = Training.objects.filter(id=expand_id).first()
     else:
         training = trainings.first()
-    allowed = True if (
-        training and training.id in accessed_training) else False
+    allowed = training and training.id in accessed_training
     completed_media_ids = Completed.objects.filter(
         user=request.user).values_list('media_id', flat=True)
 
@@ -521,7 +520,8 @@ def media(request, training_id, module_id, media_id=None):
         media = Media.objects.get(id=media_id)
     else:
         media = Media.objects.filter(module=module).first()
-        return main_media(request, media.id)
+        if media:
+            return main_media(request, media.id)
 
     context = {
         'module': module,
@@ -556,7 +556,7 @@ def mark_as_done(request, media_id):
 
     if media.next:
         media = media.next
-        messages.success(request, 'Media has been marked as completed')
+        messages.success(request, 'Lektion als abgeschlossen markiert')
         training_id = media.module.training.id
         module_id = media.module.id
         media_id = media.id
@@ -569,7 +569,7 @@ def mark_as_done(request, media_id):
 
     print(media.module.next)
     if media.module.next:
-        messages.success(request, 'Module has been marked as completed')
+        messages.success(request, 'Modul als abgeschlossen markiert')
         next_module = media.module.next
         training_id = next_module.training.id
         module_id = next_module.id
@@ -579,7 +579,7 @@ def mark_as_done(request, media_id):
             module_id=module_id
         )
 
-    messages.success(request, 'Training has been completed')
+    messages.success(request, 'Kurs wurde abgeschlossen')
     return redirect('trainings')
 
 # Function to render the single_media page

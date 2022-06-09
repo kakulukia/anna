@@ -4,7 +4,7 @@
 {% bootstrap_css %}
 {% bootstrap_messages %}
 {% bootstrap_javascript %}
-{% block title %}Dashboard{% endblock title %}
+{% block title %}Kurse{% endblock title %}
 {% block content %}
 
 
@@ -21,13 +21,13 @@
             <!-- Modal body -->
             <div class="modal-body">
                 <h6 class="mb-3">Contact admin</h6>
-                
+
                 <div class="card mb-2">
                     <div class="card-header">
                         <p class="card-text my-0">admin@training.com</p>
                     </div>
                 </div>
-                
+
                 <div class="card">
                     <div class="card-header">
                         <p class="card-text my-0">+92315246256</p>
@@ -47,7 +47,11 @@
 
 
 <div class="px-3 mt-5 mb-3">
-    <h1 class="h2">Alle Kurse</h1>
+  <div id="all-title">
+    <p class="text-secondary d-flex align-items-center course-navigation" style="font-size: 17px;">
+        Alle Kurse
+    </p>
+  </div>
 </div>
 {% include 'inc/msgs.inc.html' %}
 
@@ -55,14 +59,14 @@
     <div class="row mb-4">
         <div class="col-sm-12 col-md-12 col-xl-8 py-3">
             {% if not trainings  %}
-            <div class="card">
-                <div class="card-body text-center d-flex align-items-center justify-content-center" style="height: 300px;">
-                    <div>
-                        <img src="{% static 'img/notfound.png' %}" style="width: 150px;" alt="">
-                        <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">Es gibt keine Trainings</h4>
-                    </div>
-                </div>
-            </div>
+              <div class="card">
+                  <div class="card-body text-center d-flex align-items-center justify-content-center" style="height: 300px;">
+                      <div>
+                          <img src="{% static 'img/notfound.png' %}" style="width: 150px;" alt="">
+                          <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">Es gibt keine Kurse</h4>
+                      </div>
+                  </div>
+              </div>
             {% endif %}
 
             {% for single_training in trainings %}
@@ -103,10 +107,10 @@
                                     </div>
 
                                     <div class="col-sm-3">
-                                       {{ all_media.count }} Kurs{{ all_media.count|pluralize:"e" }}  
+                                       {{ all_media.count }} Kurs{{ all_media.count|pluralize:"e" }}
                                     </div>
                                 </div>
-                                
+
                             </div>
                             <div id="module-{{ module.id }}" class="collapse" data-bs-parent="#all-modules">
                                 <div class="card-body">
@@ -122,13 +126,13 @@
                         </div>
                         {% endfor %}
 
-                    
+
                     </div>
 
                     {% endwith %}
 
                     {% if allowed %}
-                        <a href="{% url 'all_modules' training.id %}" class="btn w-100  theme-primary-btn">Open training</a>
+                        <a href="{% url 'all_modules' training.id %}" class="btn w-100  theme-primary-btn">Kurs starten</a>
                     {% else %}
                         <a data-bs-toggle="modal" data-bs-target="#request-access" class="btn w-100  theme-outline-primary-btn">Zugriff anfordern</a>
                     {% endif %}
@@ -140,7 +144,7 @@
                 <div class="card-body text-center d-flex align-items-center justify-content-center" style="height: 300px;">
                     <div>
                         <img src="{% static 'img/notfound.png' %}" style="width: 150px;" alt="">
-                        <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">Keine Trainings ausgewählt</h4>
+                        <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">Keinen Kurs ausgewählt</h4>
                     </div>
                 </div>
             </div>
@@ -152,7 +156,7 @@
             {% endif %}
         </div>
     </div>
-   
+
 
 
 </div>

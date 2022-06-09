@@ -15,30 +15,33 @@
     <div class="px-3 mt-5 mb-3">
         <div id="all-title">
             <p class="text-secondary d-flex align-items-center course-navigation" style="font-size: 17px;">
+                <a href="{% url 'trainings'  %}">
+                    Alle Kurse
+                </a>
+
+                <i class="material-icons mx-2 link-arrow">keyboard_arrow_right</i>
+
                 <a href="{% url 'all_modules' training.id  %}">
                     {{ training }}
                 </a>
-            
+
                 <i class="material-icons mx-2 link-arrow">keyboard_arrow_right</i>
-            
+
                 <a href="{% url 'media' training.id module.id %}">
                     {{ module }}
                 </a>
-            
+
                 {% if media %}
-                <i class="material-icons mx-2 link-arrow">keyboard_arrow_right</i>
-            
-                <a href="{% url 'single_media' training.id module.id module.id %}">
-                    {{ media }}
-                </a>
-            
+                  <i class="material-icons mx-2 link-arrow">keyboard_arrow_right</i>
+
+                  {{ media }}
                 {% endif %}
             </p>
         </div>
 
         <div id="only-title">
             <p class="text-secondary d-flex align-items-center course-navigation" style="font-size: 17px;">
-            
+
                 {% if media %}
                     <a href="{% url 'single_media' training.id module.id module.id %}">
                         {{ media }}
@@ -62,8 +65,7 @@
                         style="height: 300px;">
                         <div>
                             <img src="{% static 'img/notfound.png' %}" style="width: 150px;" alt="">
-                            <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">No media is selected to
-                                play</h4>
+                            <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">Keine Lektion ausgewählt</h4>
                         </div>
                     </div>
                 </div>
@@ -79,12 +81,12 @@
                             style="position:absolute;top:0;left:0;width:100%;height:100%;"
                             title="Yvonne und Matthias - Erfolgsinterview"></iframe></div>
                     <script src="https://player.vimeo.com/api/player.js"></script> -->
-                    
+
                     <!-- IFRAME  -->
                     <!-- <iframe style="width: 100%; height: 25rem; border-radius: 4px 4px 0px 0px;" src="{{ media.file }}"></iframe> -->
 
                     <!-- DYNAMIC VIDEO FROM AWS S3 -->
-                   
+
                     {% if media.get_file_type == 'audio' %}
                         <div style="width: 100%; border-radius: 4px 4px 0px 0px;">
                             <img src="{{ media.thumbnail.url }}" alt="" style="width: 100%;">
@@ -102,7 +104,7 @@
                         </video>
 
                     {% endif %}
-                    
+
                     <div class="card-body">
                         <div class="row my-3">
                             <div class="col-sm-9">
@@ -119,7 +121,7 @@
                             <div class="col-sm-3 d-flex align-items-center justify-content-end">
                                 {% if media.id not in completed_media %}
                                 <a type="button" onclick="return confirm('Are you sure you want to mark it done?')" href="{% url 'mark-as-done' media.id %}">
-                                    <button type="button" class="btn theme-primary-btn">Mark as done</button>
+                                    <button type="button" class="btn theme-primary-btn">✓ Erledigt</button>
                                 </a>
                                 {% endif %}
                             </div>
@@ -131,7 +133,7 @@
                 </div>
 
                 {% endif %}
-                
+
             </div>
 
             <div class="col-sm-12 col-md-12 col-xl-4 py-3">
@@ -141,12 +143,6 @@
                         <h5>{{ module }}</h5>
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="d-flex align-items-center">
-                            </div>
-                            <div>
-                                <a onclick="openFullscreen();">
-                                    <img src="{% static 'img/full-screen-icon.png' %}" alt="full-screen-icon"
-                                        class="img-fluid" style="width: 20px;">
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -237,7 +233,7 @@
             // let url = 'http://127.0.0.1:8000/trainings/{{training_id}}/modules/{{module_id}}/medias/{{media_id}}/';
             // window.location = url;
         }
-        
+
 
 
         if (to_enter_password) {

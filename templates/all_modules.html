@@ -58,7 +58,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-9">
-                                    <h5 class="card-title">Modul {{ forloop.counter }} - {{ single_module.name }}</h5>
+                                    <h5 class="card-title">Kapitel {{ forloop.counter }} - {{ single_module.name }}</h5>
                                 </div>
                                 <div class="col-sm-3 d-flex justify-content-end theme-primary-text">
                                     <p style="font-size: 16px" class="mb-0">{{ single_module.get_all_media.count }} Lektion{{ single_module.get_all_media.count|pluralize:"en" }}</p>
@@ -72,7 +72,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <a href="{% url 'media' training.id single_module.id  %}"
-                                        class="btn theme-secondary-btn">Modul öffnen</a>
+                                        class="btn theme-secondary-btn">Kapitel öffnen</a>
                                 </div>
                                 <div class="col-sm-6 d-flex align-items-center justify-content-end">
                                     <div class="">

@@ -99,6 +99,7 @@
 
                     <div>
                         <div class="">
+                            <p>Hier kannst du deine Geräte verwalten. Du kannst maximal 5 Geräte benutzen.</p>
                             <table class="table p-3 border table-striped">
                                 <thead style="border-bottom: solid 2px #de7b5f;">
                                     <tr>
@@ -121,7 +122,7 @@
                                         <td>{{ device.last_login.date }} <br> {{ device.last_login.time }}</td>
                                         <td>
                                             <a href="{% url 'delete_device' device.id %}"
-                                                onclick="return confirm('Are you sure you want to remove this session?')">
+                                                onclick="return confirm('Sicher als abgeschlossen makieren?')">
                                                 <svg class="text-danger" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
                                                     <path
@@ -132,10 +133,8 @@
                                     </tr>
                                     {% endfor %}
                                 </tbody>
-                                <tr>Hier kannst du deine Geräte verwalten. Du kannst maximal 5 Geräte benutzen.</tr>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>

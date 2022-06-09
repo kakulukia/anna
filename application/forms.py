@@ -21,9 +21,9 @@ import re
 
 
 class LoginForm(forms.Form):
-    email = forms.EmailField(label='Email address', required=True)
+    email = forms.EmailField(label='E-Mail Adresse', required=True)
     password = forms.CharField(
-        label='Password', widget=forms.PasswordInput, help_text=None)
+        label='Passwort', widget=forms.PasswordInput, help_text=None)
 
     def is_user_exists(self, email):
         user = User.objects.filter(email=email)
@@ -37,11 +37,11 @@ class LoginForm(forms.Form):
         user = self.is_user_exists(email)
         if user:
             if not user.check_password(password):
-                self.add_error('password', 'Invalid password')
+                self.add_error('password', 'Falsches Passwort')
                 return None
             return user
         else:
-            self.add_error('email', 'This email is not registered')
+            self.add_error('email', 'Diese Adresse ist nicht regestriert')
 
 
 class UserForm(UserCreationForm):
@@ -88,16 +88,16 @@ class UserForm(UserCreationForm):
 
             if not my_field:
                 # raise forms.ValidationError("This field is required")
-                self.add_error(i, "This field is required")
+                self.add_error(i, "Dieses Feld ist erforderlich")
 
         if email:
             # pass the regular expression
             # and the string into the fullmatch() method
             if not re.fullmatch(regex, email):
-                self.add_error('email', 'Enter a valid email address')
+                self.add_error('email', 'Geben sie eine gültige E-Mail-Adresse an')
 
             if self.is_user_exists(email):
-                self.add_error('email', 'This email is already registered')
+                self.add_error('email', 'Diese Email-Adresse wurde bereits registriert')
 
         # All test passed
         if len(self.errors) == 0:
@@ -125,12 +125,12 @@ class ResetPasswordForm(forms.Form):
         confirm_password = cleaned_data.get("confirm_password")
 
         if password != confirm_password:
-            self.add_error("password", "Passwords you provided don't match.")
+            self.add_error("password", "Passwörter stimmen nicht überein.")
 
         if password.isalpha() or password.isdigit():
             self.add_error(
-                "password", "Password must contains alphabets and numbers.")
+                "password", "Das Passwort muss Buchstaben und Zahlen enthalten.")
 
         if len(password) < 8:
             self.add_error(
-                "password", "Password must contains at least 8 characters.")
+                "password", "Das Passwort muss mindestens 8 Zeichen enthalten.")

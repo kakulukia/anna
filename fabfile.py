@@ -8,7 +8,7 @@ env.output_prefix = False
 APP_NAME = "anna"
 
 env.path = f"/opt/www/{APP_NAME}"
-env.hosts = ["anna.liebendgern.de"]
+env.hosts = ["andy@anna.liebendgern.de"]
 
 
 # # DEPLOYMENT TARGETS

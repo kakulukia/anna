@@ -121,7 +121,7 @@
                             <div class="col-sm-3 d-flex align-items-center justify-content-end">
                                 {% if media.id not in completed_media %}
                                 <a type="button" onclick="return confirm('Sicher als abgeschlossen makieren?')" href="{% url 'mark-as-done' media.id %}">
-                                    <button type="button" class="btn theme-primary-btn">Als abgeschlossen makieren</button>
+                                    <button type="button" class="btn btn-width theme-primary-btn">Als abgeschlossen makieren</button>
                                 </a>
                                 {% endif %}
                             </div>

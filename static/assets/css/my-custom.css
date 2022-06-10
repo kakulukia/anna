@@ -373,3 +373,6 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+.btn-width {
+  width: 250px;
+}

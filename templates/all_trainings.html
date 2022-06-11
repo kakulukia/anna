@@ -92,7 +92,7 @@
                     </div>
 
                     {% with all_modules=training.get_all_modules %}
-                    <h6>Module ({{ all_modules.count }})</h6>
+                    <h6>Kapitel</h6>
 
                     <div id="all-modules">
                         {% for module in all_modules %}
@@ -107,7 +107,7 @@
                                     </div>
 
                                     <div class="col-sm-3">
-                                       {{ all_media.count }} Kurs{{ all_media.count|pluralize:"e" }}
+                                       {{ all_media.count }} Lektion{{ all_media.count|pluralize:"en" }}
                                     </div>
                                 </div>
 
@@ -132,7 +132,7 @@
                     {% endwith %}
 
                     {% if allowed %}
-                        <a href="{% url 'all_modules' training.id %}" class="btn w-100  theme-primary-btn">Kurs starten</a>
+                        <a href="{% url 'all_modules' training.id %}" class="btn w-100  theme-primary-btn">Kapitel starten</a>
                     {% else %}
                         <a data-bs-toggle="modal" data-bs-target="#request-access" class="btn w-100  theme-outline-primary-btn">Zugriff anfordern</a>
                     {% endif %}

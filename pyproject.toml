@@ -25,8 +25,24 @@ ipdb = "^0.13.9"
 colorama = "^0.4.4"
 fabric3 = {git = "https://github.com/kakulukia/fabric3.git"}
 icecream = "^2.1.2"
+django-undeletable = "^1.1.2"
+black = "^22.3.0"
+isort = "^5.10.1"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 95
+exclude = '''
+/(
+  \.direnv
+  | \.venv
+  | migrations
+)/
+'''
+
+[tool.isort]
+profile = "black"

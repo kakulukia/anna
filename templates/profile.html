@@ -18,7 +18,7 @@
         </div>
 
         <div class="col-sm-12 col-md-12 col-xl-5 d-flex justify-content-end">
-            {% if validity %}
+            {% if user.has_validity %}
             <div class="d-flex align-items-center border p-3 radius-10">
                 <span class="material-icons" style="font-size: 35px;">
                     date_range
@@ -27,7 +27,7 @@
                 <div style="margin-left: 15px;" class="d-flex align-items-center">
                     <div>
                         Start Date
-                        <h5 class="mb-0">{{ validity.start_date }}</h5>
+                        <h5 class="mb-0">{{ user.start_date }}</h5>
                     </div>
 
                     <span class="material-icons mx-4">
@@ -36,7 +36,7 @@
 
                     <div>
                         End Date
-                        <h5 class="mb-0">{{ validity.end_date }}</h5>
+                        <h5 class="mb-0">{{ user.end_date }}</h5>
                     </div>
                 </div>
 

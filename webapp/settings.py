@@ -138,6 +138,7 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = False
 
+LANGUAGES = (('de', 'de'),)
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

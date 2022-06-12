@@ -8,6 +8,7 @@ from application.views import render_flatpage
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('i18n/', include('django.conf.urls.i18n')),
     path("admin", RedirectView.as_view(url="/admin/")),
     path("", include("application.urls")),
     path("<url>", render_flatpage),

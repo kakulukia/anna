@@ -24,6 +24,11 @@ class ModuleAdmin(admin.ModelAdmin):
     inlines = [MediaInline]
 
 
+@admin.register(Media)
+class MediaAdmin(admin.ModelAdmin):
+    ...
+
+
 class AccessInline(admin.StackedInline):
     model = Access
     extra = 1
@@ -110,8 +115,3 @@ class UserAdmin(BaseUserAdmin):
 class PageAdmin(admin.ModelAdmin):
     list_display = ["url", "title"]
     actions = None
-
-
-# admin.site.site_header = 'Anna'
-# admin.site.site_title = 'Training platform'
-# admin.site.index_title = 'Admin'

@@ -147,21 +147,13 @@ class Module(BaseModel):
     description = models.TextField(verbose_name="Beschreibung")
     thumbnail = models.ImageField(storage=PrivateMediaStorage(), verbose_name="Vorschaubild")
     training = models.ForeignKey(Training, on_delete=models.CASCADE)
-    prev = models.ForeignKey(
-        "self",
-        on_delete=models.CASCADE,
-        related_name="mod_prev",
-        null=True,
-        blank=True,
-        verbose_name="Vor",
-    )
     next = models.ForeignKey(
         "self",
         on_delete=models.CASCADE,
         related_name="mod_next",
         null=True,
         blank=True,
-        verbose_name="Nach",
+        verbose_name="Nächstes",
     )
 
     modified = models.DateTimeField(auto_now=True, editable=False, null=True)
@@ -208,21 +200,13 @@ class Media(BaseModel):
     thumbnail = models.ImageField(storage=PrivateMediaStorage(), verbose_name="Vorschaubild")
     file = models.FileField(storage=PrivateMediaStorage(), verbose_name="Datei")
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
-    prev = models.ForeignKey(
-        "self",
-        on_delete=models.CASCADE,
-        related_name="file_prev",
-        null=True,
-        blank=True,
-        verbose_name="Vor",
-    )
     next = models.ForeignKey(
         "self",
         on_delete=models.CASCADE,
         related_name="file_next",
         null=True,
         blank=True,
-        verbose_name="Nach",
+        verbose_name="Nächstes",
     )
 
     modified = models.DateTimeField(auto_now=True, editable=False, null=True)

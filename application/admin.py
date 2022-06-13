@@ -59,16 +59,18 @@ class UserAdmin(BaseUserAdmin):
             return None
         user_id = obj.id
         url = reverse("progress-training", args=[user_id])
-        element = f'<a href = "{url}" target="_blank" class = "btn btn-outline-primary" > Progress </a>'
+        element = f'<a href = "{url}" target="_blank" class = "btn btn-outline-primary">Fortschritt anzeigen</a>'
         return mark_safe(element)
 
     option.short_description = "Fortschritt"
+    readonly_fields = ['option']
 
     fieldsets = (
         (
             "Stammdaten",
             {
                 "fields": (
+                    "option",
                     "customer_number",
                     "first_name",
                     "last_name",

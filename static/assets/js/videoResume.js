@@ -1,10 +1,8 @@
-let sampleVideo = document.getElementById("video");
-let videoName = sampleVideo.childNodes[1].src.slice(58);
-videoName = videoName.replace(".mp4", "");
-videoName = videoName.replace("mp3", "");
-videoName = videoName.split("Signature=")[0];
+let sampleVideo = document.getElementById("videoDings");
+let videoName = sampleVideo.childNodes[1].src;
+videoName = videoName.replace(/\.mp(3|4).*/, "");
+videoName = videoName.replace(/.*\//, "");
 
-// USING AN IIFE TO FETCH THE RESUMING TIME OF THE VIDEO
 (() => {
   getCurrentTime = localStorage.getItem(`${videoName}ResumeTime`);
   sampleVideo.currentTime = getCurrentTime - 1;

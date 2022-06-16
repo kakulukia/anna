@@ -46,9 +46,12 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         message="Die Telefonnummer muss in folgendem Format eingegeben werden: '+999999999'. Bis zu 15 Zeichen sind erlaubt.",
     )
     phone_number = models.CharField(
-        "Telefon", validators=[phone_regex], max_length=16, blank=True, null=True
+        "Telefonnummer", validators=[phone_regex], max_length=16, blank=True, null=True
     )
-    address = models.CharField("Adresse", max_length=255, blank=True, null=True)
+    street = models.CharField("Straße", max_length=255, blank=True, null=True)
+    zip_code = models.CharField("PLZ", max_length=255, blank=True, null=True)
+    city = models.CharField("Ort", max_length=255, blank=True, null=True)
+    country = models.CharField("Land", max_length=255, blank=True, null=True)
 
     start_date = models.DateField("Start-Datum", blank=True, null=True)
     end_date = models.DateField("Ablauf-Datum", blank=True, null=True)

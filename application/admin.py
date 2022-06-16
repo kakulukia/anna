@@ -109,7 +109,10 @@ class UserAdmin(BaseUserAdmin):
                     "start_date",
                     "end_date",
                     "phone_number",
-                    "address",
+                    "street",
+                    "zip_code",
+                    "city",
+                    "country",
                     "zoom_link",
                 )
             },

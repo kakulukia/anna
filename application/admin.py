@@ -19,6 +19,19 @@ class TrainingAdmin(admin.ModelAdmin):
     inlines = [ModuleInline]
     actions = None
 
+    fieldsets = (
+        (
+            "Infobox",
+            {
+                "fields": (
+                    "name",
+                    "description",
+                    "thumbnail",
+                )
+            },
+        ),
+    )
+
 
 @admin.register(Module)
 class ModuleAdmin(admin.ModelAdmin):

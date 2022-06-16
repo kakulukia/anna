@@ -100,7 +100,7 @@ def delete_session(sender, instance, *args, **kwargs):
 
 class Training(BaseModel):
     name = models.CharField(max_length=50)
-    description = QuillField(null=True, blank=True)
+    description = QuillField("Beschreibung", null=True, blank=True)
     thumbnail = models.ImageField(storage=PrivateMediaStorage(), verbose_name="Vorschaubild")
     modified = models.DateTimeField(auto_now=True, editable=False, null=True)
 

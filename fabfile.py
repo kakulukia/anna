@@ -66,7 +66,6 @@ def migrate():
         print(green("updating packages .."))
         # this might otherwise cause some trouble: https://github.com/python-poetry/poetry/issues/732
         # up until poetry 1.2
-        run("poetry run pip install --upgrade pip setuptools")
         run("poetry install")
 
         print(green("migrating database .."))

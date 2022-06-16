@@ -17,16 +17,18 @@ class MediaInline(admin.StackedInline):
 @admin.register(Training)
 class TrainingAdmin(admin.ModelAdmin):
     inlines = [ModuleInline]
+    actions = None
 
 
 @admin.register(Module)
 class ModuleAdmin(admin.ModelAdmin):
     inlines = [MediaInline]
+    actions = None
 
 
 @admin.register(Media)
 class MediaAdmin(admin.ModelAdmin):
-    ...
+    actions = None
 
 
 class AccessInline(admin.StackedInline):
@@ -75,7 +77,6 @@ class UserAdmin(BaseUserAdmin):
             "Stammdaten",
             {
                 "fields": (
-                    "option",
                     "customer_number",
                     "first_name",
                     "last_name",
@@ -105,6 +106,14 @@ class UserAdmin(BaseUserAdmin):
             {
                 "fields": (
                     "notes",
+                )
+            },
+        ),
+        (
+            "Fortschritt",
+            {
+                "fields": (
+                    "option",
                 )
             },
         ),

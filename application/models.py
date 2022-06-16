@@ -146,7 +146,7 @@ class Module(BaseModel):
     name = models.CharField(max_length=50)
     description = models.TextField(verbose_name="Beschreibung")
     thumbnail = models.ImageField(storage=PrivateMediaStorage(), verbose_name="Vorschaubild")
-    training = models.ForeignKey(Training, on_delete=models.CASCADE)
+    training = models.ForeignKey(Training, verbose_name="Kurs", on_delete=models.CASCADE)
     next = models.ForeignKey(
         "self",
         on_delete=models.CASCADE,

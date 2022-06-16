@@ -19,19 +19,15 @@
                   </div>
               </a>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-8" id="training-{{ single_training.id }}">
               <div class="card-body">
                   <div class="row">
                       <div class="col-sm-10">
-                          <a href="{% url 'all_modules' single_training.id %}" class="text-dark">
                               <h5 class="card-title">{{ single_training.name }}</h5>
-                          </a>
                       </div>
                       <div class="col-sm-2 d-flex justify-content-end">
-                          <a href="{% url 'trainings' %}?expand={{ single_training.id }}">
                               <i
                                   class="material-icons mk-pointer {% if training.id == single_training.id %}theme-primary-text{% else %}text-secondary{% endif %}">info</i>
-                          </a>
                       </div>
                   </div>
                   <p class="card-text mb-0">{{ single_training.get_short_description }}</p>
@@ -72,4 +68,15 @@
           </div>
       </div>
   </div>
+
+  <script>
+    (() => {
+      const trainingId = "training-{{ single_training.id }}";
+      const element = document.getElementById(trainingId);
+      const url = "{% url 'trainings' %}?expand={{ single_training.id }}";
+      element.addEventListener("click", () => {
+        window.location = url;
+      })
+    })();
+  </script>
 {% endif %}

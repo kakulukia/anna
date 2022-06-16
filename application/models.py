@@ -199,7 +199,7 @@ class Media(BaseModel):
     description = models.TextField(verbose_name="Beschreibung")
     thumbnail = models.ImageField(storage=PrivateMediaStorage(), verbose_name="Vorschaubild")
     file = models.FileField(storage=PrivateMediaStorage(), verbose_name="Datei")
-    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    module = models.ForeignKey(Module, verbose_name="Kapitel", on_delete=models.CASCADE)
     next = models.ForeignKey(
         "self",
         on_delete=models.CASCADE,

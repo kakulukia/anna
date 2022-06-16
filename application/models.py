@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.template.defaultfilters import truncatechars
+from django.urls import reverse
 from django.utils import timezone
 from django_quill.fields import QuillField
 from django_undeletable.models import BaseModel
@@ -112,6 +113,9 @@ class Training(BaseModel):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse("all_modules", args=[self.id])
+
     def get_all_modules(self):
         all_modules = Module.objects.filter(training=self)
         return all_modules
@@ -163,6 +167,12 @@ class Module(BaseModel):
         verbose_name_plural = "Kapitel"
         ordering = ["name"]
 
+    def __str__(self):
+        return self.name
+
+    # def get_absolute_url(self):
+    #     return reverse("single_media", args=[self.module.training.id, self.module.id, self.id])
+
     def get_short_description(self):
         limit = 150
         description = self.description
@@ -189,9 +199,6 @@ class Module(BaseModel):
             return 0
         return int((completed / media_count) * 100)
 
-    def __str__(self):
-        return self.name
-
 
 # Model for the Media
 class Media(BaseModel):
@@ -211,8 +218,16 @@ class Media(BaseModel):
 
     modified = models.DateTimeField(auto_now=True, editable=False, null=True)
 
+    class Meta(BaseModel.Meta):
+        ordering = ["name"]
+        verbose_name = "Lektion"
+        verbose_name_plural = "Lektionen"
+
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("single_media", args=[self.module.training.id, self.module.id, self.id])
 
     def get_file_type(self):
         file_name = self.file.name
@@ -223,11 +238,6 @@ class Media(BaseModel):
         ):
             return "audio"
         return "video"
-
-    class Meta(BaseModel.Meta):
-        ordering = ["name"]
-        verbose_name = "Lektion"
-        verbose_name_plural = "Lektionen"
 
 
 class Access(BaseModel):

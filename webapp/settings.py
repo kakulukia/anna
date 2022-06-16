@@ -219,17 +219,13 @@ JAZZMIN_SETTINGS = {
         {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
         # model admin to link to (Permissions checked against model)
         {"model": "users.User"},
+        {"name": "Seite anzeigen", "url": "trainings"},
     ],
     #############
     # User Menu #
     #############
     # Additional links to include in the user menu on the top right ("app" url type is not allowed)
     "usermenu_links": [
-        {
-            "name": "Support",
-            "url": "https://github.com/farridav/django-jazzmin/issues",
-            "new_window": True,
-        },
         {"model": "users.user"},
     ],
     #############

@@ -50,8 +50,8 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     )
     address = models.CharField("Adresse", max_length=255, blank=True, null=True)
 
-    start_date = models.DateField("Abo-Start", blank=True, null=True)
-    end_date = models.DateField("Abo-Ende", blank=True, null=True)
+    start_date = models.DateField("Start-Datum", blank=True, null=True)
+    end_date = models.DateField("Ablauf-Datum", blank=True, null=True)
 
     zoom_link = models.URLField("Zoom-Link", blank=True, null=True)
     notes = QuillField("Notizen", null=True, blank=True)

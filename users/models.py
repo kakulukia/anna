@@ -1,6 +1,7 @@
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils import timezone
@@ -59,6 +60,13 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     zoom_link = models.URLField("Zoom-Link", blank=True, null=True)
     notes = QuillField("Notizen", null=True, blank=True)
 
+    # PAARBOX
+
+    paarbox_date = models.DateField(verbose_name="Datum", null=True, blank=True)
+    paarbox_present = models.BooleanField(verbose_name="vorhanden", default=False)
+    paarbox_sent = models.BooleanField(verbose_name="versendet", default=False)
+    paarbox_handed_over = models.BooleanField(verbose_name="übergeben", default=False)
+
     # basic model stuff
     ############################################
     data = UserDataManager()
@@ -77,6 +85,10 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     def clean(self):
         super(AbstractBaseUser, self).clean()
         self.email = self.__class__.data.normalize_email(self.email)
+
+        test = self.paarbox_sent + self.paarbox_handed_over + self.paarbox_present
+        if test > 1:
+            raise ValidationError("Es kann nur eine Option ausgewählt werden! (Vorhanden, Übergeben oder Versendet)")
 
     def has_validity(self):
         return self.start_date and self.end_date

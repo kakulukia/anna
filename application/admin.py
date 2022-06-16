@@ -133,6 +133,18 @@ class UserAdmin(BaseUserAdmin):
                 )
             },
         ),
+        (
+            "PAARBOX",
+            {
+                "fields": (
+                    "paarbox_date",
+                    "paarbox_present",
+                    "paarbox_sent",
+                    "paarbox_handed_over",
+                )
+            },
+        ),
+
     )
 
 

@@ -42,6 +42,12 @@ class ModuleAdmin(admin.ModelAdmin):
 @admin.register(Media)
 class MediaAdmin(admin.ModelAdmin):
     actions = None
+    list_display = ['name', 'length']
+
+    def save_model(self, request, obj, form, change):
+        if 'file' in form.changed_data:
+            obj.length = ''
+        super().save_model(request, obj, form, change)
 
 
 class AccessInline(admin.StackedInline):

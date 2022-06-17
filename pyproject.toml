@@ -28,6 +28,8 @@ icecream = "^2.1.2"
 django-undeletable = "^1.1.2"
 black = "^22.3.0"
 isort = "^5.10.1"
+mutagen = "^1.45.1"
+opencv-python = "^4.6.0.66"
 
 
 [build-system]

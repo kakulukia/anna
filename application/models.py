@@ -1,3 +1,6 @@
+import datetime
+
+import cv2
 from django.contrib.sessions.models import Session
 from django.db import models
 from django.db.models.signals import post_delete
@@ -206,7 +209,7 @@ class Media(BaseModel):
     description = models.TextField(verbose_name="Beschreibung")
     thumbnail = models.ImageField(storage=PrivateMediaStorage(), verbose_name="Vorschaubild")
     file = models.FileField(storage=PrivateMediaStorage(), verbose_name="Datei")
-    length = models.CharField(verbose_name="Länge", max_length=50, default="")
+    length = models.CharField(verbose_name="Länge", max_length=50, default="", editable=False)
     module = models.ForeignKey(Module, verbose_name="Kapitel", on_delete=models.CASCADE)
     next = models.ForeignKey(
         "self",
@@ -226,6 +229,30 @@ class Media(BaseModel):
 
     def __str__(self):
         return self.name
+
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+        if not self.length:
+            seconds = self.get_length()
+            self.length = str(datetime.timedelta(seconds=seconds))
+        super().save(force_insert, force_update, using, update_fields)
+
+    def get_length(self):
+        if self.get_file_type() == "audio":
+            from mutagen.mp3 import MP3
+            audio = MP3(self.file)
+            length = audio.info.length
+        else:
+            data = cv2.VideoCapture(self.file.url)
+
+            # count the number of frames
+            frames = data.get(cv2.CAP_PROP_FRAME_COUNT)
+            fps = int(data.get(cv2.CAP_PROP_FPS))
+
+            # calculate duration of the video
+            length = int(frames / fps)
+        return int(length)
 
     def get_absolute_url(self):
         return reverse("single_media", args=[self.module.training.id, self.module.id, self.id])

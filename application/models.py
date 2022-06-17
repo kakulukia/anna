@@ -251,7 +251,7 @@ class Media(BaseModel):
             fps = int(data.get(cv2.CAP_PROP_FPS))
 
             # calculate duration of the video
-            length = int(frames / fps)
+            length = int(frames / fps) if frames > 0 else 0
         return int(length)
 
     def get_absolute_url(self):

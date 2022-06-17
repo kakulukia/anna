@@ -145,7 +145,8 @@
                                 </div>
                                 <div style="width: 62%;" class="px-2">
                                     <p class="m-0 p-0 text-dark d-flex align-items-center">
-                                        {{ current_media.name }}
+                                        {{ current_media.name }} <br>
+                                        {{ current_media.length }}
                                         {% if current_media.id in completed_media %}
                                         <i class="material-icons text-success mx-2">check_circle</i>
                                         {% endif %}

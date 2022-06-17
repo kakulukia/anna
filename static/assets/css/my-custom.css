@@ -373,6 +373,13 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+.button.done {
+  width: 100%;
+}
 .btn-width {
-  width: 250px;
+  width: 100%;
+}
+
+.media.card .card-title {
+  margin-bottom: 1em !important;
 }

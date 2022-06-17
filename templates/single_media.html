@@ -64,7 +64,7 @@
                       </div>
                   </div>
                 {% else %}
-                <div class="card">
+                <div class="card media">
 
                     {% if media.get_file_type == 'audio' %}
                         <div style="width: 100%; border-radius: 4px 4px 0px 0px;">
@@ -87,7 +87,7 @@
 
                     <div class="card-body">
                         <div class="row my-3">
-                            <div class="col-sm-9">
+                            <div class="col-md-7">
                                 <div>
                                     <div class="d-flex align-items-center">
                                         {% if media.id in completed_media %}
@@ -98,10 +98,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-3 d-flex align-items-center justify-content-end">
+                            <div class="col-md-5 d-flex align-items-center justify-content-end">
                                 {% if media.id not in completed_media %}
-                                <a type="button" onclick="return confirm('Sicher als abgeschlossen makieren?')" href="{% url 'mark-as-done' media.id %}">
-                                    <button type="button" class="btn btn-width theme-primary-btn">Als abgeschlossen makieren</button>
+                                <a type="button" onclick="return confirm('Wirklich als abgeschlossen markieren?')"
+                                   href="{% url 'mark-as-done' media.id %}" class="button done">
+                                    <button type="button" class="btn btn-width theme-primary-btn">Als abgeschlossen markieren</button>
                                 </a>
                                 {% endif %}
                             </div>

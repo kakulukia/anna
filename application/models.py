@@ -8,6 +8,7 @@ from django.dispatch import receiver
 from django.template.defaultfilters import truncatechars
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.functional import cached_property
 from django_quill.fields import QuillField
 from django_undeletable.models import BaseModel
 
@@ -191,19 +192,23 @@ class Module(BaseModel):
         return all_media
 
     def get_progress(self, completed_ids):
-        completed = 0
-        all_medias = Media.objects.filter(module=self).values_list("id", flat=True)
-        for i in completed_ids:
-            if i in all_medias:
-                completed += 1
+        """ used to get the progress for a different user """
+        completed = self.media_set.filter(id__in=completed_ids).count()
+        if completed:
+            return int(completed / self.media_set.count() * 100)
+        return 0
 
-        media_count = all_medias.count()
-        if media_count == 0:
+    @cached_property
+    def progress(self):
+        if not self.completed:
             return 0
-        return int((completed / media_count) * 100)
+        return int((self.completed / self.media_set.count()) * 100)
+
+    @cached_property
+    def completed(self):
+        return Completed.data.filter(media__in=self.media_set.all()).count()
 
 
-# Model for the Media
 class Media(BaseModel):
     name = models.CharField(max_length=50)
     description = models.TextField(verbose_name="Beschreibung")
@@ -254,6 +259,12 @@ class Media(BaseModel):
             length = int(frames / fps) if frames > 0 else 0
         return int(length)
 
+    @cached_property
+    def progress(self):
+        if self.completed_set.all().exists():
+            return 100
+        return 0
+
     def get_absolute_url(self):
         return reverse("single_media", args=[self.module.training.id, self.module.id, self.id])
 
@@ -290,6 +301,9 @@ class Completed(BaseModel):
 
     class Meta(BaseModel.Meta):
         verbose_name = "Abgeschlossen"
+
+    def __str__(self):
+        return f'{self.media.name} ({self.media.id})'
 
 
 class Page(BaseModel):

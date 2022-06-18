@@ -47,7 +47,7 @@
                 <div class="card-body text-center d-flex align-items-center justify-content-center" style="height: 300px;">
                     <div>
                         <img src="{% static 'img/notfound.png' %}" style="width: 150px;" alt="">
-                        <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">Modules not found</h4>
+                        <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">Keine Kapitel gefunden</h4>
                     </div>
                 </div>
             </div>
@@ -72,7 +72,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-9">
-                                    <h5 class="card-title">Module {{ forloop.counter }} - {{ single_module.name }}</h5>
+                                    <h5 class="card-title">Kapitel {{ forloop.counter }} - {{ single_module.name }}</h5>
                                 </div>
                                 <div class="col-sm-3 d-flex justify-content-end theme-primary-text">
                                     <p style="font-size: 16px" class="mb-0">{{ single_module.get_all_media.count }} Lektion{{ single_module.get_all_media.count | pluralize:"en" }}</p>
@@ -90,11 +90,11 @@
                                 <div class="col-sm-6 d-flex align-items-center justify-content-end">
                                     <div class="">
                                         <div class="progress mb-1" style="height: 0.35rem; width: 8rem; border-radius: 0.95rem;">
-                                            <div class="progress-bar bg-success" style="width: {{single_module.progress}}%;"
-                                                role="progressbar" aria-valuenow="{{ single_module.progress }}" aria-valuemin="0"
+                                            <div class="progress-bar bg-success" style="width: {{single_module.user_progress}}%;"
+                                                role="progressbar" aria-valuenow="{{ single_module.user_progress }}" aria-valuemin="0"
                                                 aria-valuemax="100"></div>
                                         </div>
-                                        <p class="py-0 my-0">{{ single_module.progress }}% abgeschlossen</p>
+                                        <p class="py-0 my-0">{{ single_module.user_progress }}% abgeschlossen</p>
                                     </div>
                                 </div>
                             </div>
@@ -174,7 +174,7 @@
                                 <div class="row">
                                     <div class="col-sm-6 pt-3">
                                         <a href="{% url 'progress-module' current_user.id single_training.id %}"
-                                            class="btn theme-secondary-btn">Klicke um den Frotschritt zu sehen</a>
+                                            class="btn theme-secondary-btn">Klicke um den Fortschritt zu sehen</a>
                                     </div>
                                     <div class="col-sm-6 pt-3 d-flex align-items-center justify-content-end">
                                         <div class="">
@@ -183,6 +183,7 @@
                                                     role="progressbar" aria-valuenow="{{ single_training.progress }}" aria-valuemin="0"
                                                     aria-valuemax="100"></div>
                                             </div>
+                                          huhu
                                             <p class="py-0 my-0">{{ single_training.progress }}% abgeschlossen</p>
                                         </div>
                                     </div>

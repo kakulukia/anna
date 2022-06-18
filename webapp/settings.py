@@ -21,6 +21,10 @@ SITE_ID = 1
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+INTERNAL_IPS = [
+    "127.0.0.1",
+    "0.0.0.0",
+]
 
 # Application definition
 INSTALLED_APPS = [
@@ -40,6 +44,7 @@ INSTALLED_APPS = [
     "django_secrets",
     # adding django-agents to the installed apps
     "django_user_agents",
+    "debug_toolbar",
 ]
 
 AUTH_USER_MODEL = "users.User"
@@ -58,6 +63,7 @@ USER_AGENTS_CACHE = "default"
 
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",

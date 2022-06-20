@@ -238,10 +238,13 @@ class Media(BaseModel):
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
+        super().save(force_insert, force_update, using, update_fields)
+        # length must be saved after uploading the file since x3 will handle umlauts
+        # and duplicated file names ..ergo the filename will likely change
         if not self.length:
             seconds = self.get_length()
             self.length = str(datetime.timedelta(seconds=seconds))
-        super().save(force_insert, force_update, using, update_fields)
+            self.save()
 
     def get_length(self):
         if self.get_file_type() == "audio":

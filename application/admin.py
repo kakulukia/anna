@@ -43,6 +43,8 @@ class ModuleAdmin(admin.ModelAdmin):
 class MediaAdmin(admin.ModelAdmin):
     actions = None
     list_display = ['name', 'length']
+    list_filter = ['module']
+    search_fields = ['name']
 
     def save_model(self, request, obj, form, change):
         if 'file' in form.changed_data:

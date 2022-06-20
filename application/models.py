@@ -281,6 +281,9 @@ class Media(BaseModel):
             return "audio"
         return "video"
 
+    def completed(self):
+        return self.completed_set.exists()
+
 
 class Access(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Nutzer")

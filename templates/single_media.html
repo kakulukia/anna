@@ -99,7 +99,7 @@
                                 </div>
                             </div>
                             <div class="col-md-5 d-flex align-items-center justify-content-end">
-                                {% if media.id not in completed_media %}
+                                {% if not media.completed %}
                                 <a type="button" onclick="return confirm('Wirklich als abgeschlossen markieren?')"
                                    href="{% url 'mark-as-done' media.id %}" class="button done">
                                     <button type="button" class="btn btn-width theme-primary-btn">Als abgeschlossen markieren</button>

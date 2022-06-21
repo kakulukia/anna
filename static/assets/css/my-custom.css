@@ -19,8 +19,8 @@
 }
 
 .nav-link {
-  border-radius: 10px !important;
-  margin: 0px 10px;
+  border: none;
+  margin: 0 10px;
   padding: 9px 9px;
   transition-duration: 0.25s;
 }

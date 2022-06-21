@@ -1,6 +1,6 @@
 {% load static %}
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white google-shadow " style="user-select: auto; border-radius: 0px 0px 20px 20px;">
+<nav class="navbar navbar-expand-lg navbar-light bg-white google-shadow " style="user-select: auto;">
   <div class="container">
     <a href="{% url 'trainings' %}">
       <img src="{% static 'img/mylogo.png' %}" style="width:250px" alt="Logo">
@@ -20,13 +20,13 @@
 
 
           {% if user.is_superuser %}
-          <a class="nav-link p-2 d-flex align-items-center bg-white border theme-secondary-text"
+          <a class="nav-link p-2 d-flex align-items-center bg-white theme-secondary-text"
             href="{% url 'progress' %}" rel="noopener" style="user-select: auto;">
             <i class="material-icons" style="font-size: 25px; margin-right: 10px;">donut_large</i>
             Fortschritt
           </a>
 
-          <a class="nav-link p-2 d-flex align-items-center bg-white border theme-secondary-text" href="/admin"
+          <a class="nav-link p-2 d-flex align-items-center bg-white theme-secondary-text" href="/admin"
             rel="noopener" style="user-select: auto;">
             <i class="material-icons" style="font-size: 25px; margin-right: 10px;">admin_panel_settings</i>
             Dashboard
@@ -36,7 +36,7 @@
 
           {% if user.zoom_link %}
             <a
-              class="nav-link p-2 d-flex align-items-center bg-white border theme-secondary-text"
+              class="nav-link p-2 d-flex align-items-center bg-white theme-secondary-text"
               target="_blank"
               href="{{ user.zoom_link }}"
               rel="noopener" style="user-select: auto;">
@@ -49,7 +49,7 @@
 
 
 
-          <a class="nav-link p-2 d-flex align-items-center bg-white border theme-secondary-text" href="{% url 'profile' %}" rel="noopener"
+          <a class="nav-link p-2 d-flex align-items-center bg-white theme-secondary-text" href="{% url 'profile' %}" rel="noopener"
             style="user-select: auto;">
             <i class="material-icons" style="font-size: 25px; margin-right: 10px;">account_circle</i>
             Profil
@@ -57,7 +57,7 @@
 
 
 
-          <a class="nav-link d-flex align-items-center p-2 bg-white border theme-secondary-text" href="{% url 'logout' %}" rel="noopener"
+          <a class="nav-link d-flex align-items-center p-2 bg-white theme-secondary-text" href="{% url 'logout' %}" rel="noopener"
             style="user-select: auto;">
             <i class="material-icons" style="font-size: 25px; margin-right: 10px;">logout</i>
             Ausloggen

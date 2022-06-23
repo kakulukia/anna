@@ -462,7 +462,7 @@ def mark_as_done(request, media_id):
         return redirect("trainings")
 
     training = media.module.training
-    if not Access.objects.filter(user=request.user, training=training).exist():
+    if not Access.objects.filter(user=request.user, training=training).exists():
         messages.error(request, "Du hast keinen Zugriff auf diesen Kurs.")
         return redirect("trainings")
 

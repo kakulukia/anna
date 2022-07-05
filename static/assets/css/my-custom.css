@@ -415,3 +415,8 @@ a:hover, .nav-link:hover{
   top: 4px;
   left: 12px;
 }
+
+body {
+    display: grid;
+    grid-template-rows: 90px 1fr 147px;
+}

@@ -157,7 +157,7 @@ class Module(BaseModel):
     training = models.ForeignKey(Training, verbose_name="Kurs", on_delete=models.CASCADE)
     next = models.ForeignKey(
         "self",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name="mod_next",
         null=True,
         blank=True,

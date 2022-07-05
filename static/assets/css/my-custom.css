@@ -55,16 +55,6 @@
   border-radius: 10px;
 }
 
-.form-select,
-input,
-textarea {
-  /* border-radius: 10px !important; */
-}
-
-/* button.btn {
-            padding: 12px 15px !important;
-        } */
-
 .text-main-head {
   font-size: 33px;
 }
@@ -402,6 +392,21 @@ input:checked + .slider:before {
   transition: all ease-in-out 0.3s;
 }
 
-a:hover {
+a:hover, .nav-link:hover{
     color: #0098a5;
+}
+
+.theme-secondary-btn {
+  background-color: #6C757D;
+}
+.theme-secondary-btn:hover, .bg-green {
+  background-color: #0098a5;
+}
+
+* {
+  border-radius: 0 !important;
+}
+
+.nav-link {
+  color: #6C757D;
 }

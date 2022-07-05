@@ -410,3 +410,8 @@ a:hover, .nav-link:hover{
 .nav-link {
   color: #6C757D;
 }
+
+.form-floating>label {
+  top: 4px;
+  left: 12px;
+}

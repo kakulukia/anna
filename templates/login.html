@@ -21,7 +21,7 @@
                 {% include 'inc/msgs.inc.html' %}
             </div>
 
-            <div class="form border p-4 background-light">
+            <div class="form border p-4 background-light" style="min-width: 400px;">
                 <form action="{% url 'signin' %}" method="post">
                     {% csrf_token %}
                     {% bootstrap_form login_form layout="floating" %}

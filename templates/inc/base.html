@@ -15,19 +15,12 @@
 
     <title>{% block title %}{% endblock title %}</title>
     <style>
-        .radius-10 {
-            border-radius: 10px;
-        }
-
         .background-light {
             background-color: #f6f8fa;
         }
 
         div,
         input,
-        button {
-            border-radius: 5px !important;
-        }
 
         button.btn {
             padding: 12px !important;
@@ -42,9 +35,9 @@
         }
 
         .link-text, .link-text:hover{
-            text-decoration: none; 
+            text-decoration: none;
             font-weight: 600;
-            color: #de7b5f; 
+            color: #de7b5f;
         }
 
         .popover{
@@ -54,16 +47,13 @@
         .popover-header{
             background-color: #198754;
             color: white;
-            border-radius: 10px 10px 0px 0px;
         }
-
-     
     </style>
 </head>
 
 <body>
 
-    
+
     <div class="text-center py-4 mt-4">
         <img src="{% static 'img/mylogo.png' %}" style="width:250px" alt="Logo">
         <!-- <i class="material-icons theme-primary-text" style="font-size: 80px; user-select: auto;">local_library</i> -->
@@ -73,7 +63,7 @@
     </div>
     {% block content %}
     {% endblock content %}
-    
+
 
 </body>
 

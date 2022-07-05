@@ -387,3 +387,21 @@ input:checked + .slider:before {
 .kapitel-button {
   margin-bottom: 8px;
 }
+.collapsed .kapitel-arrow, .lektionen .kapitel-arrow {
+  transform: rotate(0);
+}
+.lektionen .kapitel-arrow {
+  top: 0;
+}
+.kapitel-arrow {
+  font-size: 18px;
+  color: #0098a5;
+  top: 4px;
+  position: relative;
+  transform: rotate(90deg);
+  transition: all ease-in-out 0.3s;
+}
+
+a:hover {
+    color: #0098a5;
+}

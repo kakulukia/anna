@@ -104,25 +104,26 @@
                         {% for module in all_modules %}
                         <div class="card mb-2">
                             {% with all_media=module.get_all_media %}
-                            <div class="card-header text-left">
+                            <a class="text-left text-decoration-none collapsed" data-bs-toggle="collapse" href="#module-{{ module.id }}">
+                              <div class="card-header text-left">
                                 <div class="row">
-                                    <div class="col-sm-9">
-                                        <a class="text-left text-decoration-none" data-bs-toggle="collapse" href="#module-{{ module.id }}">
-                                            {{ module.name }}
-                                        </a>
+                                    <div class="col-sm-8">
+                                          <i class="material-icons theme-secondary-text kapitel-arrow">play_arrow</i>
+                                          {{ module.name }}
                                     </div>
 
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                        {{ all_media.count }} Lektion{{ all_media.count|pluralize:"en" }}
                                     </div>
                                 </div>
 
-                            </div>
+                              </div>
+                            </a>
                             <div id="module-{{ module.id }}" class="collapse" data-bs-parent="#all-modules">
-                                <div class="card-body">
+                                <div class="card-body lektionen">
                                     {% for media in all_media %}
                                     <div class="d-flex align-items-center mb-2">
-                                        <i class="material-icons theme-secondary-text" style="font-size: 18px;">play_arrow</i>
+                                        <i class="material-icons theme-secondary-text kapitel-arrow">play_arrow</i>
                                         <p class="my-0 py-0 mx-2">{{ media }}</p>
                                     </div>
                                     {% endfor %}

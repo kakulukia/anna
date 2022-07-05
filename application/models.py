@@ -218,7 +218,7 @@ class Media(BaseModel):
     module = models.ForeignKey(Module, verbose_name="Kapitel", on_delete=models.CASCADE)
     next = models.ForeignKey(
         "self",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name="file_next",
         null=True,
         blank=True,

@@ -383,3 +383,7 @@ input:checked + .slider:before {
 .media.card .card-title {
   margin-bottom: 1em !important;
 }
+
+.kapitel-button {
+  margin-bottom: 8px;
+}

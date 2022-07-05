@@ -94,6 +94,12 @@
                     {% with all_modules=training.get_all_modules %}
                     <h6>Kapitel</h6>
 
+                    {% if allowed %}
+                        <a href="{% url 'all_modules' training.id %}" class="kapitel-button btn w-100  theme-primary-btn">Zur Kapitelübersicht</a>
+                    {% else %}
+                        <a data-bs-toggle="modal" data-bs-target="#request-access" class="btn w-100  theme-outline-primary-btn">Zugriff anfordern</a>
+                    {% endif %}
+
                     <div id="all-modules">
                         {% for module in all_modules %}
                         <div class="card mb-2">
@@ -131,11 +137,7 @@
 
                     {% endwith %}
 
-                    {% if allowed %}
-                        <a href="{% url 'all_modules' training.id %}" class="btn w-100  theme-primary-btn">Kapitel starten</a>
-                    {% else %}
-                        <a data-bs-toggle="modal" data-bs-target="#request-access" class="btn w-100  theme-outline-primary-btn">Zugriff anfordern</a>
-                    {% endif %}
+
                 </div>
             </div>
             {% else %}

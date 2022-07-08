@@ -80,7 +80,7 @@
 {#                                              <div class="progress-bar bg-success"  style="width: {{media.progress}}%;"  role="progressbar"#}
 {#                                                  aria-valuenow="{{ media.progress }}" aria-valuemin="0" aria-valuemax="100"></div>#}
 {#                                          </div>#}
-                                          <p class="py-0 my-0">{% if media.progress %}abgeschlossen{% else %}offen{% endif %}</p>
+                                          <p class="py-0 my-0 {% if media.progress %}green-text{% else %}orange-text{% endif %}">{% if media.progress %}abgeschlossen{% else %}offen{% endif %}</p>
                                       </div>
                                   </div>
                               </div>

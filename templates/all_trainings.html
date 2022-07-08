@@ -95,7 +95,7 @@
                     <h6>Kapitel</h6>
 
                     {% if allowed %}
-                        <a href="{% url 'all_modules' training.id %}" class="kapitel-button btn w-100  theme-primary-btn">Zur Kapitelübersicht</a>
+                        <a href="{% url 'all_modules' training.id %}" class="kapitel-button btn w-100 theme-secondary-btn">Zur Kapitelübersicht</a>
                     {% else %}
                         <a data-bs-toggle="modal" data-bs-target="#request-access" class="btn w-100  theme-outline-primary-btn">Zugriff anfordern</a>
                     {% endif %}

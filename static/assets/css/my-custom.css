@@ -424,3 +424,9 @@ body {
 .btn.start-media {
   min-width: 133px;
 }
+.green-text {
+  color: #0098a5;
+}
+.orange-text {
+  color: #de7b5f;
+}

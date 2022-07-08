@@ -37,6 +37,7 @@ class TrainingAdmin(admin.ModelAdmin):
 class ModuleAdmin(admin.ModelAdmin):
     inlines = [MediaInline]
     actions = None
+    list_display = ['name', 'ordering']
 
 
 @admin.register(Media)

@@ -155,6 +155,7 @@ class Module(BaseModel):
     description = models.TextField(verbose_name="Beschreibung")
     thumbnail = models.ImageField(storage=PrivateMediaStorage(), verbose_name="Vorschaubild")
     training = models.ForeignKey(Training, verbose_name="Kurs", on_delete=models.CASCADE)
+    ordering = models.IntegerField("Sortierung", default=0)
     next = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,
@@ -169,7 +170,7 @@ class Module(BaseModel):
     class Meta(BaseModel.Meta):
         verbose_name = "Kapitel"
         verbose_name_plural = "Kapitel"
-        ordering = ["name"]
+        ordering = ["ordering", "name"]
 
     def __str__(self):
         return self.name

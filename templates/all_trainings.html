@@ -103,32 +103,34 @@
                     <div id="all-modules">
                         {% for module in all_modules %}
                         <div class="card mb-2">
-                            {% with all_media=module.get_all_media %}
-                            <a class="text-left text-decoration-none collapsed" data-bs-toggle="collapse" href="#module-{{ module.id }}">
-                              <div class="card-header text-left">
-                                <div class="row">
-                                    <div class="col-sm-8">
-                                          <i class="material-icons theme-secondary-text kapitel-arrow">play_arrow</i>
-                                          {{ module.name }}
-                                    </div>
+                              <a class="text-left text-decoration-none collapsed" data-bs-toggle="collapse" href="#module-{{ module.id }}">
+                                <div class="card-header text-left">
+                                  <div class="row">
+                                      <div class="col-sm-8">
+                                        <i class="material-icons theme-secondary-text kapitel-arrow">play_arrow</i>
+                                        {{ module.name }}
+                                      </div>
 
-                                    <div class="col-sm-4">
-                                       {{ all_media.count }} Lektion{{ all_media.count|pluralize:"en" }}
-                                    </div>
+                                      <div class="col-sm-4">
+                                       {{ module.media_set.count }} Lektion{{ all_media.count|pluralize:"en" }}
+                                      </div>
+                                  </div>
+
                                 </div>
-
-                              </div>
-                            </a>
-                            <div id="module-{{ module.id }}" class="collapse" data-bs-parent="#all-modules">
+                              </a>
+                              <div id="module-{{ module.id }}" class="collapse" data-bs-parent="#all-modules">
                                 <div class="card-body lektionen">
-                                    {% for media in all_media %}
+                                  {% for media in module.media_set.all %}
                                     <div class="d-flex align-items-center mb-2">
-                                        <p class="my-0 py-0 mx-2">{{ media }}</p>
+                                        <p class="my-0 py-0 mx-2">
+                                          <a href="{% url "single_media" training.id module.id media.id %}">
+                                            {{ media }}
+                                          </a>
+                                        </p>
                                     </div>
-                                    {% endfor %}
+                                  {% endfor %}
                                 </div>
-                            </div>
-                            {% endwith %}
+                              </div>
                         </div>
                         {% endfor %}
 

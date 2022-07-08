@@ -467,6 +467,7 @@ def mark_as_done(request, media_id):
         return redirect("trainings")
 
     Completed.objects.create(user=request.user, media=media)
+    request.user.update_progress()
 
     if media.next:
         media = media.next

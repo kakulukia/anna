@@ -59,9 +59,9 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
 
     zoom_link = models.URLField("Zoom-Link", blank=True, null=True)
     notes = QuillField("Notizen", null=True, blank=True)
+    progress = models.FloatField(default=0)
 
     # PAARBOX
-
     paarbox_date = models.DateField(verbose_name="Datum", null=True, blank=True)
     paarbox_present = models.BooleanField(verbose_name="vorhanden", default=False)
     paarbox_sent = models.BooleanField(verbose_name="versendet", default=False)
@@ -106,6 +106,16 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     def get_short_name(self):
         """Return the short name for the user."""
         return self.first_name
+
+    def update_progress(self):
+        from application.models import Media
+
+        medias = Media.data.filter(module__training__in=self.access_set.values('training')).count()
+        completed = self.completed_set.all().count()
+        if medias and completed:
+            ic(self, completed, medias)
+            self.progress = completed / medias * 100
+            self.save()
 
     # def email_user(
     #     self, subject, message, from_email=settings.DEFAULT_FROM_EMAIL, **kwargs

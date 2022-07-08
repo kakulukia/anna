@@ -22,13 +22,13 @@ urlpatterns = [
     # Path to All trainings Page
     path("kurse/", views.all_trainings, name="trainings"),
     # Path to (Single training - with all modules) Page
-    path("kurse/<int:training_id>/modules/", views.all_modules, name="all_modules"),
-    path("kurse/<int:training_id>/modules/", views.all_modules, name="all_modules"),
+    path("kurse/<int:training_id>/kapitel/", views.all_modules, name="all_modules"),
+    path("kurse/<int:training_id>/kapitel/", views.all_modules, name="all_modules"),
     path("kurse/<int:training_id>/", views.resume_all_modules, name="resume_all_modules"),
     # Path to (Single training - with single module - with all videos) Page
-    path("kurse/<int:training_id>/modules/<int:module_id>/medias/", views.media, name="media"),
+    path("kurse/<int:training_id>/kapitel/<int:module_id>/lektionen/", views.media, name="media"),
     # Path to (Single training - with single module - with single media) Page
-    path("kurse/<int:training_id>/modules/<int:module_id>/medias/<int:media_id>/",
+    path("kurse/<int:training_id>/kapitel/<int:module_id>/lektionen/<int:media_id>/",
          views.single_media, name="single_media",
          ),
     path("progress/", views.progress, name="progress"),

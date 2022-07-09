@@ -430,3 +430,19 @@ body {
 .orange-text {
   color: #de7b5f;
 }
+
+:root {
+  --plyr-color-main: #0098a5;
+}
+
+@media (max-width: 991px) {
+  .menu-form {
+    background: white;
+    border: 1px solid #0098a5;
+    justify-content: end;
+    flex-wrap: wrap;
+  }
+}
+.menu-form a {
+  display: flex;
+}

@@ -70,19 +70,15 @@
                         <div style="width: 100%; border-radius: 4px 4px 0px 0px;">
                             <img src="{{ media.thumbnail.url }}" alt="" style="width: 100%;">
                             <div class="p-2">
-                                <audio controls id="videoDings" style="width: 100%;">
-                                    <source src="{{ media.file.url }}" type="audio/ogg">
->
-                                    <source src="{{ media.file.url }}" type="audio/mpeg">
-                                    Dein Browser unterstützt keine Audiowiedergabe.
-                                </audio>
+                              <audio id="videoDings" controls style="width: 100%;">
+                                <source src="{{ media.file.url }}" type="audio/mp3" />
+                              </audio>
                             </div>
                         </div>
                     {% else %}
-                        <video controls id="videoDings">
-                            <source src="{{ media.file.url }}">
-                        </video>
-
+                      <video id="videoDings" playsinline controls data-poster="{{ current_media.thumbnail.url }}">
+                        <source src="{{ media.file.url }}" type="video/mp4" />
+                      </video>
                     {% endif %}
 
                     <div class="card-body">
@@ -191,5 +187,8 @@
     </div>
 </div>
 
-
+<script src="https://cdn.plyr.io/3.7.2/plyr.js"></script>
+<script>
+  const player = new Plyr('#videoDings');
+</script>
 {% endblock content %}

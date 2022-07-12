@@ -441,6 +441,14 @@ body {
     border: 1px solid #0098a5;
     justify-content: end;
     flex-wrap: wrap;
+    flex-direction: column;
+    position: fixed;
+    right: 11px;
+  }
+  nav.navbar {
+    position: fixed;
+    width: 100%;
+    z-index: 30;
   }
 }
 .menu-form a {

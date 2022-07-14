@@ -28,8 +28,7 @@ def remove_other_sessions(sender, user, request, **kwargs):
         new_device.session_id = session_id
 
     if new_device.is_limit_reached() and not is_exists:
-        messages.error(request, "You have reached maximum Sessions limit!")
-        print("Loging out")
+        messages.error(request, "Du hast die maximale Anzahl an Geräten erreicht.")
         logout(request)
         return
 

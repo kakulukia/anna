@@ -13,14 +13,13 @@
     <h1 class="display-6 mb-0 mt-4 text-main-head" style="text-align: center;">
         Bitte einloggen
     </h1>
-    <div class="row">
-        <div class="col-sm-4"></div>
-        <div class="col-sm-4">
+    <div class="login-div">
+        <div class="login-form">
             <div>
                 {% include 'inc/msgs.inc.html' %}
             </div>
 
-            <div class="form border p-4 background-light" style="min-width: 400px;">
+            <div class="form border p-4 background-light" style="min-width: 330px;">
                 <form action="{% url 'signin' %}" method="post">
                     {% csrf_token %}
                     {% bootstrap_form login_form layout="floating" %}
@@ -40,7 +39,6 @@
               </div>
             </div> -->
         </div>
-        <div class="col-sm-4"></div>
     </div>
 </div>
 

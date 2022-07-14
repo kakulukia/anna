@@ -438,12 +438,11 @@ body {
 @media (max-width: 991px) {
   .menu-form {
     background: white;
-    border: 1px solid #0098a5;
     justify-content: end;
     flex-wrap: wrap;
     flex-direction: column;
     position: fixed;
-    right: 11px;
+    right: 0;
   }
   nav.navbar {
     position: fixed;
@@ -462,4 +461,12 @@ body {
 }
 .login-form {
   max-width: 400px;
+}
+
+.navbar-toggler {
+  font-size: 1rem;
+  border: none;
+}
+.navbar-toggler:focus {
+  box-shadow: none;
 }

@@ -437,12 +437,9 @@ body {
 
 @media (max-width: 991px) {
   .menu-form {
-    background: white;
     justify-content: end;
     flex-wrap: wrap;
     flex-direction: column;
-    position: fixed;
-    right: 0;
   }
   nav.navbar {
     position: fixed;
@@ -469,4 +466,20 @@ body {
 }
 .navbar-toggler:focus {
   box-shadow: none;
+}
+
+.collapse:not(.show) {
+  height: 0;
+  display: block;
+  overflow: hidden;
+}
+.collapse.show {
+  height: auto;
+  display: block;
+  overflow: hidden;
+}
+.navbar-collapse {
+  position: fixed;
+  right: 0;
+  top: 50px;
 }

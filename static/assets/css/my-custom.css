@@ -446,6 +446,22 @@ body {
     width: 100%;
     z-index: 30;
   }
+  .collapse:not(.show) {
+    height: 0;
+    display: block;
+    overflow: hidden;
+  }
+  .collapse.show {
+    height: auto;
+    display: block;
+    overflow: hidden;
+  }
+  .navbar-collapse {
+    position: fixed;
+    right: 0;
+    top: 50px;
+  }
+
 }
 .menu-form a {
   display: flex;
@@ -468,18 +484,3 @@ body {
   box-shadow: none;
 }
 
-.collapse:not(.show) {
-  height: 0;
-  display: block;
-  overflow: hidden;
-}
-.collapse.show {
-  height: auto;
-  display: block;
-  overflow: hidden;
-}
-.navbar-collapse {
-  position: fixed;
-  right: 0;
-  top: 50px;
-}

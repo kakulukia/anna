@@ -15,7 +15,7 @@ from django.utils.safestring import mark_safe
 from .forms import *
 
 
-# Signals to add device in loggged in device
+# Signals to add device in logged in device
 @receiver(user_logged_in)
 def remove_other_sessions(sender, user, request, **kwargs):
     request.session.save()
@@ -33,18 +33,6 @@ def remove_other_sessions(sender, user, request, **kwargs):
         return
 
     new_device.save()
-
-    # # remove other sessions
-    # print("-------------------")
-    # # return redirect("profile")
-    # # save current session
-    # print("-------------------")
-
-    # create a link from the user to the current session (for later removal)
-    # UserSession.objects.get_or_create(
-    #     user=user,
-    #     session_id=request.session.session_key
-    # )
 
 
 @login_required

@@ -1,9 +1,14 @@
+import datetime
+
+import cv2
 from django.contrib.sessions.models import Session
 from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.template.defaultfilters import truncatechars
+from django.urls import reverse
 from django.utils import timezone
+from django.utils.functional import cached_property
 from django_quill.fields import QuillField
 from django_undeletable.models import BaseModel
 
@@ -77,7 +82,7 @@ class Device(models.Model):
 
         return device_queryset.first()
 
-    def is_limit_reached(self, limit=4):
+    def is_limit_reached(self, limit=3):
         devices = Device.objects.filter(user=self.user)
         print(devices.count())
         return not devices.count() < limit
@@ -100,7 +105,7 @@ def delete_session(sender, instance, *args, **kwargs):
 
 class Training(BaseModel):
     name = models.CharField(max_length=50)
-    description = QuillField(null=True, blank=True)
+    description = QuillField("Beschreibung", null=True, blank=True)
     thumbnail = models.ImageField(storage=PrivateMediaStorage(), verbose_name="Vorschaubild")
     modified = models.DateTimeField(auto_now=True, editable=False, null=True)
 
@@ -111,6 +116,9 @@ class Training(BaseModel):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("all_modules", args=[self.id])
 
     def get_all_modules(self):
         all_modules = Module.objects.filter(training=self)
@@ -146,22 +154,15 @@ class Module(BaseModel):
     name = models.CharField(max_length=50)
     description = models.TextField(verbose_name="Beschreibung")
     thumbnail = models.ImageField(storage=PrivateMediaStorage(), verbose_name="Vorschaubild")
-    training = models.ForeignKey(Training, on_delete=models.CASCADE)
-    prev = models.ForeignKey(
-        "self",
-        on_delete=models.CASCADE,
-        related_name="mod_prev",
-        null=True,
-        blank=True,
-        verbose_name="Vor",
-    )
+    training = models.ForeignKey(Training, verbose_name="Kurs", on_delete=models.CASCADE)
+    ordering = models.IntegerField("Sortierung", default=0)
     next = models.ForeignKey(
         "self",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name="mod_next",
         null=True,
         blank=True,
-        verbose_name="Nach",
+        verbose_name="Nächstes",
     )
 
     modified = models.DateTimeField(auto_now=True, editable=False, null=True)
@@ -169,7 +170,13 @@ class Module(BaseModel):
     class Meta(BaseModel.Meta):
         verbose_name = "Kapitel"
         verbose_name_plural = "Kapitel"
-        ordering = ["name"]
+        ordering = ["ordering", "name"]
+
+    def __str__(self):
+        return self.name
+
+    # def get_absolute_url(self):
+    #     return reverse("single_media", args=[self.module.training.id, self.module.id, self.id])
 
     def get_short_description(self):
         limit = 150
@@ -186,49 +193,84 @@ class Module(BaseModel):
         return all_media
 
     def get_progress(self, completed_ids):
-        completed = 0
-        all_medias = Media.objects.filter(module=self).values_list("id", flat=True)
-        for i in completed_ids:
-            if i in all_medias:
-                completed += 1
+        """ used to get the progress for a different user """
+        completed = self.media_set.filter(id__in=completed_ids).count()
+        if completed:
+            return int(completed / self.media_set.count() * 100)
+        return 0
 
-        media_count = all_medias.count()
-        if media_count == 0:
+    @cached_property
+    def progress(self):
+        if not self.completed:
             return 0
-        return int((completed / media_count) * 100)
+        return int((self.completed / self.media_set.count()) * 100)
 
-    def __str__(self):
-        return self.name
+    @cached_property
+    def completed(self):
+        return Completed.data.filter(media__in=self.media_set.all()).count()
 
 
-# Model for the Media
 class Media(BaseModel):
     name = models.CharField(max_length=50)
     description = models.TextField(verbose_name="Beschreibung")
     thumbnail = models.ImageField(storage=PrivateMediaStorage(), verbose_name="Vorschaubild")
     file = models.FileField(storage=PrivateMediaStorage(), verbose_name="Datei")
-    module = models.ForeignKey(Module, on_delete=models.CASCADE)
-    prev = models.ForeignKey(
-        "self",
-        on_delete=models.CASCADE,
-        related_name="file_prev",
-        null=True,
-        blank=True,
-        verbose_name="Vor",
-    )
+    length = models.CharField(verbose_name="Länge", max_length=50, default="", editable=False)
+    module = models.ForeignKey(Module, verbose_name="Kapitel", on_delete=models.CASCADE)
     next = models.ForeignKey(
         "self",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name="file_next",
         null=True,
         blank=True,
-        verbose_name="Nach",
+        verbose_name="Nächstes",
     )
 
     modified = models.DateTimeField(auto_now=True, editable=False, null=True)
 
+    class Meta(BaseModel.Meta):
+        ordering = ["name"]
+        verbose_name = "Lektion"
+        verbose_name_plural = "Lektionen"
+
     def __str__(self):
         return self.name
+
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+        super().save(force_insert, force_update, using, update_fields)
+        # length must be saved after uploading the file since x3 will handle umlauts
+        # and duplicated file names ..ergo the filename will likely change
+        if not self.length:
+            seconds = self.get_length()
+            self.length = str(datetime.timedelta(seconds=seconds))
+            self.save()
+
+    def get_length(self):
+        if self.get_file_type() == "audio":
+            from mutagen.mp3 import MP3
+            audio = MP3(self.file)
+            length = audio.info.length
+        else:
+            data = cv2.VideoCapture(self.file.url)
+
+            # count the number of frames
+            frames = data.get(cv2.CAP_PROP_FRAME_COUNT)
+            fps = int(data.get(cv2.CAP_PROP_FPS))
+
+            # calculate duration of the video
+            length = int(frames / fps) if frames > 0 else 0
+        return int(length)
+
+    @cached_property
+    def progress(self):
+        if self.completed_set.all().exists():
+            return 100
+        return 0
+
+    def get_absolute_url(self):
+        return reverse("single_media", args=[self.module.training.id, self.module.id, self.id])
 
     def get_file_type(self):
         file_name = self.file.name
@@ -240,10 +282,8 @@ class Media(BaseModel):
             return "audio"
         return "video"
 
-    class Meta(BaseModel.Meta):
-        ordering = ["name"]
-        verbose_name = "Lektion"
-        verbose_name_plural = "Lektionen"
+    def completed(self):
+        return self.completed_set.exists()
 
 
 class Access(BaseModel):
@@ -268,6 +308,9 @@ class Completed(BaseModel):
 
     class Meta(BaseModel.Meta):
         verbose_name = "Abgeschlossen"
+
+    def __str__(self):
+        return f'{self.media.name} ({self.media.id})'
 
 
 class Page(BaseModel):

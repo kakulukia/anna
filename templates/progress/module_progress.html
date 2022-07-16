@@ -10,7 +10,7 @@
 
 
 <div class="px-3 mt-5 mb-3">
-    <h1 class="h2">Trainigsfortschritt von <span class="theme-secondary-text">{{current_user.first_name}} {{current_user.last_name}}</span></h1>
+    <h1 class="h2">Fortschritt von <span class="theme-secondary-text">{{current_user.first_name}} {{current_user.last_name}}</span></h1>
 </div>
 
 {% include 'inc/msgs.inc.html' %}
@@ -28,7 +28,7 @@
                     <div class="col-sm-3 d-flex justify-content-end">
                         <div style="">
                             <div class="progress mb-1" style="height: 0.35rem; width: 8rem; border-radius: 0.95rem;">
-                                <div class="progress-bar bg-success" style="width: {{training.progress}}%;" role="progressbar"
+                                <div class="progress-bar bg-green" style="width: {{training.progress}}%;" role="progressbar"
                                     aria-valuenow="{{ training.progress }}" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                             <p class="py-0 my-0">{{ training.progress }}% abgeschlossen</p>
@@ -47,7 +47,7 @@
                 <div class="card-body text-center d-flex align-items-center justify-content-center" style="height: 300px;">
                     <div>
                         <img src="{% static 'img/notfound.png' %}" style="width: 150px;" alt="">
-                        <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">Modules not found</h4>
+                        <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">Keine Kapitel gefunden</h4>
                     </div>
                 </div>
             </div>
@@ -72,10 +72,10 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-9">
-                                    <h5 class="card-title">Module {{ forloop.counter }} - {{ single_module.name }}</h5>
+                                    <h5 class="card-title">Kapitel {{ forloop.counter }} - {{ single_module.name }}</h5>
                                 </div>
                                 <div class="col-sm-3 d-flex justify-content-end theme-primary-text">
-                                    <p style="font-size: 16px" class="mb-0">{{ single_module.get_all_media.count }} lessons</p>
+                                    <p style="font-size: 16px" class="mb-0">{{ single_module.get_all_media.count }} Lektion{{ single_module.get_all_media.count | pluralize:"en" }}</p>
 
 
                                 </div>
@@ -85,16 +85,16 @@
 
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <a class="btn theme-secondary-btn" data-bs-toggle="collapse" href="#module-{{ single_module.id }}">Expand</a>
+                                    <a class="btn theme-secondary-btn" data-bs-toggle="collapse" href="#module-{{ single_module.id }}">Mehr anzeigen</a>
                                 </div>
                                 <div class="col-sm-6 d-flex align-items-center justify-content-end">
                                     <div class="">
                                         <div class="progress mb-1" style="height: 0.35rem; width: 8rem; border-radius: 0.95rem;">
-                                            <div class="progress-bar bg-success" style="width: {{single_module.progress}}%;"
-                                                role="progressbar" aria-valuenow="{{ single_module.progress }}" aria-valuemin="0"
+                                            <div class="progress-bar bg-green" style="width: {{single_module.user_progress}}%;"
+                                                role="progressbar" aria-valuenow="{{ single_module.user_progress }}" aria-valuemin="0"
                                                 aria-valuemax="100"></div>
                                         </div>
-                                        <p class="py-0 my-0">{{ single_module.progress }}% abgeschlossen</p>
+                                        <p class="py-0 my-0">{{ single_module.user_progress }}% abgeschlossen</p>
                                     </div>
                                 </div>
                             </div>
@@ -120,7 +120,7 @@
 
                                         <h6 class="card-title my-0" style="width: 95%;">{{ current_media.name }}</h6>
                                         {% if current_media.id in completed_media %}
-                                        <i class="material-icons text-success mx-1">check_circle</i>
+                                        <i class="material-icons green-text mx-1">check_circle</i>
                                         {% endif %}
 
 
@@ -174,15 +174,16 @@
                                 <div class="row">
                                     <div class="col-sm-6 pt-3">
                                         <a href="{% url 'progress-module' current_user.id single_training.id %}"
-                                            class="btn theme-secondary-btn">Klicke um den Frotschritt zu sehen</a>
+                                            class="btn theme-secondary-btn">Klicke um den Fortschritt zu sehen</a>
                                     </div>
                                     <div class="col-sm-6 pt-3 d-flex align-items-center justify-content-end">
                                         <div class="">
                                             <div class="progress mb-1" style="height: 0.35rem; width: 9rem; border-radius: 0.95rem;">
-                                                <div class="progress-bar bg-success" style="width: {{single_training.progress}}%;"
+                                                <div class="progress-bar bg-green" style="width: {{single_training.progress}}%;"
                                                     role="progressbar" aria-valuenow="{{ single_training.progress }}" aria-valuemin="0"
                                                     aria-valuemax="100"></div>
                                             </div>
+                                          huhu
                                             <p class="py-0 my-0">{{ single_training.progress }}% abgeschlossen</p>
                                         </div>
                                     </div>
@@ -197,9 +198,10 @@
         </div>
 
         <div class="col-sm-12 col-md-12 col-xl-4 py-3">
+          {% if users %}
             <div class="card text-left">
               <div class="card-body" >
-                <h4 class="card-title">Customers</h4>
+                <h4 class="card-title">Nutzer</h4>
                     <div style="max-height: 80vh; overflow-y: auto; padding-right: 7px;">
                         {% for single_user in users %}
                         <a href="{% url 'progress-training' single_user.user.id %}">
@@ -210,7 +212,7 @@
                                     <div class="px-2">
                                         <div>
                                             <h6 class="mb-2 text-dark">{{ single_user.user.first_name }} {{ single_user.user.last_name }} <span
-                                                    class="badge badge-pill badge-success bg-success">{{ single_user.count }} trainings</span>
+                                                    class="badge badge-pill badge-success bg-green">{{ single_user.count }} Kurse</span>
                                             </h6>
                                             <p class="mb-0 text-dark">{{ single_user.user.email }}</p>
                                         </div>
@@ -225,7 +227,7 @@
 
               </div>
             </div>
-
+          {% endif %}
         </div>
     </div>
 

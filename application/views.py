@@ -15,7 +15,7 @@ from django.utils.safestring import mark_safe
 from .forms import *
 
 
-# Signals to add device in loggged in device
+# Signals to add device in logged in device
 @receiver(user_logged_in)
 def remove_other_sessions(sender, user, request, **kwargs):
     request.session.save()
@@ -28,24 +28,11 @@ def remove_other_sessions(sender, user, request, **kwargs):
         new_device.session_id = session_id
 
     if new_device.is_limit_reached() and not is_exists:
-        messages.error(request, "You have reached maximum Sessions limit!")
-        print("Loging out")
+        messages.error(request, "Du hast die maximale Anzahl an Geräten erreicht.")
         logout(request)
         return
 
     new_device.save()
-
-    # # remove other sessions
-    # print("-------------------")
-    # # return redirect("profile")
-    # # save current session
-    # print("-------------------")
-
-    # create a link from the user to the current session (for later removal)
-    # UserSession.objects.get_or_create(
-    #     user=user,
-    #     session_id=request.session.session_key
-    # )
 
 
 @login_required
@@ -278,63 +265,50 @@ def all_trainings(request):
 @login_required
 def progress(request):
     if not request.user.is_superuser:
-        messages.error(request, "You don't have permission to access this page")
+        messages.error(request, "Du hast keine Berechtigung für diese Seite.")
         return redirect("index")
 
-    try:
-        all_users = User.data.filter(is_superuser=False)[1:]
-        updated_users = []
-        for user in all_users:
-            access_objects = get_accessed_training(user)
-            updated_users.append({"user": user, "count": access_objects.count()})
+    all_users = User.data.filter(is_superuser=False)
+    updated_users = []
+    for user in all_users:
+        access_objects = get_accessed_training(user)
+        updated_users.append({"user": user, "count": access_objects.count()})
 
-        context = {
-            "users": updated_users,
-        }
-        return render(request, "progress/index.html", context)
-
-    except Exception as e:
-        messages.error(request, str(e))
-        return redirect("index")
+    context = {
+        "users": updated_users,
+    }
+    return render(request, "progress/index.html", context)
 
 
 @login_required
 def progress_trainings(request, id):
     if not request.user.is_superuser:
-        messages.error(request, "You don't have permission to access this page")
+        messages.error(request, "Du hast keine Berechtigung für diese Seite.")
         return redirect("index")
 
-    try:
-        all_users = User.objects.filter(is_superuser=False)[1:]
-        current_user = User.objects.get(id=id)
-        current_user_trainings = get_accessed_training_objects(current_user)
-        completed_media_ids = Completed.objects.filter(user=current_user).values_list(
-            "media_id", flat=True
-        )
-        current_user_trainings_updated = []
-        for access in current_user_trainings:
-            my_training = access.training
-            my_training.progress = my_training.get_progress(completed_media_ids)
-            current_user_trainings_updated.append(my_training)
+    all_users = User.objects.filter(is_superuser=False)[1:]
+    current_user = User.objects.get(id=id)
+    current_user_trainings = get_accessed_training_objects(current_user)
+    completed_media_ids = Completed.objects.filter(user=current_user).values_list(
+        "media_id", flat=True
+    )
+    current_user_trainings_updated = []
+    for access in current_user_trainings:
+        my_training = access.training
+        my_training.progress = my_training.get_progress(completed_media_ids)
+        current_user_trainings_updated.append(my_training)
 
-        updated_users = []
-        for user in all_users:
-            access_objects = get_accessed_training(user)
-            updated_users.append({"user": user, "count": access_objects.count()})
+    updated_users = []
+    for user in all_users:
+        access_objects = get_accessed_training(user)
+        updated_users.append({"user": user, "count": access_objects.count()})
 
-        context = {
-            "trainings": current_user_trainings_updated,
-            "users": updated_users,
-            "current_user": current_user,
-        }
-        return render(request, "progress/training_progress.html", context)
-
-    except Exception as e:
-        messages.error(request, str(e))
-        return redirect("index")
-
-
-# Function to render the all modules page
+    context = {
+        "trainings": current_user_trainings_updated,
+        "users": updated_users,
+        "current_user": current_user,
+    }
+    return render(request, "progress/training_progress.html", context)
 
 
 @login_required
@@ -342,20 +316,25 @@ def all_modules(request, training_id):
     training = Training.objects.get(id=training_id)
 
     if not Access.objects.filter(user=request.user, training=training).exists():
-        messages.error(
-            request,
-            "You don't have access to watch this course. Request admin to provide you access.",
-        )
+        messages.error(request, "Du hast keinen Zugriff auf diesen Kurs.")
         return redirect("trainings")
 
     modules = Module.objects.filter(training=training)
-    completed_media_ids = Completed.objects.filter(user=request.user).values_list(
-        "media_id", flat=True
-    )
-    for module in modules:
-        module.progress = module.get_progress(completed_media_ids)
     context = {"training": training, "modules": modules}
     return render(request, "all_modules.html", context)
+
+
+@login_required
+def all_medias(request, training_id, module_id):
+    training = get_object_or_404(Training, id=training_id)
+    module = get_object_or_404(Module, id=module_id)
+
+    if not Access.objects.filter(user=request.user, training=training).exists():
+        messages.error(request, "Du hast keinen Zugriff auf diesen Kurs.")
+        return redirect("trainings")
+
+    context = {"module": module}
+    return render(request, "all_media.html", context)
 
 
 @login_required
@@ -364,52 +343,34 @@ def progress_modules(request, id, training_id):
         messages.error(request, "You don't have permission to access this page")
         return redirect("index")
 
-    try:
-        all_users = User.objects.filter(is_superuser=False)[1:]
-        current_user = User.objects.get(id=id)
-        completed_media_ids = Completed.objects.filter(user=current_user).values_list(
-            "media_id", flat=True
-        )
-        current_user_trainings = get_accessed_training_objects(current_user)
-        current_user_trainings_ids = current_user_trainings.values_list(
-            "training_id", flat=True
-        )
-        current_training = Training.objects.filter(
-            id=training_id, id__in=current_user_trainings_ids
-        ).first()
-        if not current_training:
-            raise Exception("No training exists with this id")
-        current_training.progress = current_training.get_progress(completed_media_ids)
-        updated_users = []
-        for user in all_users:
-            access_objects = get_accessed_training(user)
-            updated_users.append({"user": user, "count": access_objects.count()})
+    all_users = User.objects.filter(is_superuser=False)
+    current_user = User.objects.get(id=id)
+    completed_media_ids = Completed.objects.filter(user=current_user).values_list(
+        "media_id", flat=True
+    )
+    current_training = get_object_or_404(Training, id=training_id)
+    current_training.progress = current_training.get_progress(completed_media_ids)
+    updated_users = []
+    for user in all_users:
+        access_objects = get_accessed_training(user)
+        updated_users.append({"user": user, "count": access_objects.count()})
 
-        # Fetching modules
-        modules = Module.objects.filter(training=current_training)
-        for module in modules:
-            module.progress = module.get_progress(completed_media_ids)
+    # Fetching modules
+    modules = Module.objects.filter(training=current_training)
+    for module in modules:
+        module.user_progress = module.get_progress(completed_media_ids)
 
-        # Fetching completed medias
-        completed_media_ids = Completed.objects.filter(user=current_user).values_list(
-            "media_id", flat=True
-        )
+    # Fetching completed medias
+    completed_media_ids = Completed.objects.filter(user=current_user).values_list("media_id", flat=True)
 
-        context = {
-            "completed_media": completed_media_ids,
-            "modules": modules,
-            "training": current_training,
-            "users": updated_users,
-            "current_user": current_user,
-        }
-        return render(request, "progress/module_progress.html", context)
-
-    except Exception as e:
-        messages.error(request, str(e))
-        return redirect("index")
-
-
-# Function to Render the All Modules Page
+    context = {
+        "completed_media": completed_media_ids,
+        "modules": modules,
+        "training": current_training,
+        "users": updated_users,
+        "current_user": current_user,
+    }
+    return render(request, "progress/module_progress.html", context)
 
 
 @login_required
@@ -445,9 +406,6 @@ def resume_all_modules(request, training_id):
     return render(request, "all_modules.html", context)
 
 
-# Function to render a single video page
-
-
 def main_media(request, media_id):
     media = Media.objects.filter(id=media_id).first()
     if not media:
@@ -458,9 +416,6 @@ def main_media(request, media_id):
     return redirect(
         "single_media", training_id=training_id, module_id=module_id, media_id=media_id
     )
-
-
-# function for getting the media which is not in the completed model
 
 
 def get_remaining_media_id(all_media_ids_list, completed_media_ids_list):
@@ -474,53 +429,32 @@ def get_remaining_media_id(all_media_ids_list, completed_media_ids_list):
 @login_required
 def media(request, training_id, module_id, media_id=None):
     module = Module.objects.get(id=module_id)
-    medias = Media.objects.filter(module=module)
-    training = Training.objects.get(id=training_id)
 
-    if not Access.objects.filter(user=request.user, training=training).exists():
-        messages.error(
-            request,
-            "You don't have access to watch this course. Request admin to provide you access.",
-        )
+    if not Access.objects.filter(user=request.user, training=module.training).exists():
+        messages.error(request, "Du hast keinen Zugriff auf diesen Kurs.")
         return redirect("trainings")
-
-    completed_media_ids = Completed.objects.filter(user=request.user).values_list(
-        "media_id", flat=True
-    )
-    media = None
-    if media_id:
-        media = Media.objects.get(id=media_id)
-    else:
-        media = Media.objects.filter(module=module).first()
-        if media:
-            return main_media(request, media.id)
 
     context = {
         "module": module,
-        "medias": medias,
         "media": media,
-        "first_media": medias.first(),
-        "training": training,
-        "completed_media": completed_media_ids,
     }
-    return render(request, "single_media.html", context)
+    return render(request, "all_media.html", context)
 
 
 @login_required
 def mark_as_done(request, media_id):
-    media = Media.objects.filter(id=media_id).first()
+    media = get_object_or_404(Media, id=media_id)
     if not media:
         messages.error(request, "Invalid action")
         return redirect("trainings")
 
     training = media.module.training
-    access = Access.objects.filter(user=request.user, training=training).first()
-
-    if not access:
-        messages.error(request, "You don't have access to this training")
+    if not Access.objects.filter(user=request.user, training=training).exists():
+        messages.error(request, "Du hast keinen Zugriff auf diesen Kurs.")
         return redirect("trainings")
 
     Completed.objects.create(user=request.user, media=media)
+    request.user.update_progress()
 
     if media.next:
         media = media.next
@@ -532,7 +466,6 @@ def mark_as_done(request, media_id):
             "single_media", training_id=training_id, module_id=module_id, media_id=media_id
         )
 
-    print(media.module.next)
     if media.module.next:
         messages.success(request, "Modul als abgeschlossen markiert")
         next_module = media.module.next

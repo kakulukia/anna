@@ -58,7 +58,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-9">
-                                    <h5 class="card-title">Kapitel {{ forloop.counter }} - {{ single_module.name }}</h5>
+                                    <h5 class="card-title">{{ single_module.name }}</h5>
                                 </div>
                                 <div class="col-sm-3 d-flex justify-content-end theme-primary-text">
                                     <p style="font-size: 16px" class="mb-0">{{ single_module.get_all_media.count }} Lektion{{ single_module.get_all_media.count|pluralize:"en" }}</p>
@@ -78,7 +78,7 @@
                                     <div class="">
                                         <div class="progress mb-1"
                                             style="height: 0.35rem; width: 9rem; border-radius: 0.95rem;">
-                                            <div class="progress-bar bg-success"  style="width: {{single_module.progress}}%;"  role="progressbar"
+                                            <div class="progress-bar bg-green"  style="width: {{single_module.progress}}%;"  role="progressbar"
                                                 aria-valuenow="{{ single_module.progress }}" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                         <p class="py-0 my-0">{{ single_module.progress }}% abgeschlossen</p>

@@ -12,24 +12,25 @@ urlpatterns = [
     path("signup/", views.signup, name="signup"),
     path("signin/", views.signin, name="signin"),
     path("logout/", views.signout, name="logout"),
+
     # Test path for checking the browser, IP-address, and device info of the user
     path("browser/", views.get_browser_info, name="browser"),
+
     path("media/<media_id>/done", views.mark_as_done, name="mark-as-done"),
     path("device/<int:device_id>/delete", views.delete_user_device, name="delete_device"),
+
     # Path to All trainings Page
     path("kurse/", views.all_trainings, name="trainings"),
     # Path to (Single training - with all modules) Page
-    path("kurse/<int:training_id>/modules/", views.all_modules, name="all_modules"),
-    # Path to (Single training - with all modules) Page
+    path("kurse/<int:training_id>/kapitel/", views.all_modules, name="all_modules"),
+    path("kurse/<int:training_id>/kapitel/", views.all_modules, name="all_modules"),
     path("kurse/<int:training_id>/", views.resume_all_modules, name="resume_all_modules"),
     # Path to (Single training - with single module - with all videos) Page
-    path("kurse/<int:training_id>/modules/<int:module_id>/medias/", views.media, name="media"),
+    path("kurse/<int:training_id>/kapitel/<int:module_id>/lektionen/", views.media, name="media"),
     # Path to (Single training - with single module - with single media) Page
-    path(
-        "kurse/<int:training_id>/modules/<int:module_id>/medias/<int:media_id>/",
-        views.media,
-        name="single_media",
-    ),
+    path("kurse/<int:training_id>/kapitel/<int:module_id>/lektionen/<int:media_id>/",
+         views.single_media, name="single_media",
+         ),
     path("progress/", views.progress, name="progress"),
     path(
         "progress/customer/<id>/trainings/", views.progress_trainings, name="progress-training"

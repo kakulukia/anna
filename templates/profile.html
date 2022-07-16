@@ -99,7 +99,7 @@
 
                     <div>
                         <div class="">
-                            <p>Hier kannst du deine Geräte verwalten. Du kannst maximal 5 Geräte benutzen.</p>
+                            <p>Hier kannst du deine Geräte verwalten. Du kannst maximal 3 Geräte benutzen.</p>
                             <table class="table p-3 border table-striped">
                                 <thead style="border-bottom: solid 2px #de7b5f;">
                                     <tr>
@@ -151,7 +151,7 @@
                         <form action="{% url 'profile' %}" method="post" class="mb-0">
                             {% csrf_token %}
                             {% bootstrap_form user_form layout="floating" %}
-                            <button type="submit" name="" id="" class="btn theme-primary-btn mb-0 btn-lg w-100">Speichern</button>
+                            <button type="submit" name="" id="" class="btn theme-secondary-btn mb-0 btn-lg w-100">Speichern</button>
                         </form>
                     </div>
                 </div>
@@ -170,7 +170,7 @@
                         <form action="{% url 'reset-password' %}" method="post" class="mb-0">
                             {% csrf_token %}
                             {% bootstrap_form password_form layout="floating" %}
-                            <button type="submit" name="" id="" class="btn theme-primary-btn mb-0 btn-lg w-100">Speichern</button>
+                            <button type="submit" name="" id="" class="btn theme-secondary-btn mb-0 btn-lg w-100">Speichern</button>
                         </form>
                     </div>
                 </div>

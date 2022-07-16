@@ -17,11 +17,40 @@ class MediaInline(admin.StackedInline):
 @admin.register(Training)
 class TrainingAdmin(admin.ModelAdmin):
     inlines = [ModuleInline]
+    actions = None
+
+    fieldsets = (
+        (
+            "Infobox",
+            {
+                "fields": (
+                    "name",
+                    "description",
+                    "thumbnail",
+                )
+            },
+        ),
+    )
 
 
 @admin.register(Module)
 class ModuleAdmin(admin.ModelAdmin):
     inlines = [MediaInline]
+    actions = None
+    list_display = ['name', 'ordering']
+
+
+@admin.register(Media)
+class MediaAdmin(admin.ModelAdmin):
+    actions = None
+    list_display = ['name', 'length']
+    list_filter = ['module']
+    search_fields = ['name']
+
+    def save_model(self, request, obj, form, change):
+        if 'file' in form.changed_data:
+            obj.length = ''
+        super().save_model(request, obj, form, change)
 
 
 class AccessInline(admin.StackedInline):
@@ -59,10 +88,11 @@ class UserAdmin(BaseUserAdmin):
             return None
         user_id = obj.id
         url = reverse("progress-training", args=[user_id])
-        element = f'<a href = "{url}" target="_blank" class = "btn btn-outline-primary" > Progress </a>'
+        element = f'<a href = "{url}" target="_blank" class = "btn btn-outline-primary">Fortschritt anzeigen</a>'
         return mark_safe(element)
 
     option.short_description = "Fortschritt"
+    readonly_fields = ['option']
 
     fieldsets = (
         (
@@ -88,7 +118,10 @@ class UserAdmin(BaseUserAdmin):
                     "start_date",
                     "end_date",
                     "phone_number",
-                    "address",
+                    "street",
+                    "zip_code",
+                    "city",
+                    "country",
                     "zoom_link",
                 )
             },
@@ -101,6 +134,26 @@ class UserAdmin(BaseUserAdmin):
                 )
             },
         ),
+        (
+            "Fortschritt",
+            {
+                "fields": (
+                    "option",
+                )
+            },
+        ),
+        (
+            "PAARBOX",
+            {
+                "fields": (
+                    "paarbox_date",
+                    "paarbox_present",
+                    "paarbox_sent",
+                    "paarbox_handed_over",
+                )
+            },
+        ),
+
     )
 
 
@@ -108,8 +161,3 @@ class UserAdmin(BaseUserAdmin):
 class PageAdmin(admin.ModelAdmin):
     list_display = ["url", "title"]
     actions = None
-
-
-# admin.site.site_header = 'Anna'
-# admin.site.site_title = 'Training platform'
-# admin.site.index_title = 'Admin'

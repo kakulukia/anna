@@ -7,28 +7,30 @@
 
 
 
-{% block form_title %}
-    Sign in to <i>mamaAnywhere</i>
-{% endblock form_title %}
 
 {% block content %}
-
 <div class="container">
-    <div class="row">
-        <div class="col-sm-4"></div>
-        <div class="col-sm-4">
+    <h1 class="display-6 mb-0 mt-4 text-main-head" style="text-align: center;">
+        Bitte einloggen
+    </h1>
+    <div class="login-div">
+        <div class="login-form">
             <div>
                 {% include 'inc/msgs.inc.html' %}
             </div>
 
-            <div class="form border p-4 background-light">
+            <div class="form border p-4 background-light" style="min-width: 330px;">
                 <form action="{% url 'signin' %}" method="post">
                     {% csrf_token %}
                     {% bootstrap_form login_form layout="floating" %}
                     <div class="d-grid gap-2">
-                        <button class="btn theme-secondary-btn" type="submit">Sign in</button>
+                        <button class="btn theme-secondary-btn" type="submit">Einloggen</button>
                     </div>
                 </form>
+              <br>
+              <a href="/password_reset/">
+                Benutzername oder Passwort vergessen?
+              </a>
             </div>
 
             <!-- <div class="card text-center mt-4">
@@ -37,7 +39,6 @@
               </div>
             </div> -->
         </div>
-        <div class="col-sm-4"></div>
     </div>
 </div>
 

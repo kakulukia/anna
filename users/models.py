@@ -1,6 +1,7 @@
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils import timezone
@@ -46,15 +47,25 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         message="Die Telefonnummer muss in folgendem Format eingegeben werden: '+999999999'. Bis zu 15 Zeichen sind erlaubt.",
     )
     phone_number = models.CharField(
-        "Telefon", validators=[phone_regex], max_length=16, blank=True, null=True
+        "Telefonnummer", validators=[phone_regex], max_length=16, blank=True, null=True
     )
-    address = models.CharField("Adresse", max_length=255, blank=True, null=True)
+    street = models.CharField("Straße", max_length=255, blank=True, null=True)
+    zip_code = models.CharField("PLZ", max_length=255, blank=True, null=True)
+    city = models.CharField("Ort", max_length=255, blank=True, null=True)
+    country = models.CharField("Land", max_length=255, blank=True, null=True)
 
-    start_date = models.DateField("Abo-Start", blank=True, null=True)
-    end_date = models.DateField("Abo-Ende", blank=True, null=True)
+    start_date = models.DateField("Start-Datum", blank=True, null=True)
+    end_date = models.DateField("Ablauf-Datum", blank=True, null=True)
 
     zoom_link = models.URLField("Zoom-Link", blank=True, null=True)
     notes = QuillField("Notizen", null=True, blank=True)
+    progress = models.FloatField(default=0)
+
+    # PAARBOX
+    paarbox_date = models.DateField(verbose_name="Datum", null=True, blank=True)
+    paarbox_present = models.BooleanField(verbose_name="vorhanden", default=False)
+    paarbox_sent = models.BooleanField(verbose_name="versendet", default=False)
+    paarbox_handed_over = models.BooleanField(verbose_name="übergeben", default=False)
 
     # basic model stuff
     ############################################
@@ -75,6 +86,10 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         super(AbstractBaseUser, self).clean()
         self.email = self.__class__.data.normalize_email(self.email)
 
+        test = self.paarbox_sent + self.paarbox_handed_over + self.paarbox_present
+        if test > 1:
+            raise ValidationError("Es kann nur eine Option ausgewählt werden! (Vorhanden, Übergeben oder Versendet)")
+
     def has_validity(self):
         return self.start_date and self.end_date
 
@@ -91,6 +106,16 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     def get_short_name(self):
         """Return the short name for the user."""
         return self.first_name
+
+    def update_progress(self):
+        from application.models import Media
+
+        medias = Media.data.filter(module__training__in=self.access_set.values('training')).count()
+        completed = self.completed_set.all().count()
+        if medias and completed:
+            ic(self, completed, medias)
+            self.progress = completed / medias * 100
+            self.save()
 
     # def email_user(
     #     self, subject, message, from_email=settings.DEFAULT_FROM_EMAIL, **kwargs

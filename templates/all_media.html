@@ -1,0 +1,124 @@
+{% extends 'inc/dashboard_base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_messages %}
+{% bootstrap_javascript %}
+{% block title %}Module{% endblock title %}
+{% block content %}
+
+<div class="px-3 mt-5 mb-3">
+  <div id="all-title">
+    <p class="text-secondary d-flex align-items-center course-navigation" style="font-size: 17px;">
+      <a href="{% url 'trainings'  %}">
+          Alle Kurse
+      </a>
+
+      <i class="material-icons mx-2 link-arrow">keyboard_arrow_right</i>
+      <a href="{% url 'all_modules' module.training.id  %}">
+          {{ module.training }}
+      </a>
+
+      <i class="material-icons mx-2 link-arrow">keyboard_arrow_right</i>
+      {{ module }} - Lektionen
+
+    </p>
+  </div>
+</div>
+
+{% include 'inc/msgs.inc.html' %}
+
+
+<div class="container mb-3">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-xl-8 py-3">
+            {% if not module.media_set.all  %}
+                <div class="card">
+                    <div class="card-body text-center d-flex align-items-center justify-content-center" style="height: 300px;">
+                      <div>
+                          <img src="{% static 'img/notfound.png' %}" style="width: 150px;" alt="">
+                          <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">Es existiert keine Lektion in diesem Kapitel</h4>
+                      </div>
+                  </div>
+                </div>
+            {% endif %}
+
+            {% for media in module.media_set.all %}
+
+              <div class="card mb-3">
+                  <div class="row g-0">
+                      <div class="col-md-4 d-flex align-items-center thumbnail">
+                          <a href="{% url 'single_media' module.training.id module.id media.id %}" class="h-100 w-100">
+                              <div style="background-image: url({{ media.thumbnail.url }});
+                                      background-size: cover;
+                                      background-repeat:   no-repeat;
+                                      background-position: center center; width:100%; height: 100%">
+                              </div>
+                          </a>
+                      </div>
+                      <div class="col-md-8">
+                          <div class="card-body">
+                              <div class="row">
+                                  <div class="col-sm-9">
+                                      <h5 class="card-title">{{ media.name }}</h5>
+                                  </div>
+                              </div>
+                              <p class="card-text">{{ media.description }}</p>
+                              <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
+
+                              <div class="row">
+                                  <div class="col-sm-6">
+                                      <a href="{% url 'single_media' module.training.id module.id media.id %}"
+                                          class="btn theme-secondary-btn start-media">
+                                        {% if media.progress %}Erneut starten{% else %}Starten{% endif %}
+                                      </a>
+                                  </div>
+                                  <div class="col-sm-6 d-flex align-items-center justify-content-end">
+                                      <div>
+{#                                          <div class="progress mb-1"#}
+{#                                              style="height: 0.35rem; width: 9rem; border-radius: 0.95rem;">#}
+{#                                              <div class="progress-bar bg-success"  style="width: {{media.progress}}%;"  role="progressbar"#}
+{#                                                  aria-valuenow="{{ media.progress }}" aria-valuemin="0" aria-valuemax="100"></div>#}
+{#                                          </div>#}
+                                          <p class="py-0 my-0 {% if media.progress %}green-text{% else %}orange-text{% endif %}">{% if media.progress %}abgeschlossen{% else %}offen{% endif %}</p>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+            {% endfor %}
+        </div>
+
+        <div class="col-sm-12 col-md-12 col-xl-4 py-3">
+
+            <div class="card">
+{#                <div class="card-header bg-white ">#}
+{#                    <h4 class="my-2 py-0">{{ module.name }}</h4>#}
+{#                </div>#}
+                <img src="{{ module.thumbnail.url }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <div style="text-align: center">
+                        <h4>Fortschritt</h4>
+                        <p class="py-0 my-0">{{ module.completed }} von {{ module.media_set.count }} abgeschlossen</p>
+                        <div class="progress mb-1"
+                            style="height: 0.35rem; border-radius: 0.95rem;">
+                            <div class="progress-bar bg-green"  style="width: {{module.progress}}%;"  role="progressbar"
+                                aria-valuenow="{{ module.progress }}" aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <p class="card-text">{{ module.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+{% endblock content %}

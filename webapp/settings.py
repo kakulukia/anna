@@ -21,6 +21,10 @@ SITE_ID = 1
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+INTERNAL_IPS = [
+    "127.0.0.1",
+    "0.0.0.0",
+]
 
 # Application definition
 INSTALLED_APPS = [
@@ -31,6 +35,7 @@ INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
+    "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_bootstrap5",
@@ -40,6 +45,7 @@ INSTALLED_APPS = [
     "django_secrets",
     # adding django-agents to the installed apps
     "django_user_agents",
+    "debug_toolbar",
 ]
 
 AUTH_USER_MODEL = "users.User"
@@ -58,6 +64,7 @@ USER_AGENTS_CACHE = "default"
 
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -199,15 +206,16 @@ JAZZMIN_SETTINGS = {
     # Logo to use for your site, must be present in static files, used for brand on top left
     # "site_logo": "books/img/logo.png",
     # CSS classes that are applied to the logo above
-    "site_logo_classes": "img-circle",
+    "site_logo_classes": "none",
+    "site_logo": "img/mylogo.png",
     # Relative path to a favicon for your site, will default to site_logo if absent (ideally 32x32 px)
     "site_icon": None,
     # Welcome text on the login screen
-    "welcome_sign": "Welcome to the library",
+    "welcome_sign": "",
     # Copyright on the footer
     "copyright": "Anna Holfeld",
     # The model admin to search from the search bar, search bar omitted if excluded
-    "search_model": "auth.User",
+    "search_model": "users.User",
     # Field name on user model that contains avatar ImageField/URLField/Charfield or a callable that receives the user
     "user_avatar": None,
     ############
@@ -219,17 +227,13 @@ JAZZMIN_SETTINGS = {
         {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
         # model admin to link to (Permissions checked against model)
         {"model": "users.User"},
+        {"name": "Seite anzeigen", "url": "trainings"},
     ],
     #############
     # User Menu #
     #############
     # Additional links to include in the user menu on the top right ("app" url type is not allowed)
     "usermenu_links": [
-        {
-            "name": "Support",
-            "url": "https://github.com/farridav/django-jazzmin/issues",
-            "new_window": True,
-        },
         {"model": "users.user"},
     ],
     #############
@@ -241,7 +245,7 @@ JAZZMIN_SETTINGS = {
     "navigation_expanded": True,
     # Hide these apps when generating side menu e.g (auth)
     "hide_apps": [
-        "Sites",
+        # "Sites",
         "auth",
     ],
     # Hide these models when generating side menu (e.g auth.user)
@@ -308,3 +312,10 @@ QUILL_CONFIGS = {
         },
     },
 }
+
+# mail settings
+EMAIL_HOST = "smtp.strato.de"
+EMAIL_PORT = 465
+EMAIL_HOST_USER = "neuespasswort@liebendgern.de"
+EMAIL_HOST_PASSWORD = secrets.EMAIL_PASSWORD
+EMAIL_USE_SSL = True

@@ -84,7 +84,7 @@
                 <div class="card-header bg-white ">
                     <h4 class="my-2 py-0">{{ training.name }}</h4>
                 </div>
-                <img src="{{ training.thumbnail.url }}" class="card-img-top" alt="...">
+                <img src="{{ training.thumbnail.url }}" class="card-img-top rounded-0" alt="...">
                 <div class="card-body">
                     <!-- <h4 class="card-title">{{ training.name }}</h4> -->
                     <div style="max-height: 200px; overflow-y: auto; padding-right: 10px;" class="mb-3">
@@ -94,35 +94,43 @@
                     {% with all_modules=training.get_all_modules %}
                     <h6>Kapitel</h6>
 
+                    {% if allowed %}
+                        <a href="{% url 'all_modules' training.id %}" class="kapitel-button btn w-100 theme-secondary-btn">Zur Kapitelübersicht</a>
+                    {% else %}
+                        <a data-bs-toggle="modal" data-bs-target="#request-access" class="btn w-100  theme-outline-primary-btn">Zugriff anfordern</a>
+                    {% endif %}
+
                     <div id="all-modules">
                         {% for module in all_modules %}
                         <div class="card mb-2">
-                            {% with all_media=module.get_all_media %}
-                            <div class="card-header text-left">
-                                <div class="row">
-                                    <div class="col-sm-9">
-                                        <a class="text-left text-decoration-none" data-bs-toggle="collapse" href="#module-{{ module.id }}">
-                                            {{ module.name }}
-                                        </a>
-                                    </div>
+                              <a class="text-left text-decoration-none collapsed" data-bs-toggle="collapse" href="#module-{{ module.id }}">
+                                <div class="card-header text-left">
+                                  <div class="row">
+                                      <div class="col-sm-8">
+                                        <i class="material-icons theme-secondary-text kapitel-arrow">play_arrow</i>
+                                        {{ module.name }}
+                                      </div>
 
-                                    <div class="col-sm-3">
-                                       {{ all_media.count }} Lektion{{ all_media.count|pluralize:"en" }}
-                                    </div>
+                                      <div class="col-sm-4">
+                                       {{ module.media_set.count }} Lektion{{ all_media.count|pluralize:"en" }}
+                                      </div>
+                                  </div>
+
                                 </div>
-
-                            </div>
-                            <div id="module-{{ module.id }}" class="collapse" data-bs-parent="#all-modules">
-                                <div class="card-body">
-                                    {% for media in all_media %}
+                              </a>
+                              <div id="module-{{ module.id }}" class="collapse" data-bs-parent="#all-modules">
+                                <div class="card-body lektionen">
+                                  {% for media in module.media_set.all %}
                                     <div class="d-flex align-items-center mb-2">
-                                        <i class="material-icons theme-secondary-text" style="font-size: 18px;">play_arrow</i>
-                                        <p class="my-0 py-0 mx-2">{{ media }}</p>
+                                        <p class="my-0 py-0 mx-2">
+                                          <a href="{% url "single_media" training.id module.id media.id %}">
+                                            {{ media }}
+                                          </a>
+                                        </p>
                                     </div>
-                                    {% endfor %}
+                                  {% endfor %}
                                 </div>
-                            </div>
-                            {% endwith %}
+                              </div>
                         </div>
                         {% endfor %}
 

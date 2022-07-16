@@ -1,5 +1,5 @@
 {% if single_training.id in accessed_training %}
-  <div class="card mb-3" {% if training == single_training %}style="box-shadow: 5px 5px 5px #cccccc;"{% endif %}>
+  <div class="card mb-3 rounded-0" {% if training == single_training %}style="box-shadow: 5px 5px 5px #cccccc;"{% endif %}>
       <div class="row g-0">
           <!-- <div class="col-md-4 d-flex align-items-center">
               <a href="{% url 'all_modules' single_training.id %}">
@@ -19,19 +19,15 @@
                   </div>
               </a>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-8" id="training-{{ single_training.id }}">
               <div class="card-body">
                   <div class="row">
                       <div class="col-sm-10">
-                          <a href="{% url 'all_modules' single_training.id %}" class="text-dark">
                               <h5 class="card-title">{{ single_training.name }}</h5>
-                          </a>
                       </div>
                       <div class="col-sm-2 d-flex justify-content-end">
-                          <a href="{% url 'trainings' %}?expand={{ single_training.id }}">
                               <i
                                   class="material-icons mk-pointer {% if training.id == single_training.id %}theme-primary-text{% else %}text-secondary{% endif %}">info</i>
-                          </a>
                       </div>
                   </div>
                   <p class="card-text mb-0">{{ single_training.get_short_description }}</p>
@@ -40,7 +36,7 @@
                   <div class="row">
                       {% if single_training.id in accessed_training %}
                         <div class="col-sm-6 pt-3">
-                            <a href="{% url 'resume_all_modules' single_training.id %}" class="btn theme-secondary-btn">
+                            <a href="{% url 'resume_all_modules' single_training.id %}" class="rounded-0 btn theme-secondary-btn">
 
                                 {% if single_training.progress == 100 %}
                                     Noch mal ansehen
@@ -54,7 +50,7 @@
                         <div class="col-sm-6 pt-3 d-flex align-items-center justify-content-end">
                             <div class="">
                                 <div class="progress mb-1" style="height: 0.35rem; width: 9rem; border-radius: 0.95rem;">
-                                    <div class="progress-bar bg-success" style="width: {{single_training.progress}}%;" role="progressbar" aria-valuenow="{{ single_training.progress }}"
+                                    <div class="progress-bar bg-green" style="width: {{single_training.progress}}%;" role="progressbar" aria-valuenow="{{ single_training.progress }}"
                                         aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                                 <p class="py-0 my-0">{{ single_training.progress }}% abgeschlossen</p>
@@ -72,4 +68,15 @@
           </div>
       </div>
   </div>
+
+  <script>
+    (() => {
+      const trainingId = "training-{{ single_training.id }}";
+      const element = document.getElementById(trainingId);
+      const url = "{% url 'trainings' %}?expand={{ single_training.id }}";
+      element.addEventListener("click", () => {
+        window.location = url;
+      })
+    })();
+  </script>
 {% endif %}

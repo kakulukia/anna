@@ -4,18 +4,16 @@ if (sampleVideo) {
   let videoName = sampleVideo.childNodes[1].src;
   videoName = videoName.replace(/\.mp(3|4).*/, "");
   videoName = videoName.replace(/.*\//, "");
+  const key = username + '-' + videoName + 'ResumeTime';
+
 
   (() => {
-    const getCurrentTime = localStorage.getItem(`${videoName}ResumeTime`) ;
-    sampleVideo.currentTime = getCurrentTime;
+    sampleVideo.currentTime = localStorage.getItem(key);
   })();
 
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
-      localStorage.setItem(`${videoName}ResumeTime`, sampleVideo.currentTime);
-      return;
-    } else {
-      return;
+      localStorage.setItem(key, sampleVideo.currentTime);
     }
   });
 }

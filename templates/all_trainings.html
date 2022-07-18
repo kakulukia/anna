@@ -139,7 +139,11 @@
 
                     {% endwith %}
 
-
+                    {% if allowed %}
+                        <a href="{% url 'all_modules' training.id %}" class="btn w-100  theme-primary-btn">Zu den Kapiteln</a>
+                    {% else %}
+                        <a data-bs-toggle="modal" data-bs-target="#request-access" class="btn w-100  theme-outline-primary-btn">Zugriff anfordern</a>
+                    {% endif %}
                 </div>
             </div>
             {% else %}

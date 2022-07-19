@@ -70,6 +70,7 @@ class UserAdmin(BaseUserAdmin):
         "zoom",
         "option",
     )
+    list_display_links = ['email', 'first_name']
     list_filter = ["is_superuser", ("zoom_link", admin.EmptyFieldListFilter)]
     verbose_name = "Customer"
     actions = None

@@ -436,6 +436,9 @@ body {
 }
 
 @media (max-width: 991px) {
+  td:nth-of-type(4), th:nth-of-type(4), td:nth-of-type(5), th:nth-of-type(5) {
+    display: none;
+  }
   .menu-form {
     justify-content: end;
     flex-wrap: wrap;

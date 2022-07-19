@@ -6,6 +6,7 @@ from traceback import print_tb
 from django.contrib import messages
 from django.contrib.auth import login, logout, user_logged_in
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count, Q
 from django.dispatch.dispatcher import receiver
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
@@ -29,8 +30,9 @@ def remove_other_sessions(sender, user, request, **kwargs):
 
     if new_device.is_limit_reached() and not is_exists:
         messages.error(request, "Du hast die maximale Anzahl an Geräten erreicht.")
-        logout(request)
-        return
+        if not request.user.is_superuser:
+            logout(request)
+            return
 
     new_device.save()
 
@@ -319,7 +321,8 @@ def all_modules(request, training_id):
         messages.error(request, "Du hast keinen Zugriff auf diesen Kurs.")
         return redirect("trainings")
 
-    modules = Module.objects.filter(training=training)
+    modules = Module.data.filter(training=training).annotate(
+        completed_count=Count('media__completed', filter=Q(media__completed__user=request.user)))
     context = {"training": training, "modules": modules}
     return render(request, "all_modules.html", context)
 
@@ -327,7 +330,8 @@ def all_modules(request, training_id):
 @login_required
 def all_medias(request, training_id, module_id):
     training = get_object_or_404(Training, id=training_id)
-    module = get_object_or_404(Module, id=module_id)
+    module = get_object_or_404(Module.data.all().annotate(completed_count=Count(
+        'media__completed', filter=Q(media__completed__user=request.user))), id=module_id)
 
     if not Access.objects.filter(user=request.user, training=training).exists():
         messages.error(request, "Du hast keinen Zugriff auf diesen Kurs.")
@@ -428,15 +432,19 @@ def get_remaining_media_id(all_media_ids_list, completed_media_ids_list):
 
 @login_required
 def media(request, training_id, module_id, media_id=None):
-    module = Module.objects.get(id=module_id)
+    module = Module.data.annotate(
+        completed_count=Count('media__completed', filter=Q(media__completed__user=request.user))).get(id=module_id)
 
     if not Access.objects.filter(user=request.user, training=module.training).exists():
         messages.error(request, "Du hast keinen Zugriff auf diesen Kurs.")
         return redirect("trainings")
 
+    media_set = Media.data.filter(module=module).annotate(
+        is_completed=Count('completed', filter=Q(completed__user=request.user)))
+
     context = {
         "module": module,
-        "media": media,
+        "media_set": media_set,
     }
     return render(request, "all_media.html", context)
 
@@ -484,7 +492,7 @@ def mark_as_done(request, media_id):
 def single_media(request, training_id, module_id, media_id):
     training = Training.objects.get(id=training_id)
     module = Module.objects.get(id=module_id)
-    media = Media.objects.get(id=media_id)
+    media = Media.objects.annotate(is_completed=Count('completed', filter=Q(completed__user=request.user))).get(id=media_id)
     medias = Media.objects.filter(module=module)
     context = {
         "module": module,

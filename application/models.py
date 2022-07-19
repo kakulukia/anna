@@ -200,13 +200,11 @@ class Module(BaseModel):
 
     @cached_property
     def progress(self):
-        if not self.completed:
+        if not hasattr(self, 'completed_count'):
+            raise Exception('progress darf hier nicht aufgerufen werden - es fehlt eine Annotation')
+        if not self.completed_count:
             return 0
-        return int((self.completed / self.media_set.count()) * 100)
-
-    @cached_property
-    def completed(self):
-        return Completed.data.filter(media__in=self.media_set.all()).count()
+        return int((self.completed_count / self.media_set.count()) * 100)
 
 
 class Media(BaseModel):
@@ -264,7 +262,9 @@ class Media(BaseModel):
 
     @cached_property
     def progress(self):
-        if self.completed_set.all().exists():
+        if not hasattr(self, 'is_completed'):
+            raise Exception('Annotation fehlt!')
+        if self.is_completed:
             return 100
         return 0
 
@@ -280,9 +280,6 @@ class Media(BaseModel):
         ):
             return "audio"
         return "video"
-
-    def completed(self):
-        return self.completed_set.exists()
 
 
 class Access(BaseModel):

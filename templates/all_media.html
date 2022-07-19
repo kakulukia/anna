@@ -43,7 +43,7 @@
                 </div>
             {% endif %}
 
-            {% for media in module.media_set.all %}
+            {% for media in media_set %}
 
               <div class="card mb-3">
                   <div class="row g-0">
@@ -102,7 +102,7 @@
                 <div class="card-body">
                     <div style="text-align: center">
                         <h4>Fortschritt</h4>
-                        <p class="py-0 my-0">{{ module.completed }} von {{ module.media_set.count }} abgeschlossen</p>
+                        <p class="py-0 my-0">{{ module.completed_count }} von {{ module.media_set.count }} abgeschlossen</p>
                         <div class="progress mb-1"
                             style="height: 0.35rem; border-radius: 0.95rem;">
                             <div class="progress-bar bg-green"  style="width: {{module.progress}}%;"  role="progressbar"

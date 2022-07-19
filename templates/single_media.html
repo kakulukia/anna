@@ -95,11 +95,11 @@
                                 </div>
                             </div>
                             <div class="col-md-5 d-flex align-items-center justify-content-end">
-                                {% if not media.completed %}
-                                <a type="button" onclick="return confirm('Wirklich als abgeschlossen markieren?')"
-                                   href="{% url 'mark-as-done' media.id %}" class="button done">
-                                    <button type="button" class="btn btn-width theme-secondary-btn">Als abgeschlossen markieren</button>
-                                </a>
+                                {% if not media.is_completed %}
+                                  <a type="button" onclick="return confirm('Wirklich als abgeschlossen markieren?')"
+                                     href="{% url 'mark-as-done' media.id %}" class="button done">
+                                      <button type="button" class="btn btn-width theme-secondary-btn">Als abgeschlossen markieren</button>
+                                  </a>
                                 {% endif %}
                             </div>
                         </div>

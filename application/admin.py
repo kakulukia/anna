@@ -37,13 +37,13 @@ class TrainingAdmin(admin.ModelAdmin):
 class ModuleAdmin(admin.ModelAdmin):
     inlines = [MediaInline]
     actions = None
-    list_display = ['name', 'ordering']
+    list_display = ['name', 'ordering', 'next']
 
 
 @admin.register(Media)
 class MediaAdmin(admin.ModelAdmin):
     actions = None
-    list_display = ['name', 'length']
+    list_display = ['name', 'length', 'next']
     list_filter = ['module']
     search_fields = ['name']
 

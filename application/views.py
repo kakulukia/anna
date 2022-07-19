@@ -475,7 +475,7 @@ def mark_as_done(request, media_id):
         )
 
     if media.module.next:
-        messages.success(request, "Modul als abgeschlossen markiert")
+        messages.success(request, "Kapitel als abgeschlossen markiert")
         next_module = media.module.next
         training_id = next_module.training.id
         module_id = next_module.id

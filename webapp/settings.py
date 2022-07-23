@@ -18,7 +18,7 @@ SECRET_KEY = secrets.SECRET_KEY
 SITE_ID = 1
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 INTERNAL_IPS = [

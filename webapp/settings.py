@@ -234,7 +234,6 @@ JAZZMIN_SETTINGS = {
     #############
     # Additional links to include in the user menu on the top right ("app" url type is not allowed)
     "usermenu_links": [
-        {"model": "users.user"},
     ],
     #############
     # Side Menu #
@@ -248,6 +247,14 @@ JAZZMIN_SETTINGS = {
         # "Sites",
         "auth",
     ],
+    "custom_links": {
+        "application": [{
+            "name": "Seite anzeigen",
+            "url": "index",
+            "icon": "fas fa-globe",
+            "permissions": []
+        }]
+    },
     # Hide these models when generating side menu (e.g auth.user)
     "hide_models": ["application.Completed", "application.access"],
     # List of apps (and/or models) to base side menu ordering off of (does not need to contain all apps/models)

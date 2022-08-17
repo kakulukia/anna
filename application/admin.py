@@ -63,17 +63,22 @@ class UserAdmin(BaseUserAdmin):
     inlines = [AccessInline]
     list_display = (
         "email",
-        "first_name",
+        "first_or_username",
         "last_name",
         "start_date",
         "end_date",
         "zoom",
         "option",
     )
-    list_display_links = ['email', 'first_name']
+    list_display_links = ['email', 'first_or_username']
     list_filter = ["is_superuser", ("zoom_link", admin.EmptyFieldListFilter)]
     verbose_name = "Customer"
     actions = None
+
+    def first_or_username(self, user: User):
+        return user.first_name if user.first_name else user.username
+    first_or_username.short_description = "Vorname"
+    first_or_username.admin_order_field = 'first_name'
 
     def zoom(self, user: User):
         return bool(user.zoom_link)

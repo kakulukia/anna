@@ -97,7 +97,7 @@ class Device(models.Model):
         super(Device, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.user} - ({self.os}, {self.browser}, {self.device_type}, {self.ip}, {self.session})"
+        return f"{self.user} - ({self.os}, {self.browser}, {self.device_type}, {self.ip}, {self.session.session_key})"
 
 
 # signal to remove session from DB after deleting the device

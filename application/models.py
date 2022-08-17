@@ -81,7 +81,7 @@ class Device(models.Model):
 
         return device_queryset.first()
 
-    def is_limit_reached(self, limit=3):
+    def is_limit_reached(self, limit=5):
         devices = Device.objects.filter(user=self.user)
         print(devices.count())
         return not devices.count() < limit

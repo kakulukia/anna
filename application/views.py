@@ -322,7 +322,8 @@ def all_modules(request, training_id):
         return redirect("trainings")
 
     modules = Module.data.filter(training=training).annotate(
-        completed_count=Count('media__completed', filter=Q(media__completed__user=request.user)))
+        completed_count=Count('media__completed', filter=Q(media__completed__user=request.user))
+    ).order_by('ordering')
     context = {"training": training, "modules": modules}
     return render(request, "all_modules.html", context)
 

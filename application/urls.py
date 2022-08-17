@@ -23,7 +23,6 @@ urlpatterns = [
     path("kurse/", views.all_trainings, name="trainings"),
     # Path to (Single training - with all modules) Page
     path("kurse/<int:training_id>/kapitel/", views.all_modules, name="all_modules"),
-    path("kurse/<int:training_id>/kapitel/", views.all_modules, name="all_modules"),
     path("kurse/<int:training_id>/", views.resume_all_modules, name="resume_all_modules"),
     # Path to (Single training - with single module - with all videos) Page
     path("kurse/<int:training_id>/kapitel/<int:module_id>/lektionen/", views.media, name="media"),

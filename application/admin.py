@@ -58,9 +58,20 @@ class AccessInline(admin.StackedInline):
     extra = 1
 
 
+class DeviceInline(admin.StackedInline):
+    model = Device
+    extra = 0
+
+    def has_add_permission(self, request, obj):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
-    inlines = [AccessInline]
+    inlines = [AccessInline, DeviceInline]
     list_display = (
         "email",
         "first_or_username",

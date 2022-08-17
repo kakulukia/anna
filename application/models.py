@@ -26,6 +26,10 @@ class Device(models.Model):
     datetime = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(default=timezone.now)
 
+    class Meta:
+        verbose_name = "Gerät"
+        verbose_name_plural = "Geräte"
+
     # method to fetch the ip of client
     def get_client_ip(self, request):
         x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")

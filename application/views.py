@@ -107,16 +107,6 @@ def profile(request):
 @login_required
 def index(request):
     return redirect("trainings")
-    all_folders = Folder.objects.filter(user=request.user)[0:3]
-    all_bookmarks = Bookmark.objects.filter(user=request.user)[0:3]
-    all_terms = Term.objects.filter(user=request.user)[0:3]
-    context = {
-        "page": "dashboard",
-        "all_folders": all_folders,
-        "all_bookmarks": all_bookmarks,
-        "all_terms": all_terms,
-    }
-    return render(request, "index.html", context)
 
 
 def signup(request):

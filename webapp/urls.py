@@ -5,6 +5,7 @@ from django.urls import include, path
 from django.views.generic import RedirectView
 from django.contrib.auth import views as auth_views
 
+from application.admin import clone_user
 from application.views import render_flatpage
 
 
@@ -13,6 +14,7 @@ class PasswordResetView(auth_views.PasswordResetView):
 
 
 urlpatterns = [
+    path("admin/clone-user/<int:user_id>/", clone_user, name="clone-user"),
     path("admin/", admin.site.urls),
     path('i18n/', include('django.conf.urls.i18n')),
     path("admin", RedirectView.as_view(url="/admin/")),
@@ -24,6 +26,7 @@ urlpatterns = [
     path("password_reset/done/", auth_views.PasswordResetDoneView.as_view(), name="password_reset_done"),
     path("reset/<uidb64>/<token>/", auth_views.PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
     path("reset/done/", auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
+
 
     path("<url>", render_flatpage),
 ]

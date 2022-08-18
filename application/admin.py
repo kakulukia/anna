@@ -1,5 +1,9 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
+from django.utils.safestring import mark_safe
 
 from .models import *
 
@@ -78,6 +82,7 @@ class UserAdmin(BaseUserAdmin):
         "last_name",
         "start_date",
         "end_date",
+        "clone",
         "zoom",
         "option",
     )
@@ -85,6 +90,14 @@ class UserAdmin(BaseUserAdmin):
     list_filter = ["is_superuser", ("zoom_link", admin.EmptyFieldListFilter)]
     verbose_name = "Customer"
     actions = None
+
+    def clone(self, user: User):
+        if user.is_superuser:
+            return ""
+        url = reverse("clone-user", args=[user.id])
+        button = f'<a href = "{url}" class="btn btn-outline-primary">klonen</a>'
+        return mark_safe(button)
+    clone.short_description = ""
 
     def first_or_username(self, user: User):
         return user.first_name if user.first_name else user.username
@@ -178,3 +191,20 @@ class UserAdmin(BaseUserAdmin):
 class PageAdmin(admin.ModelAdmin):
     list_display = ["url", "title"]
     actions = None
+
+
+@login_required
+def clone_user(request, user_id):
+    user = get_object_or_404(User.data.all(), id=user_id)
+    user.id = None
+    user.username += "1"
+    user.save()
+
+    for access in Access.data.filter(user_id=user_id):
+        access.user_id = user.id
+        access.id = None
+        access.save()
+
+    messages.success(request, f"{user.get_full_name()} geklont!")
+
+    return HttpResponseRedirect(reverse("admin:users_user_change", args=[user.id]))

@@ -90,6 +90,7 @@ class UserAdmin(BaseUserAdmin):
     list_filter = ["is_superuser", ("zoom_link", admin.EmptyFieldListFilter)]
     verbose_name = "Customer"
     actions = None
+    ordering = ("-created",)
 
     def clone(self, user: User):
         if user.is_superuser:

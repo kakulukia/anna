@@ -90,6 +90,11 @@ class Device(models.Model):
         print(devices.count())
         return not devices.count() < limit
 
+    def limit_is_nearly_reached(self, limit=3):
+        devices = Device.objects.filter(user=self.user)
+        print(devices.count())
+        return not devices.count() < limit
+
     def save(self, *args, **kwargs):
         # figure out warranty end date
         if self.pk:

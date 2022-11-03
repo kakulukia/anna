@@ -15,7 +15,6 @@ from django.utils.safestring import mark_safe
 
 from .forms import *
 
-
 # Signals to add device in logged in device
 @receiver(user_logged_in)
 def remove_other_sessions(sender, user, request, **kwargs):
@@ -28,11 +27,18 @@ def remove_other_sessions(sender, user, request, **kwargs):
         new_device = is_exists
         new_device.session_id = session_id
 
-    if new_device.is_limit_reached() and not is_exists:
-        messages.error(request, "Du hast die maximale Anzahl an Geräten erreicht.")
-        if not request.user.is_superuser:
-            logout(request)
-            return
+    else:  
+        if new_device.is_limit_reached():
+            messages.error(request, "Du hast die maximale Anzahl an Geräten erreicht.")
+            if not request.user.is_superuser:
+                logout(request)
+                return
+
+        if new_device.limit_is_nearly_reached():
+            messages.warning(request, mark_safe("Du hast bereits 4 Geräte angemeldet, bitte lösche ein Gerät <a href='/profile/'>hier</a>"))
+            if not request.user.is_superuser:
+                logout(request)
+                return
 
     new_device.save()
 

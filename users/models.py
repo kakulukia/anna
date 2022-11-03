@@ -67,6 +67,10 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     paarbox_sent = models.BooleanField(verbose_name="versendet", default=False)
     paarbox_handed_over = models.BooleanField(verbose_name="übergeben", default=False)
 
+    # CLOSE CMS STUFF
+    lead = models.CharField(max_length=70, default="")
+    customer = models.CharField(max_length=70, null=True, unique=True)
+
     # basic model stuff
     ############################################
     data = UserDataManager()

@@ -1,0 +1,17 @@
+server {
+	server_name test-anna.liebendgern.de;
+	client_max_body_size 1G;
+	listen 80;
+
+  location = /favicon.ico { access_log off; log_not_found off; }
+
+  location / {
+    include proxy_params;
+	  proxy_pass http://unix:/tmp/test-anna.sock;
+  }
+
+  location /static/ {
+    alias /opt/www/test-anna/staticfiles/;
+    try_files $uri =404;
+  }
+}

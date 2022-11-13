@@ -1,7 +1,6 @@
 server {
 	server_name test-anna.liebendgern.de;
 	client_max_body_size 1G;
-	listen 80;
 
   location = /favicon.ico { access_log off; log_not_found off; }
 
@@ -14,4 +13,23 @@ server {
     alias /opt/www/test-anna/staticfiles/;
     try_files $uri =404;
   }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/test-anna.liebendgern.de/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/test-anna.liebendgern.de/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+server {
+    if ($host = test-anna.liebendgern.de) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+	server_name test-anna.liebendgern.de;
+	listen 80;
+    return 404; # managed by Certbot
+
+
 }

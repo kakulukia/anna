@@ -91,7 +91,21 @@
           {% if users %}
             <div class="card text-left">
               <div class="card-body" >
-                <h4 class="card-title">Nutzer</h4>
+                <div>
+                    <h4 class="card-title">Nutzer</h4>
+                        <div class="search">
+                            <div class="search-bar">
+                                <form id="searchform">
+                                    <input placeholder="Namen suchen"
+                                    type="search" id="mainSearch"
+                                    name="mainSearch" class="search-bar">
+                                    <button class="search-button" type="submit" id="searchButton">
+                                        <img class="search-button-img" src="/static/assets/img/icons/common/search.svg">
+                                        <!-- <img class="search-button", src="/static/assets/img/icons/common/lupe.png"> -->
+                                    </button>
+                                </form>
+                            </div>
+                </div>
                     <div style="max-height: 80vh; overflow-y: auto; padding-right: 7px;">
                         {% for single_user in users %}
                         <a href="{% url 'progress-training' single_user.user.id %}">

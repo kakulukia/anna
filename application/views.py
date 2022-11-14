@@ -1,19 +1,15 @@
-import re
 import uuid
-from os import stat
-from traceback import print_tb
 
 from django.contrib import messages
 from django.contrib.auth import login, logout, user_logged_in
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q, OuterRef, Subquery
-from django.dispatch.dispatcher import receiver
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
 from django.utils.safestring import mark_safe
 
 from .forms import *
+
 
 # Signals to add device in logged in device
 @receiver(user_logged_in)
@@ -27,7 +23,7 @@ def remove_other_sessions(sender, user, request, **kwargs):
         new_device = is_exists
         new_device.session_id = session_id
 
-    else:  
+    else:
         if new_device.is_limit_reached():
             messages.error(request, "Du hast die maximale Anzahl an Geräten erreicht.")
             if not request.user.is_superuser:
@@ -36,9 +32,6 @@ def remove_other_sessions(sender, user, request, **kwargs):
 
         if new_device.limit_is_nearly_reached():
             messages.warning(request, mark_safe("Du hast bereits 4 Geräte angemeldet, bitte lösche ein Gerät <a href='/profile/'>hier</a>"))
-            if not request.user.is_superuser:
-                logout(request)
-                return
 
     new_device.save()
 

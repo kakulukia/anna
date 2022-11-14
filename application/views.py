@@ -30,8 +30,8 @@ def remove_other_sessions(sender, user, request, **kwargs):
                 logout(request)
                 return
 
-        if new_device.limit_is_nearly_reached():
-            messages.warning(request, mark_safe("Du hast bereits 4 Geräte angemeldet, bitte lösche ein Gerät <a href='/profile/'>hier</a>"))
+        if new_device.limit_is_nearly_reached() or True:
+            messages.warning(request, mark_safe("Du hast bereits 4 Geräte angemeldet, bitte lösche ein Gerät <a href='/profile/#devices'>hier >>></a>."))
 
     new_device.save()
 

@@ -496,3 +496,14 @@ body {
   bottom: 0;
   backdrop-filter: blur(10px);
 }
+
+.alert-warning {
+  background: #FF6B39;
+  border-color: #FF6B39;
+  color: white;
+}
+.alert-warning  a {
+  color: white;
+  font-weight: bold;
+  text-decoration: underline;
+}

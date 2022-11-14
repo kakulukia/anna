@@ -3,7 +3,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white google-shadow " style="user-select: auto;">
   <div class="container">
     <a href="{% url 'trainings' %}">
-      <img src="{% static 'img/mylogo.png' %}" style="width:190px" alt="Logo">
+      <img src="{% if STAGE %}{% static 'img/mylogo-test.png' %}{% else %}{% static 'img/mylogo.png' %}{% endif %}" style="width:190px" alt="Logo">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

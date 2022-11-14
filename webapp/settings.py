@@ -19,6 +19,7 @@ SITE_ID = 1
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+STAGE = False
 
 ALLOWED_HOSTS = ["*"]
 INTERNAL_IPS = [
@@ -207,7 +208,7 @@ JAZZMIN_SETTINGS = {
     # "site_logo": "books/img/logo.png",
     # CSS classes that are applied to the logo above
     "site_logo_classes": "none",
-    "site_logo": "img/mylogo.png",
+    "site_logo": "img/mylogo-test.png" if STAGE else "img/mylogo.png",
     # Relative path to a favicon for your site, will default to site_logo if absent (ideally 32x32 px)
     "site_icon": None,
     # Welcome text on the login screen

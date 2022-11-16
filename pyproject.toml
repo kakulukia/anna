@@ -6,7 +6,7 @@ authors = ["mika <mika.griebsch@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "3.10.4"
+python = "^3.10.4"
 Django = "^4.0.4"
 django-bootstrap5 = "^22.1"
 django-jazzmin = "^2.5.0"

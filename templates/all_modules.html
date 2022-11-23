@@ -1,11 +1,12 @@
 {% extends 'inc/dashboard_base.html' %}
-{% load static %}
+{% load static anna %}
 {% load django_bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_messages %}
 {% bootstrap_javascript %}
 {% block title %}Module{% endblock title %}
 {% block content %}
+
 
 <div class="px-3 mt-5 mb-3">
   <div id="all-title">
@@ -41,7 +42,11 @@
 
             {% for single_module in modules %}
 
-            <div class="card mb-3">
+            <div class="card mb-3 lektion">
+              {% previous_module_completed single_module user as previous_completed %}
+                {% if single_module.training.stick_to_the_plan and not previous_completed %}
+                  <div class="blurred"></div>
+                {% endif %}
                 <div class="row g-0">
                     <div class="col-md-4 d-flex align-items-center thumbnail">
                         <a href="{% url 'media' training.id single_module.id  %}"  class="h-100 w-100">

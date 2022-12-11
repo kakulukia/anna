@@ -1,5 +1,6 @@
 import re
 import uuid
+from django.db.models import Q
 from os import stat
 from traceback import print_tb
 
@@ -267,6 +268,9 @@ def progress(request):
         return redirect("index")
 
     all_users = User.data.filter(is_superuser=False)
+    if request.method == "POST" and "filter" in request.POST:
+        search_text = request.POST['filter']
+        all_users = all_users.filter(Q(first_name__icontains=search_text) | Q(last_name__icontains=search_text)) 
     updated_users = []
     for user in all_users:
         access_objects = get_accessed_training(user)
@@ -274,8 +278,9 @@ def progress(request):
 
     context = {
         "users": updated_users,
+        # "search_text": search_text
     }
-    return render(request, "progress/index.html", context)
+    return render(request, "progress/index.html", context )
 
 
 @login_required
@@ -283,6 +288,8 @@ def progress_trainings(request, id):
     if not request.user.is_superuser:
         messages.error(request, "Du hast keine Berechtigung für diese Seite.")
         return redirect("index")
+
+
 
     all_users = User.objects.filter(is_superuser=False)[1:]
     current_user = User.objects.get(id=id)
@@ -296,6 +303,10 @@ def progress_trainings(request, id):
         my_training.progress = my_training.get_progress(completed_media_ids)
         current_user_trainings_updated.append(my_training)
 
+    # if request.method == "POST" and "filter" in request.POST:
+    #     search_text = request.POST['filter']
+    #     all_users = all_users.filter(Q(first_name__icontains=search_text) | Q(last_name__icontains=search_text)) 
+
     updated_users = []
     for user in all_users:
         access_objects = get_accessed_training(user)
@@ -305,6 +316,7 @@ def progress_trainings(request, id):
         "trainings": current_user_trainings_updated,
         "users": updated_users,
         "current_user": current_user,
+        # "search-text": search_text
     }
     return render(request, "progress/training_progress.html", context)
 

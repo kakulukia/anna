@@ -7,20 +7,19 @@ env.shell = "/bin/zsh -c"
 env.output_prefix = False
 APP_NAME = "anna"
 
-env.path = f"/opt/www/{APP_NAME}"
-env.hosts = ["andy@anna.liebendgern.de"]
+
+# DEPLOYMENT TARGETS
+# ####################
+def stage():
+    env.environment = "stage"
+    env.path = f"/opt/www/test-anna"
+    env.hosts = ["andy@test-anna.liebendgern.de"]
 
 
-# # DEPLOYMENT TARGETS
-# # ####################
-# def stage():
-#     env.environment = "stage"
-#     env.hosts = ["servername"]
-
-
-# def live():
-#     env.environment = "live"
-#     env.hosts = ["servername"]
+def live():
+    env.environment = "live"
+    env.path = f"/opt/www/anna"
+    env.hosts = ["andy@anna.liebendgern.de"]
 
 
 # T A S K S
@@ -42,7 +41,10 @@ def clear_cache():
 def restart():
     """Restart nginx and the backend worker."""
     print(green("restarting server .."))
-    run(f"pm2 restart {APP_NAME}")
+    if env.environment == "stage":
+        run(f"pm2 restart test-anna")
+    else:
+        run(f"pm2 restart {APP_NAME}")
 
     clear_cache()
 

@@ -6,9 +6,9 @@ authors = ["mika <mika.griebsch@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "3.10.4"
+python = "^3.10.4"
 Django = "^4.0.4"
-django-bootstrap5 = "^21.3"
+django-bootstrap5 = "^22.1"
 django-jazzmin = "^2.5.0"
 django-quill-editor = "^0.1.40"
 django-storages = "^1.12.3"

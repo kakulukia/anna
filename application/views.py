@@ -1,20 +1,15 @@
-import re
 import uuid
-from django.db.models import Q
-from os import stat
-from traceback import print_tb
 
 from django.contrib import messages
 from django.contrib.auth import login, logout, user_logged_in
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count, Q
-from django.dispatch.dispatcher import receiver
+from django.db.models import Count, Q, OuterRef, Subquery
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
 from django.utils.safestring import mark_safe
 
 from .forms import *
+
 
 # Signals to add device in logged in device
 @receiver(user_logged_in)
@@ -36,10 +31,7 @@ def remove_other_sessions(sender, user, request, **kwargs):
                 return
 
         if new_device.limit_is_nearly_reached():
-            messages.warning(request, mark_safe("Du hast bereits 4 Geräte angemeldet, bitte lösche ein Gerät <a href='/profile/'>hier</a>"))
-            if not request.user.is_superuser:
-                logout(request)
-                return
+            messages.warning(request, mark_safe("Du hast bereits 4 Geräte angemeldet, bitte lösche ein Gerät <a href='/profile/#devices'>hier >>></a>."))
 
     new_device.save()
 
@@ -447,6 +439,12 @@ def media(request, training_id, module_id, media_id=None):
 
     media_set = Media.data.filter(module=module).annotate(
         is_completed=Count('completed', filter=Q(completed__user=request.user)))
+    # annotate the previous media if any for reference in the next step
+    previous = Media.data.filter(next=OuterRef('pk')).values('id')[:1]
+    media_set = media_set.annotate(previous=Subquery(previous))
+
+    previous_completed = Completed.data.filter(media=OuterRef('previous'), user=request.user)
+    media_set = media_set.annotate(previous_completed=Subquery(previous_completed.values('id')))
 
     context = {
         "module": module,

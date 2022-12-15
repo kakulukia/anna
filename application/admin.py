@@ -31,6 +31,7 @@ class TrainingAdmin(admin.ModelAdmin):
                     "name",
                     "description",
                     "thumbnail",
+                    "stick_to_the_plan",
                 )
             },
         ),

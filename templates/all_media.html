@@ -45,7 +45,10 @@
 
             {% for media in media_set %}
 
-              <div class="card mb-3">
+              <div class="card mb-3 lektion">
+                {% if module.training.stick_to_the_plan and media.previous and not media.previous_completed %}
+                  <div class="blurred"></div>
+                {% endif %}
                   <div class="row g-0">
                       <div class="col-md-4 d-flex align-items-center thumbnail">
                           <a href="{% url 'single_media' module.training.id module.id media.id %}" class="h-100 w-100">

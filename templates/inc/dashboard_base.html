@@ -76,7 +76,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <a target="_blank">
-                        <img src="{% static 'img/mylogo.png' %}" style="width:180px" alt="Logo">
+                        <img class="appLogo" src="{% if STAGE %}{% static 'img/mylogo-test.png' %}{% else %}{% static 'img/mylogo.png' %}{% endif %}" style="width:180px" alt="Logo">
                     </a>
                 </div>
 

@@ -28,7 +28,7 @@ def remove_other_sessions(sender, user, request, **kwargs):
         new_device = is_exists
         new_device.session_id = session_id
 
-    else:  
+    else:
         if new_device.is_limit_reached():
             messages.error(request, "Du hast die maximale Anzahl an Geräten erreicht.")
             if not request.user.is_superuser:
@@ -268,9 +268,10 @@ def progress(request):
         return redirect("index")
 
     all_users = User.data.filter(is_superuser=False)
+    search_text = ""
     if request.method == "POST" and "filter" in request.POST:
         search_text = request.POST['filter']
-        all_users = all_users.filter(Q(first_name__icontains=search_text) | Q(last_name__icontains=search_text)) 
+        all_users = all_users.filter(Q(first_name__icontains=search_text) | Q(last_name__icontains=search_text))
     updated_users = []
     for user in all_users:
         access_objects = get_accessed_training(user)
@@ -278,7 +279,7 @@ def progress(request):
 
     context = {
         "users": updated_users,
-        # "search_text": search_text
+        "search_text": search_text
     }
     return render(request, "progress/index.html", context )
 
@@ -302,10 +303,6 @@ def progress_trainings(request, id):
         my_training = access.training
         my_training.progress = my_training.get_progress(completed_media_ids)
         current_user_trainings_updated.append(my_training)
-
-    # if request.method == "POST" and "filter" in request.POST:
-    #     search_text = request.POST['filter']
-    #     all_users = all_users.filter(Q(first_name__icontains=search_text) | Q(last_name__icontains=search_text)) 
 
     updated_users = []
     for user in all_users:

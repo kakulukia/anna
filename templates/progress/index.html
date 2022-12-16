@@ -17,7 +17,7 @@
                 <div class="card-body">
                     <h4 class="card-title">Nutzer</h4>
                     <form method="POST"> {% csrf_token %}
-                        <input class="search_bar" type="text" name="filter" placeholder="🔍 Namen suchen" value="{{ search_text }}"/>
+                        <input class="search_bar" type="text" name="filter" placeholder="Namen suchen" value="{{ search_text }}"/>
                     </form>
                     <div style="max-height: 80vh; overflow-y: auto; padding-right: 7px;">
                         {% for single_user in users %}

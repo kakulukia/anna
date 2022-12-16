@@ -62,12 +62,9 @@
     <div>
       {% include 'inc/header.inc.html' %}
     </div>
-
-    <div class="container">
-        <div>
-            {% block content %}
-            {% endblock content %}
-        </div>
+    <div>
+    {% block content %}
+    {% endblock content %}
     </div>
 
     <footer class="text-white" style="background-color: #f1f1f1;">
@@ -79,7 +76,6 @@
                         <img class="appLogo" src="{% if STAGE %}{% static 'img/mylogo-test.png' %}{% else %}{% static 'img/mylogo.png' %}{% endif %}" style="width:180px" alt="Logo">
                     </a>
                 </div>
-
                 <div class="col-sm-6 d-flex justify-content-end">
                     <!-- Section: Social media -->
                     <section class="mb-4">
@@ -103,6 +99,7 @@
 
         </div>
         <!-- Grid container -->
+
 
         <!-- Copyright -->
 

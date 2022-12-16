@@ -418,7 +418,7 @@ a:hover, .nav-link:hover{
 
 body {
     display: grid;
-    grid-template-rows: 90px 1fr 147px;
+    grid-template-rows: 69px 1fr 147px;
 }
 
 .btn.start-media {
@@ -518,4 +518,23 @@ input[type=text] {
 
 input[type=text]:focus {
   border: 1px solid #0098A5;
+}
+
+.header-image {
+  /* margin-top: -25px; */
+  width: 100vw;
+  /* margin-left: 0cm;
+  margin-right: 20cm; */
+
+}
+
+@media (min-width: 992px){
+  .navbar {
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+}
+
+body {
+  overflow-x: hidden;
 }

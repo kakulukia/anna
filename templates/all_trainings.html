@@ -7,165 +7,166 @@
 {% block title %}Kurse{% endblock title %}
 {% block content %}
 
+<div class="">
+    <img src="/static/img/Header-image.png" class="header-image">
+ </div>
+ <div class="container">
+    <div class="modal" id="request-access">
+        <div class="modal-dialog">
+            <div class="modal-content">
 
-<div class="modal" id="request-access">
-    <div class="modal-dialog">
-        <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Request access</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
 
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Request access</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <h6 class="mb-3">Contact admin</h6>
+
+                    <div class="card mb-2">
+                        <div class="card-header">
+                            <p class="card-text my-0">admin@training.com</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <p class="card-text my-0">+92315246256</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+
             </div>
+        </div>
+    </div>
 
-            <!-- Modal body -->
-            <div class="modal-body">
-                <h6 class="mb-3">Contact admin</h6>
+    <div class="px-3 mt-5 mb-3">
+    <div id="all-title">
+        <p class="text-secondary d-flex align-items-center course-navigation" style="font-size: 17px;">
+            Alle Kurse
+        </p>
+    </div>
+    </div>
+    {% include 'inc/msgs.inc.html' %}
 
-                <div class="card mb-2">
-                    <div class="card-header">
-                        <p class="card-text my-0">admin@training.com</p>
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-sm-12 col-md-12 col-xl-8 py-3">
+                {% if not trainings  %}
+                <div class="card">
+                    <div class="card-body text-center d-flex align-items-center justify-content-center" style="height: 300px;">
+                        <div>
+                            <img src="{% static 'img/notfound.png' %}" style="width: 150px;" alt="">
+                            <h4 class=" display-3 mt-3" style="font-size: 25px;">Es gibt keine Kurse</h4>
+                        </div>
                     </div>
                 </div>
+                {% endif %}
+
+                {% for single_training in trainings %}
+
+                    {% include 'inc/training.inc.html' %}
+
+                {% endfor %}
+            </div>
+
+            <div class="col-sm-12 col-md-12 col-xl-4 py-3">
+
+
+                {% if training %}
+                <div class="card">
+                    <div class="card-header bg-white ">
+                        <h4 class="my-2 py-0">{{ training.name }}</h4>
+                    </div>
+                    <img src="{{ training.thumbnail.url }}" class="card-img-top rounded-0" alt="...">
+                    <div class="card-body">
+                        <!-- <h4 class="card-title">{{ training.name }}</h4> -->
+                        <div style="max-height: 200px; overflow-y: auto; padding-right: 10px;" class="mb-3">
+                            <p class="card-text" style="">{{ training.description.html | safe }}</p>
+                        </div>
+
+                        {% with all_modules=training.get_all_modules %}
+                        <h6>Kapitel</h6>
+
+                        {% if allowed %}
+                            <a href="{% url 'all_modules' training.id %}" class="kapitel-button btn w-100 theme-secondary-btn">Zur Kapitelübersicht</a>
+                        {% else %}
+                            <a data-bs-toggle="modal" data-bs-target="#request-access" class="btn w-100  theme-outline-primary-btn">Zugriff anfordern</a>
+                        {% endif %}
+
+                        <div id="all-modules">
+                            {% for module in all_modules %}
+                            <div class="card mb-2">
+                                <a class="text-left text-decoration-none collapsed" data-bs-toggle="collapse" href="#module-{{ module.id }}">
+                                    <div class="card-header text-left">
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <i class="material-icons theme-secondary-text kapitel-arrow">play_arrow</i>
+                                            {{ module.name }}
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                        {{ module.media_set.count }} Lektion{{ all_media.count|pluralize:"en" }}
+                                        </div>
+                                    </div>
+
+                                    </div>
+                                </a>
+                                <div id="module-{{ module.id }}" class="collapse" data-bs-parent="#all-modules">
+                                    <div class="card-body lektionen">
+                                    {% for media in module.media_set.all %}
+                                        <div class="d-flex align-items-center mb-2">
+                                            <p class="my-0 py-0 mx-2">
+                                            <a href="{% url "single_media" training.id module.id media.id %}">
+                                                {{ media }}
+                                            </a>
+                                            </p>
+                                        </div>
+                                    {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+
+                        </div>
+
+                        {% endwith %}
+
+                        {% if allowed %}
+                            <a href="{% url 'all_modules' training.id %}" class="btn w-100  theme-primary-btn">Zu den Kapiteln</a>
+                        {% else %}
+                            <a data-bs-toggle="modal" data-bs-target="#request-access" class="btn w-100  theme-outline-primary-btn">Zugriff anfordern</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% else %}
 
                 <div class="card">
-                    <div class="card-header">
-                        <p class="card-text my-0">+92315246256</p>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-
-<div class="px-3 mt-5 mb-3">
-  <div id="all-title">
-    <p class="text-secondary d-flex align-items-center course-navigation" style="font-size: 17px;">
-        Alle Kurse
-    </p>
-  </div>
-</div>
-{% include 'inc/msgs.inc.html' %}
-
-<div class="container">
-    <div class="row mb-4">
-        <div class="col-sm-12 col-md-12 col-xl-8 py-3">
-            {% if not trainings  %}
-              <div class="card">
-                  <div class="card-body text-center d-flex align-items-center justify-content-center" style="height: 300px;">
-                      <div>
-                          <img src="{% static 'img/notfound.png' %}" style="width: 150px;" alt="">
-                          <h4 class=" display-3 mt-3" style="font-size: 25px;">Es gibt keine Kurse</h4>
-                      </div>
-                  </div>
-              </div>
-            {% endif %}
-
-            {% for single_training in trainings %}
-
-                {% include 'inc/training.inc.html' %}
-
-            {% endfor %}
-        </div>
-
-        <div class="col-sm-12 col-md-12 col-xl-4 py-3">
-
-
-            {% if training %}
-            <div class="card">
-                <div class="card-header bg-white ">
-                    <h4 class="my-2 py-0">{{ training.name }}</h4>
-                </div>
-                <img src="{{ training.thumbnail.url }}" class="card-img-top rounded-0" alt="...">
-                <div class="card-body">
-                    <!-- <h4 class="card-title">{{ training.name }}</h4> -->
-                    <div style="max-height: 200px; overflow-y: auto; padding-right: 10px;" class="mb-3">
-                        <p class="card-text" style="">{{ training.description.html | safe }}</p>
-                    </div>
-
-                    {% with all_modules=training.get_all_modules %}
-                    <h6>Kapitel</h6>
-
-                    {% if allowed %}
-                        <a href="{% url 'all_modules' training.id %}" class="kapitel-button btn w-100 theme-secondary-btn">Zur Kapitelübersicht</a>
-                    {% else %}
-                        <a data-bs-toggle="modal" data-bs-target="#request-access" class="btn w-100  theme-outline-primary-btn">Zugriff anfordern</a>
-                    {% endif %}
-
-                    <div id="all-modules">
-                        {% for module in all_modules %}
-                        <div class="card mb-2">
-                              <a class="text-left text-decoration-none collapsed" data-bs-toggle="collapse" href="#module-{{ module.id }}">
-                                <div class="card-header text-left">
-                                  <div class="row">
-                                      <div class="col-sm-8">
-                                        <i class="material-icons theme-secondary-text kapitel-arrow">play_arrow</i>
-                                        {{ module.name }}
-                                      </div>
-
-                                      <div class="col-sm-4">
-                                       {{ module.media_set.count }} Lektion{{ all_media.count|pluralize:"en" }}
-                                      </div>
-                                  </div>
-
-                                </div>
-                              </a>
-                              <div id="module-{{ module.id }}" class="collapse" data-bs-parent="#all-modules">
-                                <div class="card-body lektionen">
-                                  {% for media in module.media_set.all %}
-                                    <div class="d-flex align-items-center mb-2">
-                                        <p class="my-0 py-0 mx-2">
-                                          <a href="{% url "single_media" training.id module.id media.id %}">
-                                            {{ media }}
-                                          </a>
-                                        </p>
-                                    </div>
-                                  {% endfor %}
-                                </div>
-                              </div>
+                    <div class="card-body text-center d-flex align-items-center justify-content-center" style="height: 300px;">
+                        <div>
+                            <img src="{% static 'img/notfound.png' %}" style="width: 150px;" alt="">
+                            <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">Keinen Kurs ausgewählt</h4>
                         </div>
-                        {% endfor %}
-
-
-                    </div>
-
-                    {% endwith %}
-
-                    {% if allowed %}
-                        <a href="{% url 'all_modules' training.id %}" class="btn w-100  theme-primary-btn">Zu den Kapiteln</a>
-                    {% else %}
-                        <a data-bs-toggle="modal" data-bs-target="#request-access" class="btn w-100  theme-outline-primary-btn">Zugriff anfordern</a>
-                    {% endif %}
-                </div>
-            </div>
-            {% else %}
-
-            <div class="card">
-                <div class="card-body text-center d-flex align-items-center justify-content-center" style="height: 300px;">
-                    <div>
-                        <img src="{% static 'img/notfound.png' %}" style="width: 150px;" alt="">
-                        <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">Keinen Kurs ausgewählt</h4>
                     </div>
                 </div>
+
+
+
+
+
+                {% endif %}
             </div>
-
-
-
-
-
-            {% endif %}
         </div>
     </div>
-
-
 
 </div>
 {% endblock content %}

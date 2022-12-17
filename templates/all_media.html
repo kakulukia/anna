@@ -6,24 +6,25 @@
 {% bootstrap_javascript %}
 {% block title %}Module{% endblock title %}
 {% block content %}
+<div class="container">
+    <div class="px-3 mt-5 mb-3">
+    <div id="all-title">
+        <p class="text-secondary d-flex align-items-center course-navigation" style="font-size: 17px;">
+        <a href="{% url 'trainings'  %}">
+            Alle Kurse
+        </a>
 
-<div class="px-3 mt-5 mb-3">
-  <div id="all-title">
-    <p class="text-secondary d-flex align-items-center course-navigation" style="font-size: 17px;">
-      <a href="{% url 'trainings'  %}">
-          Alle Kurse
-      </a>
+        <i class="material-icons mx-2 link-arrow">keyboard_arrow_right</i>
+        <a href="{% url 'all_modules' module.training.id  %}">
+            {{ module.training }}
+        </a>
 
-      <i class="material-icons mx-2 link-arrow">keyboard_arrow_right</i>
-      <a href="{% url 'all_modules' module.training.id  %}">
-          {{ module.training }}
-      </a>
+        <i class="material-icons mx-2 link-arrow">keyboard_arrow_right</i>
+        {{ module }} - Lektionen
 
-      <i class="material-icons mx-2 link-arrow">keyboard_arrow_right</i>
-      {{ module }} - Lektionen
-
-    </p>
-  </div>
+        </p>
+    </div>
+    </div>
 </div>
 
 {% include 'inc/msgs.inc.html' %}

@@ -10,11 +10,21 @@
   .small-icon {
     display: none;
   }
+
+  .navbar {
+    padding-top: 17px;
+    padding-bottom: 19px;
+  }
 }
 
 @media (min-width: 768px) {
   .bd-placeholder-img-lg {
     font-size: 3.5rem;
+  }
+
+  .navbar {
+    padding-top: 17px;
+    padding-bottom: 19px;
   }
 }
 

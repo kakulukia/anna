@@ -531,10 +531,12 @@ input[type=text]:focus {
 }
 
 .header-image {
-  /* margin-top: -25px; */
   width: 100vw;
-  /* margin-left: 0cm;
-  margin-right: 20cm; */
+  background-size: cover;
+  background-position: center;
+  background-image: url(/static/img/Header-image.png);
+  aspect-ratio: 64 / 15;
+  min-height: 200px;
 
 }
 
@@ -544,6 +546,14 @@ input[type=text]:focus {
     padding-bottom: 3px;
   }
 }
+
+@media (max-width: 500px){
+ .header-image {
+    background-image: url(/static/img/headerbild-mobile.png);
+    height: 25vh;
+
+}
+
 
 body {
   overflow-x: hidden;

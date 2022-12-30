@@ -329,3 +329,15 @@ class Page(BaseModel):
         verbose_name = "Unterseite"
         verbose_name_plural = "Unterseiten"
         ordering = ["url"]
+
+
+class Appointment(BaseModel):
+    name = models.CharField(max_length=100)
+    date = models.DateField(verbose_name="Datum")
+    start_time = models.TimeField(verbose_name="Startzeit")
+    description = models.TextField(verbose_name="Beschreibung")
+    link = models.URLField(verbose_name="Meeting-Link")
+
+    class Meta(BaseModel.Meta):
+        verbose_name = "Termin"
+        verbose_name_plural = "Termine"

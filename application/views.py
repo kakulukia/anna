@@ -514,3 +514,11 @@ def render_flatpage(request, url):
     content = mark_safe(page.content.html)
 
     return render(request, "flatpage.html", {"title": title, "content": content})
+
+
+@login_required
+def appointments(request):
+    context = {
+        "appointments": Appointment.data.all()
+    }
+    return render(request, "appointments.html", context)

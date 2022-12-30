@@ -210,3 +210,8 @@ def clone_user(request, user_id):
     messages.success(request, f"{user.get_full_name()} geklont!")
 
     return HttpResponseRedirect(reverse("admin:users_user_change", args=[user.id]))
+
+
+@admin.register(Appointment)
+class EventAdmin(admin.ModelAdmin):
+    ...

@@ -31,6 +31,12 @@
             </a>
           {% endif %}
 
+          <a class="nav-link p-2 align-items-center bg-white theme-secondary-text"
+              href="{% url 'progress' %}" rel="noopener" style="user-select: auto;">
+              <i class="material-icons" style="font-size: 25px; margin-right: 10px;">calendar_month</i>
+              Termine
+            </a>
+
           {% if user.zoom_link %}
             <a class="nav-link p-2 align-items-center bg-white theme-secondary-text"
               target="_blank" href="{{ user.zoom_link }}" rel="noopener" style="user-select: auto;">

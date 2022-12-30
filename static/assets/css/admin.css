@@ -4,3 +4,8 @@
 a img.none {
   box-shadow: none !important;
 }
+
+img {
+  padding-left: 5px;
+  padding-right: 5px;
+}

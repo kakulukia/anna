@@ -586,3 +586,7 @@ button.appointment-details {
 .accordion-button:not(.collapsed) { color: black; background-color: unset; }
 .accordion .accordion-button, .accordion .accordion-button:focus { border: none; box-shadow: none;  }
 /*https://fonts.google.com/icons?selected=Material+Icons&icon.query=clock&icon.style=Outlined*/
+
+img {
+  max-width: 100vw;
+}

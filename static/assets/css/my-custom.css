@@ -577,4 +577,7 @@ body {
   border-color: #0098a5;
 }
 
+.accordion-item, .accordion-button:not(.collapsed) { border: none; box-shadow: none; }
+.accordion-button:not(.collapsed) { color: black; background-color: unset; }
+.accordion .accordion-button, .accordion .accordion-button:focus { border: none; box-shadow: none; border-bottom: 1px solid #ced0d1; }
 /*https://fonts.google.com/icons?selected=Material+Icons&icon.query=clock&icon.style=Outlined*/

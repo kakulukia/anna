@@ -46,11 +46,11 @@
 
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingTwo">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#M{{ appointment.date.month }}" aria-expanded="false" aria-controls="collapseTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#M{{ appointment.date.month }}{{ appointment.date.year }}" aria-expanded="false" aria-controls="collapseTwo">
                   <h4>{{ appointment.date | date:"F" }}</h4>
                 </button>
               </h2>
-              <div id="M{{ appointment.date.month }}" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+              <div id="M{{ appointment.date.month }}{{ appointment.date.year }}" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
 
           {% endifchanged %}

@@ -549,12 +549,32 @@ input[type=text]:focus {
 
 @media (max-width: 500px){
  .header-image {
-    background-image: url(/static/img/headerbild-mobile.png);
-    height: 25vh;
-
+   background-image: url(/static/img/headerbild-mobile.png);
+   height: 25vh;
+ }
 }
 
 
 body {
   overflow-x: hidden;
 }
+
+.badge.appointment-details {
+  background-color: #6C757D;
+  font-size: 15px;
+}
+.badge.appointment-details .icon {
+  font-size: 13px;
+  margin-right: 10px;
+}
+
+.btn-primary {
+  background-color: #6C757D;
+  border-color: #6C757D;
+}
+.btn-primary:hover {
+  background-color: #0098a5;
+  border-color: #0098a5;
+}
+
+/*https://fonts.google.com/icons?selected=Material+Icons&icon.query=clock&icon.style=Outlined*/

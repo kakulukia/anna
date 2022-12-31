@@ -19,7 +19,7 @@ SITE_ID = 1
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-STAGE = False
+STAGE = True
 
 ALLOWED_HOSTS = ["*"]
 INTERNAL_IPS = [
@@ -272,6 +272,7 @@ JAZZMIN_SETTINGS = {
         "application.module": "fas fa-solid fa-book",
         "application.media": "fas fa-bookmark",
         "application.page": "far fa-file-alt",
+        "application.appointment": "far fa-calendar",
     },
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",

@@ -519,6 +519,6 @@ def render_flatpage(request, url):
 @login_required
 def appointments(request):
     context = {
-        "appointments": Appointment.data.all()
+        "appointments": Appointment.data.upcoming()
     }
     return render(request, "appointments.html", context)

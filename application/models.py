@@ -1,6 +1,7 @@
 import datetime
 
 import cv2
+from dateutil.utils import today
 from django.contrib.sessions.models import Session
 from django.db import models
 from django.db.models.signals import post_delete
@@ -9,7 +10,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.functional import cached_property
 from django_quill.fields import QuillField
-from django_undeletable.models import BaseModel
+from django_undeletable.models import BaseModel, DataManager
 
 from users.models import User
 from webapp.storages import PrivateMediaStorage
@@ -331,6 +332,11 @@ class Page(BaseModel):
         ordering = ["url"]
 
 
+class AppointmentManager(DataManager):
+    def upcoming(self):
+        return self.filter(date__gte=today())
+
+
 class Appointment(BaseModel):
     name = models.CharField(max_length=100)
     date = models.DateField(verbose_name="Datum")
@@ -338,6 +344,12 @@ class Appointment(BaseModel):
     description = models.TextField(verbose_name="Beschreibung")
     link = models.URLField(verbose_name="Meeting-Link")
 
+    data = AppointmentManager()
+
     class Meta(BaseModel.Meta):
         verbose_name = "Termin"
         verbose_name_plural = "Termine"
+        ordering = ['date', 'start_time']
+
+    def __str__(self):
+        return f'{self.name } ({self.date})'

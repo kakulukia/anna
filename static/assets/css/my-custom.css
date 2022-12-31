@@ -559,11 +559,15 @@ body {
   overflow-x: hidden;
 }
 
-.badge.appointment-details {
+button.appointment-details {
   background-color: #6C757D;
   font-size: 15px;
+  font-weight: normal;
+  border: none;
+  cursor: unset;
+  color: white;
 }
-.badge.appointment-details .icon {
+.appointment-details .icon {
   font-size: 13px;
   margin-right: 10px;
 }
@@ -578,7 +582,7 @@ body {
 }
 .btn-primary a {color: white;}
 
-.accordion-item, .accordion-button:not(.collapsed) { border: none; box-shadow: none; }
+.accordion-item, .accordion-button:not(.collapsed) { border: none; box-shadow: none; border-bottom: 1px solid #ced0d1; }
 .accordion-button:not(.collapsed) { color: black; background-color: unset; }
-.accordion .accordion-button, .accordion .accordion-button:focus { border: none; box-shadow: none; border-bottom: 1px solid #ced0d1; }
+.accordion .accordion-button, .accordion .accordion-button:focus { border: none; box-shadow: none;  }
 /*https://fonts.google.com/icons?selected=Material+Icons&icon.query=clock&icon.style=Outlined*/

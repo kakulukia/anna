@@ -8,40 +8,42 @@
 {% block content %}
   <div class="container">
     <div class="px-3">
-      <h1 class="h2 my-5">Unsere Live-Call Termine</h1>
+      <h1 class="h2 mt-5">Unsere Live-Call Termine</h1>
 
-      <hr>
+      <hr class="my-5">
 
       {% if appointments %}
         <strong>{{ appointments.0.name }}</strong><br>
         <br>
-        <div class="row justify-content-start">
-          <div class="col-md-9">
-            {{ appointments.0.description }}<br>
-            <br>
-            <span class="badge appointment-details"><i class="icon material-icons">calendar_month</i>{{ appointments.0.date | date:"D"}} {{ appointments.0.date }}</span>
-            <span class="badge appointment-details"><i class="icon material-icons">schedule</i>{{ appointments.0.start_time }}</span><br>
-            <br>
-          </div>
-            <div class="col-md-3 text-md-end">
-              <div class="d-grid gap-2 d-md-block">
-                <button class="btn btn-primary px-3" type="button">
-                  <a href="{{ appointments.0.link }}" target="_blank">
-                    Zum Meeting
-                  </a>
-                </button>
-              </div>
+        {{ appointments.0.description }}<br>
+
+        <div class="row justify-content-start align-items-end">
+          <div class="col-md-8">
+            <div class="d-grid gap-2 d-md-block">
+              <button class="appointment-details px-3 disabled mt-3">
+                <i class="icon material-icons">calendar_month</i>{{ appointments.0.date | date:"l, d.m.y"}}, {{ appointments.0.start_time }} Uhr
+              </button>
             </div>
           </div>
-        {% else %}
-          Im Moment gibt es keine aktuellen Termine. <br>
-          Wir arbeiten aber schon an neuen Angeboten für Euch!
-        {% endif %}
+          <div class="col-md-4 text-md-end">
+            <div class="d-grid gap-2 d-md-block">
+              <button class="btn btn-primary px-3 mt-3" type="button">
+                <a href="{{ appointments.0.link }}" target="_blank">
+                  Live-Call beitreten
+                </a>
+              </button>
+            </div>
+          </div>
+        </div>
+      {% else %}
+        Im Moment gibt es keine aktuellen Termine. <br>
+        Wir arbeiten aber schon an neuen Angeboten für Euch!
+      {% endif %}
     </div>
-    <div class="px-3 my-5">
+    <div class="px-3">
 
       {% if appointments %}
-        <hr>
+        <hr class="my-5">
         <div class="accordion" id="accordionExample">
         {% for appointment in appointments %}
           {% ifchanged appointment.date.month %}
@@ -62,7 +64,7 @@
 
           {% endifchanged %}
 
-          <p>{{ appointment.date | date:"D d.m." }} - {{ appointment.name }}</p>
+          <p>{{ appointment.date | date:"l, d.m.y" }}, {{ appointment.start_time }} Uhr - {{ appointment.name }}</p>
           {% if forloop.last %}
                 </div>
               </div>

@@ -121,6 +121,10 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
             self.progress = completed / medias * 100
             self.save()
 
+    @property
+    def active_member(self):
+        return self.start_date <= now().date() <= self.end_date
+
     # def email_user(
     #     self, subject, message, from_email=settings.DEFAULT_FROM_EMAIL, **kwargs
     # ):

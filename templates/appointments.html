@@ -17,7 +17,7 @@
           <div class="col-md-9">
             {{ appointments.0.description }}<br>
             <br>
-            <span class="badge appointment-details"><i class="icon material-icons">calendar_month</i>{{ appointments.0.date }}</span>
+            <span class="badge appointment-details"><i class="icon material-icons">calendar_month</i>{{ appointments.0.date | date:"D"}} {{ appointments.0.date }}</span>
             <span class="badge appointment-details"><i class="icon material-icons">schedule</i>{{ appointments.0.start_time }}</span><br>
             <br>
           </div>
@@ -55,7 +55,7 @@
 
           {% endifchanged %}
 
-          <p>{{ appointment.date | date:"d.m." }} - {{ appointment.name }}</p>
+          <p>{{ appointment.date | date:"D d.m." }} - {{ appointment.name }}</p>
           {% if forloop.last %}
                 </div>
               </div>

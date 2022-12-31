@@ -48,7 +48,7 @@
 
       {% if appointments %}
         <hr class="my-5">
-        <div class="accordion" id="accordionExample">
+        <div class="accordion mb-5" id="accordionExample">
         {% for appointment in appointments %}
           {% ifchanged appointment.date.month %}
             {% if not forloop.first %}

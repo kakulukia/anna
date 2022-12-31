@@ -334,7 +334,8 @@ class Page(BaseModel):
 
 class AppointmentManager(DataManager):
     def upcoming(self):
-        return self.filter(date__gte=today())
+        date = today() + datetime.timedelta(days=90)
+        return self.filter(date__gte=today(), date__lt=date)
 
 
 class Appointment(BaseModel):

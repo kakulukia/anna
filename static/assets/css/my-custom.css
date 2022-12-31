@@ -576,6 +576,7 @@ body {
   background-color: #0098a5;
   border-color: #0098a5;
 }
+.btn-primary a {color: white;}
 
 .accordion-item, .accordion-button:not(.collapsed) { border: none; box-shadow: none; }
 .accordion-button:not(.collapsed) { color: black; background-color: unset; }

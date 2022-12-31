@@ -31,7 +31,7 @@
             </a>
           {% endif %}
 
-          {% if user.active_member %}
+          {% if user.active_member or user.is_superuser %}
             <a class="nav-link p-2 align-items-center bg-white theme-secondary-text"
               href="{% url 'appointments' %}" rel="noopener" style="user-select: auto;">
               <i class="material-icons" style="font-size: 25px; margin-right: 10px;">calendar_month</i>

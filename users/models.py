@@ -123,7 +123,9 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
 
     @property
     def active_member(self):
-        return self.start_date <= now().date() <= self.end_date
+        if self.start_date and self. end_date:
+            return self.start_date <= now().date() <= self.end_date
+        return False
 
     # def email_user(
     #     self, subject, message, from_email=settings.DEFAULT_FROM_EMAIL, **kwargs

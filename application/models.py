@@ -12,6 +12,7 @@ from django.utils.functional import cached_property
 from django_quill.fields import QuillField
 from django_undeletable.models import BaseModel, DataManager
 
+from application.utils import NonStrippingTextField
 from users.models import User
 from webapp.storages import PrivateMediaStorage
 
@@ -164,7 +165,7 @@ class Training(BaseModel):
 
 class Module(BaseModel):
     name = models.CharField(max_length=50)
-    description = models.TextField(verbose_name="Beschreibung")
+    description = NonStrippingTextField(verbose_name="Beschreibung")
     thumbnail = models.ImageField(storage=PrivateMediaStorage(), verbose_name="Vorschaubild")
     training = models.ForeignKey(Training, verbose_name="Kurs", on_delete=models.CASCADE)
     ordering = models.IntegerField("Sortierung", default=0)
@@ -222,7 +223,7 @@ class Module(BaseModel):
 
 class Media(BaseModel):
     name = models.CharField(max_length=50)
-    description = models.TextField(verbose_name="Beschreibung")
+    description = NonStrippingTextField(verbose_name="Beschreibung")
     thumbnail = models.ImageField(storage=PrivateMediaStorage(), verbose_name="Vorschaubild")
     file = models.FileField(storage=PrivateMediaStorage(), verbose_name="Datei")
     length = models.CharField(verbose_name="Länge", max_length=50, default="", editable=False)

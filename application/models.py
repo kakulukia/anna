@@ -155,11 +155,11 @@ class Training(BaseModel):
     def get_short_description(self):
         from html2text import html2text
 
-        text = html2text(self.description.html)
-        limit = 150
+        text = html2text(self.description.html, bodywidth=400)
+        # limit = 150
         description = text
-        if description and len(description) > limit:
-            return description[0:limit] + "..."
+        # if description and len(description) > limit:
+        #     return description[0:limit] + "..."
         return description
 
 

@@ -6,7 +6,7 @@
                   <img src="{{ single_training.thumbnail }}" class="img-fluid rounded-start w-100" style="aspect-ratio:2/1" alt="...">
               </a>
           </div> -->
-          <div class="col-md-4 d-flex align-items-center thumbnail">
+          <div class="col-md-5 d-flex align-items-center thumbnail">
               <a href="{% url 'all_modules' single_training.id %}" class="h-100 w-100">
                   <div
                       style="background-image: url({{ single_training.thumbnail.url }});
@@ -19,7 +19,7 @@
                   </div>
               </a>
           </div>
-          <div class="col-md-8" id="training-{{ single_training.id }}">
+          <div class="col-md-7" id="training-{{ single_training.id }}">
               <div class="card-body">
                   <div class="row">
                       <div class="col-sm-10">

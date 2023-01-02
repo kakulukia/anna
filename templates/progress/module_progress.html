@@ -59,7 +59,7 @@
 
             <div class="card mb-3">
                 <div class="row g-0">
-                    <div class="col-md-4 d-flex align-items-center thumbnail">
+                    <div class="col-md-5 d-flex align-items-center thumbnail">
                         <div style="background-image: url({{ single_module.thumbnail.url }});
                                                         background-size: cover;
                                                         background-repeat:   no-repeat;
@@ -68,7 +68,7 @@
                         </div>
 
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-7">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-9">
@@ -144,7 +144,7 @@
                 <div class="card mb-3" {% if training == single_training %}style="box-shadow: 5px 5px 5px #cccccc;" {% endif %}>
                     <div class="row g-0">
 
-                        <div class="col-md-4 d-flex align-items-center thumbnail">
+                        <div class="col-md-5 d-flex align-items-center thumbnail">
                             <a href="{% url 'progress-module' current_user.id single_training.id %}" class="h-100 w-100">
                                 <div style="background-image: url({{ single_training.thumbnail.url }});
                                         background-size: cover;
@@ -156,7 +156,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-md-7">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-10">

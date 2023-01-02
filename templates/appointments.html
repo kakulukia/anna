@@ -17,7 +17,7 @@
       <hr class="my-5">
 
       {% if appointments %}
-        <strong>{{ appointments.0.name }}</strong><br>
+        <h4>{{ appointments.0.name }}</h4><br>
         <br>
         {{ appointments.0.description }}<br>
 
@@ -40,8 +40,10 @@
           </div>
         </div>
       {% else %}
-        Im Moment gibt es keine aktuellen Termine. <br>
-        Wir arbeiten aber schon an neuen Angeboten für Euch!
+        <div class="mb-5">
+          Im Moment gibt es keine aktuellen Termine. <br>
+          Wir arbeiten aber schon an neuen Angeboten für Euch!
+        </div>
       {% endif %}
     </div>
     <div class="px-3">

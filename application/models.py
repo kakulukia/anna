@@ -117,13 +117,14 @@ class Training(BaseModel):
     description = QuillField("Beschreibung", null=True, blank=True)
     thumbnail = models.ImageField(storage=PrivateMediaStorage(), verbose_name="Vorschaubild")
     modified = models.DateTimeField(auto_now=True, editable=False, null=True)
+    ordering = models.IntegerField("Sortierung", default=0)
 
     stick_to_the_plan = models.BooleanField('Reihenfolge einhalten', default=False)
 
     class Meta(BaseModel.Meta):
         verbose_name = "Kurs"
         verbose_name_plural = "Kurse"
-        ordering = ["name"]
+        ordering = ["ordering"]
 
     def __str__(self):
         return self.name

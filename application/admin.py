@@ -20,6 +20,7 @@ class MediaInline(admin.StackedInline):
 
 @admin.register(Training)
 class TrainingAdmin(admin.ModelAdmin):
+    list_display = ['name', 'ordering']
     inlines = [ModuleInline]
     actions = None
 
@@ -43,6 +44,7 @@ class ModuleAdmin(admin.ModelAdmin):
     inlines = [MediaInline]
     actions = None
     list_display = ['name', 'ordering', 'next']
+    list_filter = ['training']
 
 
 @admin.register(Media)

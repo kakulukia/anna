@@ -1,4 +1,5 @@
 import datetime
+import re
 
 import cv2
 from dateutil.utils import today
@@ -156,11 +157,8 @@ class Training(BaseModel):
         from html2text import html2text
 
         text = html2text(self.description.html, bodywidth=400)
-        # limit = 150
-        description = text
-        # if description and len(description) > limit:
-        #     return description[0:limit] + "..."
-        return description
+        text = re.sub('\n\n', '\n', text)
+        return text
 
 
 class Module(BaseModel):

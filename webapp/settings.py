@@ -210,7 +210,7 @@ JAZZMIN_SETTINGS = {
     "site_logo_classes": "none",
     "site_logo": "img/mylogo-test-login.png" if STAGE else "img/mylogo-gruen-login.png",
     # Relative path to a favicon for your site, will default to site_logo if absent (ideally 32x32 px)
-    "site_icon": None,
+    "site_icon": "assets/img/favicon-test.png" if STAGE else "assets/img/favicon.png",
     # Welcome text on the login screen
     "welcome_sign": "",
     # Copyright on the footer

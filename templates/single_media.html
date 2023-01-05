@@ -55,15 +55,15 @@
             <div class="row mb-4">
                 <div class="col-sm-12 col-md-12 col-xl-8 py-3">
                     {% if not media %}
-                    <div class="card">
-                        <div class="card-body text-center d-flex align-items-center justify-content-center"
-                            style="height: 300px;">
-                            <div>
-                                <img src="{% static 'img/notfound.png' %}" style="width: 150px;" alt="">
-                                <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">Keine Lektion vorhanden</h4>
-                            </div>
-                        </div>
-                    </div>
+                      <div class="card">
+                          <div class="card-body text-center d-flex align-items-center justify-content-center"
+                              style="height: 300px;">
+                              <div>
+                                  <img src="{% static 'img/notfound.png' %}" style="width: 150px;" alt="">
+                                  <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">Keine Lektion vorhanden</h4>
+                              </div>
+                          </div>
+                      </div>
                     {% else %}
                     <div class="card media">
 
@@ -77,9 +77,9 @@
                                 </div>
                             </div>
                         {% else %}
-                        <video id="videoDings" playsinline controls data-poster="{{ current_media.thumbnail.url }}">
-                            <source src="{{ media.file.url }}" type="video/mp4" />
-                        </video>
+                          <video id="videoDings" playsinline controls data-poster="{{ current_media.thumbnail.url }}">
+                              <source src="{{ media.file.url }}" type="video/mp4" />
+                          </video>
                         {% endif %}
 
                         <div class="card-body">
@@ -95,7 +95,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-5 d-flex align-items-center justify-content-end">
+                                <div class="d-none d-sm-none d-md-block col-md-5 d-flex align-items-center justify-content-end">
                                     {% if not media.is_completed %}
                                     <a type="button" onclick="return confirm('Wirklich als abgeschlossen markieren?')"
                                         href="{% url 'mark-as-done' media.id %}" class="button done">
@@ -107,6 +107,16 @@
                             <div>
                                 <p class="card-text">{{ media.description | linebreaksbr }}</p>
                             </div>
+                          <div class="d-grid gap-2 d-md-block mt-3">
+                            <div class="d-md-none d-lg-none d-xl-none col-md-5 d-flex align-items-center justify-content-end">
+                                {% if not media.is_completed %}
+                                <a type="button" onclick="return confirm('Wirklich als abgeschlossen markieren?')"
+                                    href="{% url 'mark-as-done' media.id %}" class="button done">
+                                    <button type="button" class="btn btn-width theme-secondary-btn">Als abgeschlossen markieren</button>
+                                </a>
+                                {% endif %}
+                            </div>
+                          </div>
                         </div>
                     </div>
 

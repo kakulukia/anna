@@ -26,20 +26,25 @@
     <div class="row">
         <div class="col-sm-12 col-md-12 col-xl-8 py-3">
             {% if not modules  %}
-            <div class="card">
-                <div class="card-body text-center d-flex align-items-center justify-content-center"
-                    style="height: 300px;">
-                    <div>
-                        <img src="{% static 'img/notfound.png' %}" style="width: 150px;" alt="">
-                        <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">Es existiert kein Modul in diesem Kurs</h4>
-                    </div>
-                </div>
-            </div>
+              <div class="card">
+                  <div class="card-body text-center d-flex align-items-center justify-content-center"
+                      style="height: 300px;">
+                      <div>
+                          <img src="{% static 'img/notfound.png' %}" style="width: 150px;" alt="">
+                          <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">Es existiert kein Modul in diesem Kurs</h4>
+                      </div>
+                  </div>
+              </div>
             {% endif %}
 
             {% for single_module in modules %}
 
-            <div class="card mb-3 lektion">
+            <div class="card mb-3 lektion position-relative">
+              {% if user.is_superuser %}
+                <a class="edit-link" href="{% url 'admin:application_module_change' single_module.id %}">
+                  <i class="material-icons mk-pointer text-secondary">edit</i>
+                </a>
+              {% endif %}
               {% previous_module_completed single_module user as previous_completed %}
                 {% if single_module.training.stick_to_the_plan and not previous_completed %}
                   <div class="blurred"></div>

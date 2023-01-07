@@ -14,18 +14,21 @@
         {% include 'inc/msgs.inc.html' %}
 
         <div class="mt-5 mb-3">
-            <div id="all-title">
-                <p class="text-secondary d-flex align-items-center course-navigation" style="font-size: 17px;">
-                    <a href="{% url 'trainings'  %}">
-                        Alle Kurse
-                    </a>
+            <div id="all-title" class="d-flex flex-row">
+                <p class="text-secondary align-items-center course-navigation" style="font-size: 17px;">
+                    <a href="{% url 'trainings'  %}">Alle Kurse</a>
 
                     <i class="mx-2 link-arrow">|</i>
 
-                    <a href="{% url 'all_modules' training.id  %}">
-                        Kapitelübersicht
-                    </a>
+                    <a href="{% url 'all_modules' training.id  %}">Kapitelübersicht</a>
                 </p>
+                {% if user.is_superuser %}
+                  <div class="position-relative mx-5 d-inline-block">
+                    <a class="edit-link" href="{% url 'admin:application_media_change' media.id %}">
+                      <i class="material-icons mk-pointer text-secondary">edit</i>
+                    </a>
+                  </div>
+                {% endif %}
             </div>
         </div>
 

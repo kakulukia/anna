@@ -1,6 +1,11 @@
 {% if single_training.id in accessed_training %}
-  <div class="card mb-3 rounded-0" {% if training == single_training %}style="box-shadow: 5px 5px 5px #cccccc;"{% endif %}>
-      <div class="row g-0">
+  <div class="card mb-3 rounded-0 training position-relative" {% if training == single_training %}style="box-shadow: 5px 5px 5px #cccccc;"{% endif %}>
+    {% if user.is_superuser %}
+      <a class="edit-link" href="{% url 'admin:application_training_change' single_training.id %}">
+        <i class="material-icons mk-pointer text-secondary">edit</i>
+      </a>
+    {% endif %}
+    <div class="row g-0">
           <!-- <div class="col-md-4 d-flex align-items-center">
               <a href="{% url 'all_modules' single_training.id %}">
                   <img src="{{ single_training.thumbnail }}" class="img-fluid rounded-start w-100" style="aspect-ratio:2/1" alt="...">
@@ -25,9 +30,8 @@
                       <div class="col-sm-10">
                               <h5 class="card-title">{{ single_training.name }}</h5>
                       </div>
-                      <div class="d-none d-xl-block col-sm-2 d-flex justify-content-end">
-                              <i
-                                  class="material-icons mk-pointer {% if training.id == single_training.id %}theme-primary-text{% else %}text-secondary{% endif %}">info</i>
+                      <div class="d-none d-xl-flex col-sm-2 flex-row justify-content-end">
+                        <i class="material-icons mk-pointer {% if training.id == single_training.id %}theme-primary-text{% else %}text-secondary{% endif %}">info</i>
                       </div>
                   </div>
                   <p class="card-text mb-0">{{ single_training.get_short_description | linebreaksbr }}</p>

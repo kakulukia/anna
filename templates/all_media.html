@@ -43,7 +43,12 @@
 
             {% for media in media_set %}
 
-              <div class="card mb-3 lektion">
+              <div class="card mb-3 lektion position-relative">
+                {% if user.is_superuser %}
+                  <a class="edit-link" href="{% url 'admin:application_media_change' media.id %}">
+                    <i class="material-icons mk-pointer text-secondary">edit</i>
+                  </a>
+                {% endif %}
                 {% if module.training.stick_to_the_plan and media.previous and not media.previous_completed %}
                   <div class="blurred"></div>
                 {% endif %}

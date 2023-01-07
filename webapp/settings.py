@@ -19,7 +19,7 @@ SITE_ID = 1
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-STAGE = False
+STAGE = True
 
 ALLOWED_HOSTS = ["*"]
 INTERNAL_IPS = [
@@ -226,6 +226,8 @@ JAZZMIN_SETTINGS = {
     "topmenu_links": [
         # Url that gets reversed (Permissions can be added)
         {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
+
+        {"name": f"Seite Anzeigen ({STAGE})", "url": "index", "permissions": []},
         # model admin to link to (Permissions checked against model)
         {"model": "users.User"},
     ],

@@ -504,7 +504,8 @@ def single_media(request, training_id, module_id, media_id):
         "training": training,
         "medias": medias,
     }
-    return render(request, "single_media.html", context)
+    template = "single_media_content.html" if "video-only" in request.GET else "single_media.html"
+    return render(request, template, context)
 
 
 def render_flatpage(request, url):

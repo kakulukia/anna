@@ -84,7 +84,7 @@ def profile(request):
     device_sessions = Device.objects.filter(user=request.user)
     all_trainings = Access.objects.filter(user=request.user)
 
-    completed_media_ids = Completed.objects.filter(user=request.user).values_list(
+    completed_media_ids = Completed.data.filter(user=request.user).values_list(
         "media_id", flat=True
     )
 
@@ -236,7 +236,7 @@ def all_trainings(request):
     else:
         training = trainings.first()
     allowed = training and training.id in accessed_training
-    completed_media_ids = Completed.objects.filter(user=request.user).values_list(
+    completed_media_ids = Completed.data.filter(user=request.user).values_list(
         "media_id", flat=True
     )
 
@@ -282,12 +282,10 @@ def progress_trainings(request, id):
         messages.error(request, "Du hast keine Berechtigung für diese Seite.")
         return redirect("index")
 
-
-
     all_users = User.objects.filter(is_superuser=False)[1:]
     current_user = User.objects.get(id=id)
     current_user_trainings = get_accessed_training_objects(current_user)
-    completed_media_ids = Completed.objects.filter(user=current_user).values_list(
+    completed_media_ids = Completed.data.filter(user=current_user).values_list(
         "media_id", flat=True
     )
     current_user_trainings_updated = []
@@ -347,7 +345,7 @@ def progress_modules(request, id, training_id):
 
     all_users = User.objects.filter(is_superuser=False)
     current_user = User.objects.get(id=id)
-    completed_media_ids = Completed.objects.filter(user=current_user).values_list(
+    completed_media_ids = Completed.data.filter(user=current_user).values_list(
         "media_id", flat=True
     )
     current_training = get_object_or_404(Training, id=training_id)
@@ -363,7 +361,7 @@ def progress_modules(request, id, training_id):
         module.user_progress = module.get_progress(completed_media_ids)
 
     # Fetching completed medias
-    completed_media_ids = Completed.objects.filter(user=current_user).values_list("media_id", flat=True)
+    completed_media_ids = Completed.data.filter(user=current_user).values_list("media_id", flat=True)
 
     context = {
         "completed_media": completed_media_ids,
@@ -383,7 +381,7 @@ def resume_all_modules(request, training_id):
     all_media_ids = Media.objects.filter(module_id__in=modules_ids).values_list(
         "id", flat=True
     )
-    completed_media_ids = Completed.objects.filter(
+    completed_media_ids = Completed.data.filter(
         media_id__in=all_media_ids, user=request.user
     ).values_list("media_id", flat=True)
     # all media objects ids list
@@ -465,7 +463,8 @@ def mark_as_done(request, media_id):
         messages.error(request, "Du hast keinen Zugriff auf diesen Kurs.")
         return redirect("trainings")
 
-    Completed.objects.create(user=request.user, media=media)
+    if not request.user.completed_set.filter(media=media).exists():
+        Completed.data.create(user=request.user, media=media)
     request.user.update_progress()
 
     if media.next:
@@ -504,7 +503,8 @@ def single_media(request, training_id, module_id, media_id):
         "training": training,
         "medias": medias,
     }
-    return render(request, "single_media.html", context)
+    template = "single_media_content.html" if "video-only" in request.GET else "single_media.html"
+    return render(request, template, context)
 
 
 def render_flatpage(request, url):

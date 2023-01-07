@@ -331,6 +331,9 @@ class Page(BaseModel):
         verbose_name_plural = "Unterseiten"
         ordering = ["url"]
 
+    def __str__(self):
+        return self.title
+
 
 class AppointmentManager(DataManager):
     def upcoming(self):

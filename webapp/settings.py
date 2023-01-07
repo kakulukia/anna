@@ -201,9 +201,9 @@ JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
     "site_title": "Kurs Admin",
     # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
-    "site_header": "Admin",
+    "site_header": "",
     # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
-    "site_brand": "Admin",
+    "site_brand": "",
     # Logo to use for your site, must be present in static files, used for brand on top left
     # "site_logo": "books/img/logo.png",
     # CSS classes that are applied to the logo above
@@ -227,7 +227,7 @@ JAZZMIN_SETTINGS = {
         # Url that gets reversed (Permissions can be added)
         {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
 
-        {"name": f"Seite Anzeigen ({STAGE})", "url": "index", "permissions": []},
+        {"name": f"Seite Anzeigen", "url": "index", "permissions": []},
         # model admin to link to (Permissions checked against model)
         {"model": "users.User"},
     ],

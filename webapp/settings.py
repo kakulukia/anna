@@ -19,7 +19,7 @@ SITE_ID = 1
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-STAGE = True
+STAGE = False
 
 ALLOWED_HOSTS = ["*"]
 INTERNAL_IPS = [

@@ -84,10 +84,10 @@
                       <div class="d-grid gap-2 d-md-block mt-3">
                         <div class="d-md-none d-lg-none d-xl-none col-md-5 d-flex align-items-center justify-content-end">
                             {% if not media.is_completed %}
-                            <a type="button" onclick="return confirm('Wirklich als abgeschlossen markieren?')"
-                                href="{% url 'mark-as-done' media.id %}" class="button done">
-                                <button type="button" class="btn btn-width theme-secondary-btn">Als abgeschlossen markieren</button>
-                            </a>
+                              <a type="button" onclick="return confirm('Wirklich als abgeschlossen markieren?')"
+                                  href="{% url 'mark-as-done' media.id %}" class="button done">
+                                  <button type="button" class="btn btn-width theme-secondary-btn">Als abgeschlossen markieren</button>
+                              </a>
                             {% endif %}
                         </div>
                       </div>
@@ -187,8 +187,15 @@
 </div>
 
 <script src="https://cdn.plyr.io/3.7.2/plyr.js"></script>
+{% if not media.progress == 100 %}
+  <!-- script for resume video function  -->
+  <script src="{% static 'assets/js/videoResume.js' %}"></script>
+{% endif %}
 <script>
+  let playing = false;
   const player = new Plyr('#videoDings');
+  autoplay = (localStorage.getItem('autoplay') || 'false') === 'true';
+  document.getElementById('autoplay-switch').checked = autoplay;
 
   var content = document.getElementById("media-content");
 
@@ -210,11 +217,60 @@
       eval(script.textContent);
     }
   }
-  document.getElementById('autoplay-switch').addEventListener('click', function(event) {
+  document.getElementById('autoplay-switch').addEventListener('click', function() {
+    localStorage.setItem('autoplay', this.checked);
     if (this.checked) {
       player.play();
     }
+
   });
+
+  player.on('ended', () => {
+    let autoplay = document.getElementById('autoplay-switch').checked;
+    if (playing) {
+      makeGetRequest('/media/{{ media.id }}/done');
+      if (autoplay) {
+        loadNext();
+      }
+    }
+
+  });
+  player.on('playing', () => {
+    playing = true;
+  });
+
+  if (autoplay) {
+    player.play()
+  }
+
+  function makeGetRequest(url) {
+    // Create an XMLHttpRequest object
+    const xhr = new XMLHttpRequest();
+
+    // Set the response type to JSON
+    xhr.responseType = 'json';
+
+    // Set up an event listener to receive the response
+    xhr.onload = function() {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        // If the request was successful, parse the response as JSON
+        const data = xhr.response;
+        console.log(data);
+      } else {
+        // If the request was not successful, log the error
+        console.error(xhr.statusText);
+      }
+    };
+
+    // Set up an event listener to handle any errors that occur
+    xhr.onerror = function() {
+      console.error(xhr.statusText);
+    };
+
+    // Set the method to GET and make the request
+    xhr.open('GET', url);
+    xhr.send();
+  }
 
 </script>
 

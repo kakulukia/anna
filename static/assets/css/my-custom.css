@@ -597,7 +597,7 @@ img {
 
 i {font-style: normal;}
 
-.card, .card img, .btn, .form-control, .progress {
+.card, .card img, .btn, .form-control, .progress, .alert {
   border-radius: 0;
 }
 

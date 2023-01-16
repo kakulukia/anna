@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # adding django-agents to the installed apps
     "django_user_agents",
     "debug_toolbar",
+    "django_sso.sso_gateway",
 ]
 
 AUTH_USER_MODEL = "users.User"

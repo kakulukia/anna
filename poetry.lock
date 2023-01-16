@@ -267,6 +267,18 @@ future = ">=0.18.2,<0.19.0"
 six = ">=1.11,<2.0"
 
 [[package]]
+name = "django-sso"
+version = "1.1.4"
+description = "Django Single Sign-On implementation"
+category = "main"
+optional = false
+python-versions = ">=3"
+
+[package.dependencies]
+django = "*"
+requests = "*"
+
+[[package]]
 name = "django-storages"
 version = "1.13.2"
 description = "Support for many storage backends in Django"
@@ -845,7 +857,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10.4"
-content-hash = "7c11c6fa3c360c7d4a5822250a7a675b136f6d5ce349b775f9f9662c5f16d842"
+content-hash = "220fb90f73dcaba4c8a422b9880d88d0045b2403633cf8eb25efc7416d5b5aed"
 
 [metadata.files]
 appnope = [
@@ -1047,6 +1059,9 @@ django-quill-editor = [
 django-secrets = [
     {file = "django_secrets-1.2.4-py3-none-any.whl", hash = "sha256:2aae6e0c70464599f7f2838945908bd249cac80593c0e3320a17634047f90213"},
     {file = "django_secrets-1.2.4.tar.gz", hash = "sha256:383631c60e1d33ab202c3c96e8709f583135b954783dccb2223db4d729412584"},
+]
+django-sso = [
+    {file = "django_sso-1.1.4.tar.gz", hash = "sha256:3bac3ea3aade240320bd4659f359bdb00d3423689bfb7f59c90e2c7762024777"},
 ]
 django-storages = [
     {file = "django-storages-1.13.2.tar.gz", hash = "sha256:cbadd15c909ceb7247d4ffc503f12a9bec36999df8d0bef7c31e57177d512688"},

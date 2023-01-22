@@ -361,9 +361,12 @@ class Appointment(BaseModel):
 
 class Product(BaseModel):
     name = models.CharField(verbose_name='Name', max_length=100)
-    courses = models.ManyToManyField(Training)
+    courses = models.ManyToManyField(Training, verbose_name="Kurse")
     free = models.BooleanField('unbeschränkt', default=False)
 
     class Meta(BaseModel.Meta):
         verbose_name = 'Produkt'
         verbose_name_plural = 'Produkte'
+
+    def __str__(self):
+        return self.name

@@ -357,3 +357,13 @@ class Appointment(BaseModel):
 
     def __str__(self):
         return f'{self.name } ({self.date})'
+
+
+class Product(BaseModel):
+    name = models.CharField(verbose_name='Name', max_length=100)
+    courses = models.ManyToManyField(Training)
+    free = models.BooleanField('unbeschränkt', default=False)
+
+    class Meta(BaseModel.Meta):
+        verbose_name = 'Produkt'
+        verbose_name_plural = 'Produkte'

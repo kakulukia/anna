@@ -92,9 +92,39 @@ class UserAdmin(BaseUserAdmin):
     )
     list_display_links = ['email', 'first_or_username']
     list_filter = ["is_superuser", ("zoom_link", admin.EmptyFieldListFilter)]
-    verbose_name = "Customer"
     actions = None
     ordering = ("-created",)
+    readonly_fields = ["customer_link", 'option', "partner_link"]
+    fieldsets = (
+        (
+            "Stammdaten",
+            {
+                "fields": (
+                    "customer_link",
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "partner_link",
+                    "zoom_link",
+                    "start_date",
+                    "end_date",
+                    "username",
+                    "password",
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                )
+            },
+        ),
+        (
+            "Fortschritt",
+            {
+                "fields": (
+                    "option",
+                )
+            },
+        ),
+    )
 
     def clone(self, user: User):
         if user.is_superuser:
@@ -127,69 +157,25 @@ class UserAdmin(BaseUserAdmin):
         return mark_safe(element)
 
     option.short_description = "Fortschritt"
-    readonly_fields = ['option']
 
-    fieldsets = (
-        (
-            "Stammdaten",
-            {
-                "fields": (
-                    "customer_number",
-                    "first_name",
-                    "last_name",
-                    "email",
-                    "username",
-                    "password",
-                    "is_active",
-                    "is_staff",
-                    "is_superuser",
-                )
-            },
-        ),
-        (
-            "Profil",
-            {
-                "fields": (
-                    "start_date",
-                    "end_date",
-                    "phone_number",
-                    "street",
-                    "zip_code",
-                    "city",
-                    "country",
-                    "zoom_link",
-                )
-            },
-        ),
-        (
-            "Notizen",
-            {
-                "fields": (
-                    "notes",
-                )
-            },
-        ),
-        (
-            "Fortschritt",
-            {
-                "fields": (
-                    "option",
-                )
-            },
-        ),
-        (
-            "PAARBOX",
-            {
-                "fields": (
-                    "paarbox_date",
-                    "paarbox_present",
-                    "paarbox_sent",
-                    "paarbox_handed_over",
-                )
-            },
-        ),
+    @admin.display(description='Lead')
+    def customer_link(self, user: User):
+        if user.customer_url:
+            link = f'<a href="{user.customer_url}" target="_blank">In Close anzeigen</a>'
+            return mark_safe(link)
+        else:
+            return '-'
 
-    )
+    @admin.display(description='Partner')
+    def partner_link(self, user: User):
+        if user.contact_id and user.lead_id:
+            partner = User.data.filter(lead_id=user.lead_id).exclude(id=user.id)
+            if partner:
+                partner = partner.get()
+                link = f'<a href="{reverse("admin:users_user_change", args=[partner.id])}" >{partner.full_name}</a>'
+            return mark_safe(link)
+        else:
+            return 'unbekannt'
 
 
 @admin.register(Page)
@@ -218,3 +204,16 @@ def clone_user(request, user_id):
 @admin.register(Appointment)
 class EventAdmin(admin.ModelAdmin):
     ...
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ['name', 'free', 'list_courses']
+    actions = None
+
+    def list_courses(self, product: Product):
+
+        course_names = product.courses.values_list('name', flat=True)
+        return ', '.join(course_names)
+
+    list_courses.short_description = 'Kurse'

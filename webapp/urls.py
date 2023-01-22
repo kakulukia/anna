@@ -7,6 +7,7 @@ from django.contrib.auth import views as auth_views
 
 from application.admin import clone_user
 from application.views import render_flatpage
+from users.views import create_or_update_lead_webhook
 
 
 class PasswordResetView(auth_views.PasswordResetView):
@@ -22,6 +23,7 @@ urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),
     # path('accounts/', include('django.contrib.auth.urls')),
     path('', include('django_sso.sso_gateway.urls')),
+    path('api/lead-webhook/', create_or_update_lead_webhook),
 
     path("password_reset/", PasswordResetView.as_view(), name="admin_password_reset"),
     path("password_reset/done/", auth_views.PasswordResetDoneView.as_view(), name="password_reset_done"),

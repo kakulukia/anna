@@ -41,7 +41,6 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
 
     # custom entries
     ############################################
-    customer_number = models.CharField("Kundennummer", max_length=50, null=True, blank=True)
     phone_regex = RegexValidator(
         regex=r"^\+?1?\d{9,15}$",
         message="Die Telefonnummer muss in folgendem Format eingegeben werden: '+999999999'. Bis zu 15 Zeichen sind erlaubt.",
@@ -67,9 +66,9 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     paarbox_sent = models.BooleanField(verbose_name="versendet", default=False)
     paarbox_handed_over = models.BooleanField(verbose_name="übergeben", default=False)
 
-    # CLOSE CMS STUFF
-    lead = models.CharField(max_length=70, default="")
-    customer = models.CharField(max_length=70, null=True, unique=True)
+    # CLOSE CMS STUFF - two contacts will share the same lead
+    lead_id = models.CharField(max_length=70, null=True)
+    contact_id = models.CharField(max_length=70, null=True, unique=True)
 
     # basic model stuff
     ############################################
@@ -85,6 +84,10 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     class Meta(BaseModel.Meta):
         verbose_name = "Nutzer"
         verbose_name_plural = "Nutzer"
+
+    @property
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
 
     def clean(self):
         super(AbstractBaseUser, self).clean()
@@ -126,6 +129,20 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         if self.start_date and self. end_date:
             return self.start_date <= now().date() <= self.end_date
         return False
+
+    @property
+    def customer_url(self):
+
+        if not self.lead_id:
+            return None
+
+        url = f"https://app.close.com/lead/{self.lead_id}/"
+
+        if self.contact_id:
+            url += f"#contactId={self.contact_id}"
+
+        return url
+
 
     # def email_user(
     #     self, subject, message, from_email=settings.DEFAULT_FROM_EMAIL, **kwargs

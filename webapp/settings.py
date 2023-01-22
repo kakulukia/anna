@@ -278,6 +278,7 @@ JAZZMIN_SETTINGS = {
         "application.media": "fas fa-bookmark",
         "application.page": "far fa-file-alt",
         "application.appointment": "far fa-calendar",
+        "application.product": "fas fa-box",
     },
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",

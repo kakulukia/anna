@@ -51,7 +51,7 @@ class ModuleAdmin(admin.ModelAdmin):
 @admin.register(Media)
 class MediaAdmin(admin.ModelAdmin):
     actions = None
-    list_display = ['name', 'length', 'next']
+    list_display = ['name', 'ordering', 'length', 'next']
     list_filter = ['module']
     search_fields = ['name']
 

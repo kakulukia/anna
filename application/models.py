@@ -234,11 +234,12 @@ class Media(BaseModel):
         blank=True,
         verbose_name="Nächstes",
     )
+    ordering = models.IntegerField("Sortierung", default=0)
 
     modified = models.DateTimeField(auto_now=True, editable=False, null=True)
 
     class Meta(BaseModel.Meta):
-        ordering = ["name"]
+        ordering = ["ordering", "name"]
         verbose_name = "Lektion"
         verbose_name_plural = "Lektionen"
 

@@ -169,7 +169,7 @@ BOOTSTRAP5 = {
 
 # --------------------- media files configuration for development-----------------#
 # MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # -------------------------AWS S3 CONFIGURATION---------------------------#
 AWS_ACCESS_KEY_ID = secrets.AWS_ACCESS_KEY_ID

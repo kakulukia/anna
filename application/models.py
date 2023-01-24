@@ -4,6 +4,7 @@ import re
 import cv2
 from dateutil.utils import today
 from django.contrib.sessions.models import Session
+from django.core.files.storage import FileSystemStorage
 from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
@@ -219,6 +220,13 @@ class Module(BaseModel):
         return int((self.completed_count / self.media_set.count()) * 100)
 
 
+class AttachmentStorage(FileSystemStorage):
+    location = "media/attachments"
+
+    def url(self, name):
+        return '/media/attachments/' + name
+
+
 class Media(BaseModel):
     name = models.CharField(max_length=50)
     description = NonStrippingTextField(verbose_name="Beschreibung")
@@ -235,6 +243,7 @@ class Media(BaseModel):
         verbose_name="Nächstes",
     )
     ordering = models.IntegerField("Sortierung", default=0)
+    attachment = models.FileField(verbose_name="Anhang", null=True, storage=AttachmentStorage, blank=True)
 
     modified = models.DateTimeField(auto_now=True, editable=False, null=True)
 

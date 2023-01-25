@@ -108,13 +108,13 @@ def create_or_update_lead_webhook(request):
 
             for user in users:
 
-                if zoom_link in event.data and zoom_link in event.changed_fields:
+                if zoom_link in event.data:
                     user.zoom_link = event.data[zoom_link]
                     user.save()
                     ic('zoomlink added')
 
                 # now lets set or update the duration
-                if duration_field in event.data and duration_field in event.changed_fields:
+                if duration_field in event.data:
 
                     start, end = parse_duration(event.data[duration_field])
 
@@ -123,13 +123,11 @@ def create_or_update_lead_webhook(request):
                     user.save()
                     ic('duration added')
 
-                # if purchase options changed
-                if purchase_options in event.changed_fields:
-                    # for all listed products -> add access
-                    for product in Product.data.all():
-                        if product.name in options or product.free:
-                            for course in product.courses.all():
-                                user.access_set.get_or_create(training=course)
+                # for all listed products -> add access
+                for product in Product.data.all():
+                    if product.name in options or product.free:
+                        for course in product.courses.all():
+                            user.access_set.get_or_create(training=course)
 
         return HttpResponse(status=202)
     else:

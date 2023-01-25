@@ -103,7 +103,11 @@
                   <div class="card py-3 mb-4">
                       <div class="px-3 pb-2 mb-2">
                         <h4>Anhang</h4>
-                        <a href="{{ media.attachment.url }}" target="_blank">{{ media.attachment.name }}</a><br>
+                          <a href="{{ media.attachment.url }}" target="_blank" class="d-flex flex-row justify-content-between">
+                            <span><i class="fas fa-file-pdf text-secondary"></i> {{ media.attachment.name }}</span>
+
+                            <i class="fas fa-download text-secondary"></i>
+                          </a>
                         <span class="text-secondary">{{ media.attachment.size | filesizeformat }}</span>
                       </div>
                   </div>

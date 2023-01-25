@@ -164,9 +164,8 @@ class UserAdmin(BaseUserAdmin):
             if partner:
                 partner = partner.get()
                 link = f'<a href="{reverse("admin:users_user_change", args=[partner.id])}" >{partner.full_name}</a>'
-            return mark_safe(link)
-        else:
-            return 'unbekannt'
+                return mark_safe(link)
+        return 'unbekannt'
 
 
 @admin.register(Page)

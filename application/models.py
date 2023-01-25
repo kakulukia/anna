@@ -231,6 +231,7 @@ class Media(BaseModel):
     name = models.CharField(max_length=50)
     description = NonStrippingTextField(verbose_name="Beschreibung")
     thumbnail = models.ImageField(storage=PrivateMediaStorage(), verbose_name="Vorschaubild")
+    ordering = models.IntegerField("Sortierung", default=0)
     file = models.FileField(storage=PrivateMediaStorage(), verbose_name="Datei")
     length = models.CharField(verbose_name="Länge", max_length=50, default="", editable=False)
     module = models.ForeignKey(Module, verbose_name="Kapitel", on_delete=models.CASCADE)
@@ -242,7 +243,6 @@ class Media(BaseModel):
         blank=True,
         verbose_name="Nächstes",
     )
-    ordering = models.IntegerField("Sortierung", default=0)
     attachment = models.FileField(verbose_name="Anhang", null=True, storage=AttachmentStorage, blank=True)
 
     modified = models.DateTimeField(auto_now=True, editable=False, null=True)

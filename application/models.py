@@ -373,6 +373,8 @@ class Product(BaseModel):
     name = models.CharField(verbose_name='Name', max_length=100)
     courses = models.ManyToManyField(Training, verbose_name="Kurse")
     free = models.BooleanField('unbeschränkt', default=False)
+    teaser = models.BooleanField(verbose_name="Beziehungs1x1", default=False)
+    membership = models.BooleanField(verbose_name="Akademie Beziehungskit", default=False)
 
     class Meta(BaseModel.Meta):
         verbose_name = 'Produkt'

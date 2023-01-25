@@ -1,6 +1,8 @@
 from django.contrib import admin, messages
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.decorators import login_required
+from django.db.models import OuterRef, Subquery, F, Value
+from django.db.models.functions import Concat
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.safestring import mark_safe
@@ -77,6 +79,24 @@ class DeviceInline(admin.StackedInline):
         return False
 
 
+class MembershipFilter(admin.SimpleListFilter):
+    title = 'Activ/Passiv'
+    parameter_name = 'membership'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('active', 'Aktiv'),
+            ('inactive', 'Passiv'),
+        )
+
+    def queryset(self, request, queryset):
+        now = timezone.now()
+        if self.value() == 'active':
+            return queryset.filter(start_date__lte=now, end_date__gte=now)
+        if self.value() == 'inactive':
+            return queryset.exclude(start_date__lte=now, end_date__gte=now)
+
+
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     inlines = [AccessInline, DeviceInline]
@@ -84,13 +104,15 @@ class UserAdmin(BaseUserAdmin):
         "email",
         "first_or_username",
         "last_name",
+        "other_user_name_display",
         "start_date",
         "end_date",
         "zoom",
+        "status",
         "option",
     )
     list_display_links = ['email', 'first_or_username']
-    list_filter = ["is_superuser", ("zoom_link", admin.EmptyFieldListFilter)]
+    list_filter = ["is_superuser", ("zoom_link", admin.EmptyFieldListFilter), MembershipFilter]
     actions = None
     ordering = ("-created",)
     readonly_fields = ["customer_link", 'option', "partner_link"]
@@ -120,20 +142,42 @@ class UserAdmin(BaseUserAdmin):
             {
                 "fields": (
                     "option",
+                    "bought_teaser",
+                    "bought_membership",
                 )
             },
         ),
     )
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        subquery = User.objects.filter(lead_id=OuterRef('lead_id')).exclude(id=OuterRef('pk')).annotate(
+            other_user_name=Concat(F('first_name'), Value(" "), F('last_name')))
+        qs = qs.annotate(other_user_name=Subquery(subquery.values('other_user_name')))
+        return qs
+
+    @admin.display(description="Partner")
+    def other_user_name_display(self, user: User):
+        return user.other_user_name
 
     def first_or_username(self, user: User):
         return user.first_name if user.first_name else user.username
     first_or_username.short_description = "Vorname"
     first_or_username.admin_order_field = 'first_name'
 
+    @admin.display(description='Zoom', boolean=True)
     def zoom(self, user: User):
         return bool(user.zoom_link)
 
-    zoom.boolean = True
+    @admin.display(description='Status')
+    def status(self, user: User):
+        if user.bought_membership and user.active_member:
+            return 'Aktiv'
+        if user.bought_membership:
+            return 'Passiv'
+        if user.bought_teaser:
+            return '1x1'
+        return '-'
 
     def option(self, obj):
         # or anything you prefer e.g. an edit button

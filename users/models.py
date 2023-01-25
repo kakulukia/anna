@@ -48,23 +48,15 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     phone_number = models.CharField(
         "Telefonnummer", validators=[phone_regex], max_length=16, blank=True, null=True
     )
-    street = models.CharField("Straße", max_length=255, blank=True, null=True)
-    zip_code = models.CharField("PLZ", max_length=255, blank=True, null=True)
-    city = models.CharField("Ort", max_length=255, blank=True, null=True)
-    country = models.CharField("Land", max_length=255, blank=True, null=True)
 
     start_date = models.DateField("Start-Datum", blank=True, null=True)
     end_date = models.DateField("Ablauf-Datum", blank=True, null=True)
+    bought_teaser = models.BooleanField(verbose_name='Beziehungs1x1', default=False)
+    bought_membership = models.BooleanField(verbose_name='Akademie Beziehungskit', default=False)
 
     zoom_link = models.URLField("Zoom-Link", blank=True, null=True)
-    notes = QuillField("Notizen", null=True, blank=True)
     progress = models.FloatField(default=0)
-
-    # PAARBOX
-    paarbox_date = models.DateField(verbose_name="Datum", null=True, blank=True)
-    paarbox_present = models.BooleanField(verbose_name="vorhanden", default=False)
-    paarbox_sent = models.BooleanField(verbose_name="versendet", default=False)
-    paarbox_handed_over = models.BooleanField(verbose_name="übergeben", default=False)
+    forum_name = models.CharField(verbose_name="Nutzername Forum", max_length=40, null=True, blank=True)
 
     # CLOSE CMS STUFF - two contacts will share the same lead
     lead_id = models.CharField(max_length=70, null=True)
@@ -92,10 +84,6 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     def clean(self):
         super(AbstractBaseUser, self).clean()
         self.email = self.__class__.data.normalize_email(self.email)
-
-        test = self.paarbox_sent + self.paarbox_handed_over + self.paarbox_present
-        if test > 1:
-            raise ValidationError("Es kann nur eine Option ausgewählt werden! (Vorhanden, Übergeben oder Versendet)")
 
     def has_validity(self):
         return self.start_date and self.end_date
@@ -143,6 +131,12 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
 
         return url
 
+    @property
+    def forum_url_helper(self):
+        if self.forum_name:
+            return "https://akademie.libendgern.de"
+        else:
+            return "/profile/"
 
     # def email_user(
     #     self, subject, message, from_email=settings.DEFAULT_FROM_EMAIL, **kwargs

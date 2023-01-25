@@ -126,6 +126,14 @@ def create_or_update_lead_webhook(request):
                 # for all listed products -> add access
                 for product in Product.data.all():
                     if product.name in options or product.free:
+
+                        if not user.bought_teaser and product.teaser:
+                            user.bought_teaser = True
+                            user.save()
+                        if not user.bought_membership and product.membership:
+                            user.bought_membership = True
+                            user.save()
+
                         for course in product.courses.all():
                             user.access_set.get_or_create(training=course)
 

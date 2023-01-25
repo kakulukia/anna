@@ -90,6 +90,8 @@ def create_or_update_lead_webhook(request):
                 user.lead_id = contact.lead_id
                 user.save()
 
+                users.append(user)
+
         return users
 
     if request.content_type == 'application/json':
@@ -111,7 +113,6 @@ def create_or_update_lead_webhook(request):
                 if zoom_link in event.data:
                     user.zoom_link = event.data[zoom_link]
                     user.save()
-                    ic('zoomlink added')
 
                 # now lets set or update the duration
                 if duration_field in event.data:
@@ -121,7 +122,6 @@ def create_or_update_lead_webhook(request):
                     user.start_date = start
                     user.end_date = end
                     user.save()
-                    ic('duration added')
 
                 # for all listed products -> add access
                 for product in Product.data.all():

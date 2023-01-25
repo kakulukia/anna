@@ -2,14 +2,14 @@ import json
 from datetime import datetime
 from typing import List
 
+import dateutil.parser
 import pendulum
 import requests
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from future.backports.datetime import timedelta
 from prodict import Prodict
 
-from application.models import Product, Access
+from application.models import Product
 from users.models import User
 
 
@@ -43,13 +43,14 @@ def create_or_update_lead_webhook(request):
 
     def parse_duration(string: str):
         parts = string.split('-')
-        end = datetime.strptime(parts[1], "%d.%m.%y")
-        start = datetime.strptime(parts[0] + str(end.year), "%d.%m.%Y")
+        end = dateutil.parser.parse(parts[1], dayfirst=True)
+        start_string = parts[0] + (str(end.year) if not parts[0].split('.')[-1] else '')
+        start = dateutil.parser.parse(start_string, dayfirst=True)
         if start > end:
             start = pendulum.instance(start, tz='local').subtract(years=1)
         return start, end
 
-    def get_users(lead_id: str, contact_ids: list):
+    def get_users(lead_id: str, contact_ids: list) -> List[User]:
         users = []
 
         qs = User.data.filter(lead_id=event.lead_id)
@@ -60,7 +61,6 @@ def create_or_update_lead_webhook(request):
             contacts = get_contact_data(contact_ids)
 
             for contact in contacts:
-                ic(contact)
                 if not contact.emails:
                     continue
 
@@ -96,8 +96,10 @@ def create_or_update_lead_webhook(request):
         data = json.loads(request.body)
 
         event = Prodict.from_dict(data).event
+        ic(event)
         duration_field = "custom.cf_8zV6c7eijjmYfIbl1w1vfLzZunknUoLs4sb13uoOubp"
         purchase_options = "custom.cf_0eKueP25HDy5wnHDeZXB7ySzrlx3JhiQXjaczfIx2a1"
+        zoom_link = "custom.cf_fsbXp5btDzxOJqP9QKmCNa62vc4MnHevvpXnkMkWMB8"
 
         # only listen for customers and ignore the rest
         if purchase_options in event.data:
@@ -105,6 +107,12 @@ def create_or_update_lead_webhook(request):
             users = get_users(event.lead_id, event.data.contact_ids)
 
             for user in users:
+
+                if zoom_link in event.data and zoom_link in event.changed_fields:
+                    user.zoom_link = event.data[zoom_link]
+                    user.save()
+                    ic('zoomlink added')
+
                 # now lets set or update the duration
                 if duration_field in event.data and duration_field in event.changed_fields:
 
@@ -113,6 +121,7 @@ def create_or_update_lead_webhook(request):
                     user.start_date = start
                     user.end_date = end
                     user.save()
+                    ic('duration added')
 
                 # if purchase options changed
                 if purchase_options in event.changed_fields:

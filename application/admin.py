@@ -153,7 +153,7 @@ class UserAdmin(BaseUserAdmin):
             return None
         user_id = obj.id
         url = reverse("progress-training", args=[user_id])
-        element = f'<a href = "{url}" target="_blank" class = "btn btn-outline-primary">Fortschritt anzeigen</a>'
+        element = f'<a href = "{url}" target="_blank" title="Fortschritt anzeigen"><i class="far fa-chart-bar"></i></a>'
         return mark_safe(element)
 
     option.short_description = "Fortschritt"

@@ -102,6 +102,7 @@ class UserAdmin(BaseUserAdmin):
     inlines = [AccessInline, DeviceInline]
     list_display = (
         "email",
+        'forum_name',
         "first_or_username",
         "last_name",
         "other_user_name_display",
@@ -130,6 +131,7 @@ class UserAdmin(BaseUserAdmin):
                     "start_date",
                     "end_date",
                     "username",
+                    "forum_name",
                     "password",
                     "is_active",
                     "is_staff",

@@ -56,11 +56,29 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
 
     zoom_link = models.URLField("Zoom-Link", blank=True, null=True)
     progress = models.FloatField(default=0)
-    forum_name = models.CharField(verbose_name="Nutzername Forum", max_length=40, null=True, blank=True)
+    forum_name = models.CharField(verbose_name="Forumname", max_length=40, null=True, blank=True)
 
     # CLOSE CMS STUFF - two contacts will share the same lead
     lead_id = models.CharField(max_length=70, null=True)
     contact_id = models.CharField(max_length=70, null=True, unique=True)
+
+    # additional fields for SSO with Zulip
+    ############################################
+    @property
+    def realm_id(self):
+        return 2
+
+    @property
+    def default_language(self):
+        return 'de'
+
+    @property
+    def twenty_four_hour_time(self):
+        return True
+
+    @property
+    def color_scheme(self):
+        return 2
 
     # basic model stuff
     ############################################

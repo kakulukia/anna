@@ -55,31 +55,26 @@ def reset_password(request):
 
 @login_required
 def profile(request):
-    user_form = UserForm(instance=request.user)
+
+    def get_initial_value():
+        if request.user.forum_name:
+            return request.user.forum_name
+
+        name = request.user.get_full_name()
+
+        while User.data.filter(forum_name=name).exists():
+            name = name + '1'
+
+        return name
+
+    forum_name_form = ForumNameForm(instance=request.user, initial={'forum_name': get_initial_value()})
     password_form = ResetPasswordForm()
 
     if request.method == "POST":
-        user_form = UserForm(request.POST, instance=request.user)
-        if not user_form.is_valid():
-            print(user_form.errors)
-
-        user = User.objects.get(id=request.user.id)
-        user.first_name = (
-            request.POST.get("first_name")
-            if request.POST.get("first_name")
-            else user.first_name
-        )
-        user.last_name = (
-            request.POST.get("last_name") if request.POST.get("last_name") else user.last_name
-        )
-        user.username = (
-            request.POST.get("email") if request.POST.get("email") else user.username
-        )
-        user.email = request.POST.get("email") if request.POST.get("email") else user.email
-        user.save()
-        user_form = UserForm(instance=user)
-        messages.success(request, "Profile has been updated")
-        return redirect("profile")
+        forum_name_form = ForumNameForm(request.POST, instance=request.user)
+        if forum_name_form.is_valid():
+            messages.success(request, "Das Profil wurde aktualisiert.")
+            forum_name_form.save()
 
     device_sessions = Device.objects.filter(user=request.user)
     all_trainings = Access.objects.filter(user=request.user)
@@ -94,7 +89,7 @@ def profile(request):
 
     context = {
         "all_trainings": all_trainings,
-        "user_form": user_form,
+        "forum_name_form": forum_name_form,
         "page": "profile",
         "device_sessions": device_sessions,
         "password_form": password_form,
@@ -112,9 +107,9 @@ def signup(request):
     if request.user.is_authenticated:
         return redirect("index")
 
-    user_form = UserForm()
+    user_form = ForumNameForm()
     if request.method == "POST":
-        user_form = UserForm(request.POST)
+        user_form = ForumNameForm(request.POST)
         if user_form.is_valid():
             new_user = User.objects.create_user(**user_form.cleaned_data)
             messages.success(request, "You have beem registered successfully!")

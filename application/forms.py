@@ -15,6 +15,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.core import validators
+from django.core.exceptions import ValidationError
+from django.forms import ModelForm
 
 from .models import *
 
@@ -42,72 +44,26 @@ class LoginForm(forms.Form):
                 return None
             return user
         else:
-            self.add_error("email", "Diese Adresse ist nicht regestriert")
+            self.add_error("email", "Diese Adresse ist nicht registriert")
 
 
-class UserForm(UserCreationForm):
-    password1 = forms.CharField(
-        label="Password",
-        widget=forms.PasswordInput(
-            attrs={
-                "data-bs-toggle": "popover",
-                "title": "Password instructions",
-                "data-bs-html": "true",
-                "data-bs-content": " \
-                    <ul> \
-                        <li class='my-2'>Your password can’t be too similar to your other personal information.<br></li> \
-                        <li class='my-2'>Your password must contain at least 8 characters.<br></li> \
-                        <li class='my-2'>Your password can’t be a commonly used password.<br></li> \
-                        <li class='my-2'>Your password can’t be entirely numeric. </li> \
-                    </ul>",
-            }
-        ),
-        validators=[validate_password],
-        help_text=None,
-    )
-    # password1 = forms.CharField(label='Password', widget=forms.PasswordInput, help_text=None)
-    # city = forms.CharField(widget=forms.TextInput(attrs={'autocomplete':'off'}))
+class ForumNameForm(ModelForm):
 
     class Meta:
         model = User
-        fields = ("first_name", "last_name", "email", "password1", "password2")
+        fields = ('forum_name',)
 
-    def is_user_exists(self, email):
-        user = User.objects.filter(email=email)
+    @staticmethod
+    def does_name_exist(name):
+        user = User.data.filter(forum_name=name)
         return user.exists()
 
     def clean(self):
         cleaned_data = super().clean()
-        email = cleaned_data.get("email")
-        required_fields = ["first_name", "last_name", "email"]
+        forum_name = cleaned_data.get("forum_name")
 
-        # Validate email
-        regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
-
-        for i in required_fields:
-            my_field = cleaned_data.get(i)
-
-            if not my_field:
-                # raise forms.ValidationError("This field is required")
-                self.add_error(i, "Dieses Feld ist erforderlich")
-
-        if email:
-            # pass the regular expression
-            # and the string into the fullmatch() method
-            if not re.fullmatch(regex, email):
-                self.add_error("email", "Geben sie eine gültige E-Mail-Adresse an")
-
-            if self.is_user_exists(email):
-                self.add_error("email", "Diese Email-Adresse wurde bereits registriert")
-
-        # All test passed
-        if len(self.errors) == 0:
-            new_data = self.cleaned_data.copy()
-            new_data["username"] = new_data["email"]
-            new_data["password"] = new_data["password1"]
-            del new_data["password1"]
-            del new_data["password2"]
-            return new_data
+        if self.does_name_exist(forum_name):
+            self.add_error("forum_name", "Dieser Name ist nicht mehr verfügbar.")
 
 
 class ResetPasswordForm(forms.Form):

@@ -333,3 +333,14 @@ EMAIL_PORT = 465
 EMAIL_HOST_USER = "neuespasswort@liebendgern.de"
 EMAIL_HOST_PASSWORD = secrets.EMAIL_PASSWORD
 EMAIL_USE_SSL = True
+
+SSO = {
+    'ADDITIONAL_FIELDS': [
+        'realm_id',
+        'forum_name:full_name',
+        'email:delivery_email',
+        'default_language',
+        'twenty_four_hour_time',
+        'color_scheme'
+    ]
+}

@@ -46,7 +46,7 @@ def reset_password(request):
             user = request.user
             user.set_password(password)
             user.save()
-            messages.success(request, "Password has been updated successfully!")
+            messages.success(request, "Dein neues Passwort wurde gespeichert.")
         else:
             messages.error(request, password_form.errors)
 

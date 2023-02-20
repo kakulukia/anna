@@ -4,6 +4,7 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.timezone import now
 from django.utils.translation import gettext as _
@@ -154,7 +155,7 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         if self.forum_name:
             return "https://akademie.libendgern.de"
         else:
-            return "/profile/"
+            return reverse('profile')
 
     # def email_user(
     #     self, subject, message, from_email=settings.DEFAULT_FROM_EMAIL, **kwargs

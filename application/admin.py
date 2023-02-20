@@ -80,7 +80,7 @@ class DeviceInline(admin.StackedInline):
 
 
 class MembershipFilter(admin.SimpleListFilter):
-    title = 'Activ/Passiv'
+    title = 'Aktiv/Passiv'
     parameter_name = 'membership'
 
     def lookups(self, request, model_admin):

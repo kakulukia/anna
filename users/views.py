@@ -88,6 +88,7 @@ def create_or_update_lead_webhook(request):
 
                 user.contact_id = contact.id
                 user.lead_id = contact.lead_id
+                user.set_password('102938qpwoei')
                 user.save()
 
                 users.append(user)

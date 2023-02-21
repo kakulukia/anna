@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from prodict import Prodict
 
 from application.models import Product
+from my_secrets import secrets
 from users.models import User
 
 
@@ -88,7 +89,8 @@ def create_or_update_lead_webhook(request):
 
                 user.contact_id = contact.id
                 user.lead_id = contact.lead_id
-                user.set_password('102938qpwoei')
+                # new users get a default password
+                user.set_password(secrets.DEFAULT_USER_PASSWORD)
                 user.save()
 
                 users.append(user)

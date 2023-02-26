@@ -441,7 +441,7 @@ def media(request, training_id, module_id, media_id=None):
 
     context = {
         "module": module,
-        "media_set": media_set,
+        "media_set": media_set.order_by('ordering', 'name'),
     }
     return render(request, "all_media.html", context)
 

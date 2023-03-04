@@ -1,6 +1,6 @@
 server {
 	server_name test-anna.liebendgern.de;
-	client_max_body_size 1G;
+	client_max_body_size 5G;
 
   location = /favicon.ico { access_log off; log_not_found off; }
 

@@ -44,10 +44,11 @@ INSTALLED_APPS = [
     "storages",
     "django_quill",
     "django_secrets",
-    # adding django-agents to the installed apps
     "django_user_agents",
+    'huey.contrib.djhuey',
     "debug_toolbar",
     "django_sso.sso_gateway",
+    "webapp",
 ]
 
 AUTH_USER_MODEL = "users.User"
@@ -343,4 +344,13 @@ SSO = {
         'twenty_four_hour_time',
         'color_scheme'
     ]
+}
+
+HUEY = {
+    'name': 'my-app',
+
+    # To run Huey in "immediate" mode with a live storage API, specify
+    'immediate_use_memory': False,
+    # To run Huey in "live" mode regardless of whether DEBUG is enabled,
+    'immediate': False,
 }

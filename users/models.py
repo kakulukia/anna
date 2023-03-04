@@ -127,7 +127,6 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         medias = Media.data.filter(module__training__in=self.access_set.values('training')).count()
         completed = self.completed_set.all().count()
         if medias and completed:
-            ic(self, completed, medias)
             self.progress = completed / medias * 100
             self.save()
 

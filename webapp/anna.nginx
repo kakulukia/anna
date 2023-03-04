@@ -6,7 +6,7 @@ server {
 
   location / {
     include proxy_params;
-	  proxy_pass http://unix:/tmp/gunicorn.sock;
+	  proxy_pass http://unix:/tmp/anna.sock;
   }
 
   location /static/ {

@@ -1,2 +1,2 @@
 #!/bin/zsh
-.venv/bin/gunicorn webapp.wsgi:application --worker-class='gevent'
+.venv/bin/gunicorn --worker-class='gevent' --bind unix:/tmp/anna.sock webapp.wsgi:application

@@ -342,7 +342,9 @@ SSO = {
         'email:delivery_email',
         'default_language',
         'twenty_four_hour_time',
-        'color_scheme'
+        'color_scheme',
+        'tos_version',
+        'role',
     ]
 }
 

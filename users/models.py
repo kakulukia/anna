@@ -81,6 +81,14 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     def color_scheme(self):
         return 2
 
+    @property
+    def tos_version(self):
+        return '1.0'
+
+    @property
+    def role(self):
+        return 100 if self.is_superuser else 400
+
     # basic model stuff
     ############################################
     data = UserDataManager()

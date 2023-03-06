@@ -423,7 +423,7 @@ a:hover, .nav-link:hover{
 
 .form-floating>label {
   top: 4px;
-  left: 12px;
+  left: 0;
 }
 
 body {

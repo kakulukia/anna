@@ -151,17 +151,17 @@
                             Name: {{ user.full_name }}<br>
                             E-Mail: {{ user.email }}<br>
                             <br>
-                            {% if False and user.forum_name %}
+                            {% if user.forum_name %}
                               Forumname: {{ user.forum_name }}
                             {% else %}
-                              <!--span style="color: darkred; font-weight: bold">Bevor es losgeht: </span>
+                              <span style="color: darkred; font-weight: bold">Bevor es losgeht: </span>
                               Bitte trage hier deinen Nutzernamen für das Forum ein. Der Nutzername kann nicht mehr geändert werden.<br>
                               <br>
                               <form action="{% url 'profile' %}" method="post" class="mb-0">
                                   {% csrf_token %}
                                   {% bootstrap_form forum_name_form layout="floating" %}
                                   <button type="submit" name="" id="" class="btn theme-secondary-btn mb-0 btn-lg w-100">Speichern</button>
-                              </form-->
+                              </form>
                             {% endif %}
                         </div>
                     </div>

@@ -430,6 +430,9 @@ body {
     display: grid;
     grid-template-rows: 69px 1fr 147px;
 }
+body.forum {
+    grid-template-rows: 69px 1fr;
+}
 
 .btn.start-media {
   min-width: 133px;

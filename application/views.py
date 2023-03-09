@@ -517,3 +517,8 @@ def appointments(request):
         "appointments": Appointment.data.upcoming()
     }
     return render(request, "appointments.html", context)
+
+
+@login_required
+def forum(request):
+    return render(request, "forum.html")

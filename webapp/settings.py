@@ -356,3 +356,5 @@ HUEY = {
     # To run Huey in "live" mode regardless of whether DEBUG is enabled,
     'immediate': False,
 }
+
+X_FRAME_OPTIONS = 'ALLOWALL'

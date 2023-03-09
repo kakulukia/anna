@@ -59,14 +59,14 @@
 </head>
 
 <body>
-    <div>
-      {% include 'inc/header.inc.html' %}
-    </div>
-    <div>
+  <div>
+    {% include 'inc/header.inc.html' %}
+  </div>
+  <div>
     {% block content %}
     {% endblock content %}
-    </div>
-
+  </div>
+  {% block footer %}
     <footer class="text-white" style="background-color: #f1f1f1;">
         <!-- Grid container -->
         <div class="container pt-4">
@@ -126,6 +126,7 @@
         </div>
         <!-- Copyright -->
     </footer>
+  {% endblock footer %}
   <script type="text/javascript">
     document.getElementById('copyright-year').innerText = new Date().getFullYear().toString()
   </script>

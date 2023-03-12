@@ -1,0 +1,20 @@
+// -load django_bootstrap5
+
+.container
+    .login-div
+        .login-form
+            div
+                include inc/msgs.inc.html
+
+            .form.border.p-4.background-light(style="min-width: 330px;")
+                form(action="." method="post")
+                    -csrf_token
+                    .d-grid
+                        | {{ form.as_p }}
+                        input(type="hidden" name="next" value="/")
+
+                    .d-grid.gap-2
+                        button.btn.theme-secondary-btn(type="submit") Einloggen
+                br
+                div
+                    a(href="/password_reset/") Benutzername oder Passwort vergessen?

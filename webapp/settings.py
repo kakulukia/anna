@@ -1,4 +1,5 @@
 import os
+import pathlib
 
 from icecream import install
 
@@ -7,8 +8,7 @@ install()
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from my_secrets import secrets
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+BASE_DIR = pathlib.Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "django_sso.sso_gateway",
     "webapp",
+    "django_browser_reload",
+    "compressor",
 ]
 
 AUTH_USER_MODEL = "users.User"
@@ -77,22 +79,32 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # middleware for django-agents
     "django_user_agents.middleware.UserAgentMiddleware",
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
+
 ]
 
 ROOT_URLCONF = "webapp.urls"
 
 TEMPLATES = [
     {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "templates")],
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
-                "application.context_processors.aws_media",
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'],
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+            # PyPugJS part:
+            'loaders': [
+                ('pypugjs.ext.django.Loader', (
+                    'django.template.loaders.filesystem.Loader',
+                    'django.template.loaders.app_directories.Loader',
+                ))
+            ],
+            'builtins': [
+                'pypugjs.ext.django.templatetags',
             ],
         },
     },
@@ -152,7 +164,7 @@ LANGUAGES = (('de', 'de'),)
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_URL = "/signin/"
+LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/"
 
 BOOTSTRAP5 = {
@@ -337,13 +349,8 @@ EMAIL_USE_SSL = True
 
 SSO = {
     'ADDITIONAL_FIELDS': [
-        'realm_id',
         'forum_name:full_name',
         'email:delivery_email',
-        'default_language',
-        'twenty_four_hour_time',
-        'color_scheme',
-        'tos_version',
         'role',
     ]
 }
@@ -358,3 +365,10 @@ HUEY = {
 }
 
 X_FRAME_OPTIONS = 'ALLOWALL'
+COMPRESS_PRECOMPILERS = (("text/x-sass", "sass {infile} {outfile}"),)
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # other finders..
+    'compressor.finders.CompressorFinder',
+)

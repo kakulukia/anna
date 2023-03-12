@@ -103,64 +103,10 @@ def index(request):
     return redirect("trainings")
 
 
-def signup(request):
-    if request.user.is_authenticated:
-        return redirect("index")
-
-    user_form = ForumNameForm()
-    if request.method == "POST":
-        user_form = ForumNameForm(request.POST)
-        if user_form.is_valid():
-            new_user = User.objects.create_user(**user_form.cleaned_data)
-            messages.success(request, "You have beem registered successfully!")
-
-            folder_names = ["Term Papers", "Quizzes", "Project"]
-            for folder in folder_names:
-                new_folder = Folder(name=folder, user=new_user)
-                new_folder.save()
-            return redirect("signin")
-
-    context = {"user_form": user_form}
-    return render(request, "signup.html", context)
-
-
-# function for login
-
-
-def signin(request):
-    if request.user.is_authenticated:
-        return redirect("index")
-
-    login_form = LoginForm()
-    if request.method == "POST":
-        login_form = LoginForm(request.POST)
-        if login_form.is_valid():
-            user = login_form.cleaned_data
-            # print(user)
-            print("============= LOGIN IN START ===============")
-            login(request, user)
-            print("============= LOGIN IN END ===============")
-            return redirect("trainings")
-
-            # if new_device.is_already_exists():
-            #     login(request, login_form.cleaned_data)
-            #     return redirect("index")
-            # else:
-            #     if new_device.is_limit_reached():
-            #         messages.error(request, 'Max Account Limit Reached!!')
-            #         return redirect("index")
-            #     else:
-            #         new_device.save()
-            #         login(request, login_form.cleaned_data)
-            #         return redirect("index")
-
-    return render(request, "login.html", {"login_form": login_form})
-
-
 # function for logout
 def signout(request):
     logout(request)
-    return redirect("signin")
+    return redirect("login")
 
 
 # Function for checking the browser, IP-address, and device info of the user

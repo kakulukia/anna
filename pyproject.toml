@@ -32,11 +32,14 @@ mutagen = "^1.45.1"
 opencv-python = "^4.6.0.66"
 django-debug-toolbar = "^3.4.0"
 requests = "^2.28.1"
-django-sso = "^2.0.0"
+django-sso = "^3.0.0"
 prodict = "^0.8.18"
 pendulum = "^2.1.2"
 huey = "^2.4.5"
 redis = "^4.5.1"
+django-browser-reload = "^1.7.0"
+pypugjs = "^5.9.12"
+django-compressor = "^4.3.1"
 
 
 [build-system]

@@ -28,7 +28,7 @@ Register to <i>mamaAnywhere</i>
 
             <div class="card text-center my-4">
               <div class="card-body">
-                <p class="card-text">Already a member? <a href="{% url 'signin' %}" class="link-text">Sign in now</a></p>
+                <p class="card-text">Already a member? <a href="{% url 'login' %}" class="link-text">Sign in now</a></p>
               </div>
             </div>
         </div>
@@ -39,7 +39,7 @@ Register to <i>mamaAnywhere</i>
 
 
 <script>
- 
+
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
         return new bootstrap.Popover(popoverTriggerEl)

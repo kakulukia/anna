@@ -1,4 +1,4 @@
-{% load static %}
+{% load static compress %}
 {% load django_bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
@@ -6,61 +6,64 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, maximum-scale=1.0, user-scalable=no">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="{% static 'assets/css/my-custom.css' %}?17">
-    <link rel="shortcut icon" href="/static/assets/img/favicon{% if STAGE %}-test{% endif %}.png" type="image/x-icon">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, maximum-scale=1.0, user-scalable=no">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel="stylesheet" href="{% static 'assets/css/my-custom.css' %}?17">
+      <link rel="shortcut icon" href="/static/assets/img/favicon{% if STAGE %}-test{% endif %}.png" type="image/x-icon">
+      {% compress css %}
+        <link rel='stylesheet' type='text/x-sass' href='{% static "assets/sass/styles.sass" %}'>
+      {% endcompress %}
+      <title>{% block title %}{% endblock title %}</title>
+      <style>
+          .background-light {
+              background-color: #f6f8fa;
+          }
 
-    <title>{% block title %}{% endblock title %}</title>
-    <style>
-        .background-light {
-            background-color: #f6f8fa;
-        }
+          div,
+          input,
 
-        div,
-        input,
+          button.btn {
+              padding: 12px !important;
+          }
 
-        button.btn {
-            padding: 12px !important;
-        }
+          form{
+              margin-bottom: 0 !important;
+          }
 
-        form{
-            margin-bottom: 0 !important;
-        }
+          .text-main-head{
+              font-size: 33px;
+          }
 
-        .text-main-head{
-            font-size: 33px;
-        }
+          .link-text, .link-text:hover{
+              text-decoration: none;
+              font-weight: 600;
+              color: #de7b5f;
+          }
 
-        .link-text, .link-text:hover{
-            text-decoration: none;
-            font-weight: 600;
-            color: #de7b5f;
-        }
+          .popover{
+              box-shadow: 2px 2px 2px #cccccc;
+          }
 
-        .popover{
-            box-shadow: 2px 2px 2px #cccccc;
-        }
+          .popover-header{
+              background-color: #198754;
+              color: white;
+          }
+      </style>
+  </head>
+  <body>
+      <div class="text-center py-4 mt-4">
+          <img class="appLogo" src="{% if STAGE %}{% static 'img/mylogoneu-test.png' %}{% else %}{% static 'img/mylogoneu.png' %}{% endif %}" style="width:190px" alt="Logo">
+          <!-- <i class="material-icons theme-primary-text" style="font-size: 80px; user-select: auto;">local_library</i> -->
+          <h1 class="display-6 mb-0 mt-4 text-main-head">
+              {% block form_title %}{% endblock form_title %}
+          </h1>
+      </div>
 
-        .popover-header{
-            background-color: #198754;
-            color: white;
-        }
-    </style>
-</head>
-<body>
-    <div class="text-center py-4 mt-4">
-        <img class="appLogo" src="{% if STAGE %}{% static 'img/mylogoneu-test.png' %}{% else %}{% static 'img/mylogoneu.png' %}{% endif %}" style="width:190px" alt="Logo">
-        <!-- <i class="material-icons theme-primary-text" style="font-size: 80px; user-select: auto;">local_library</i> -->
-        <h1 class="display-6 mb-0 mt-4 text-main-head">
-            {% block form_title %}{% endblock form_title %}
-        </h1>
-    </div>
-    {% block content %}
-    {% endblock content %}
+      {% block content %}
+      {% endblock content %}
 
-</body>
+  </body>
 </html>

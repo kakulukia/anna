@@ -66,26 +66,6 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     # additional fields for SSO with Zulip
     ############################################
     @property
-    def realm_id(self):
-        return 2
-
-    @property
-    def default_language(self):
-        return 'de'
-
-    @property
-    def twenty_four_hour_time(self):
-        return True
-
-    @property
-    def color_scheme(self):
-        return 2
-
-    @property
-    def tos_version(self):
-        return '1.0'
-
-    @property
     def role(self):
         return 100 if self.is_superuser else 400
 
@@ -94,7 +74,7 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     data = UserDataManager()
     objects = (
         UserDataManager()
-    )  # this should stay due to compatibility issues with 3rd party libs
+    )
 
     EMAIL_FIELD = "email"
     USERNAME_FIELD = "username"

@@ -11,8 +11,6 @@ urlpatterns = [
     path("forum", views.forum, name="forum"),
     path("profile/", views.profile, name="profile"),
     path("reset-password", views.reset_password, name="reset-password"),
-    path("signup/", views.signup, name="signup"),
-    path("signin/", views.signin, name="signin"),
     path("logout/", views.signout, name="logout"),
 
     # Test path for checking the browser, IP-address, and device info of the user

@@ -1,9 +1,12 @@
 {% extends 'inc/base.html' %}
 {% load static %}
+
 {% load django_bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_messages %}
 {% bootstrap_javascript %}
+{% block title %}Login{% endblock title %}
+{% block form_title %}Bitte einloggen{% endblock form_title %}
 
 {% block content %}
   {% include 'login.pug' %}

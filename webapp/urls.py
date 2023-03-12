@@ -18,8 +18,10 @@ urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
     path("admin", RedirectView.as_view(url="/admin/")),
     path("", include("application.urls")),
+
     path('__debug__/', include('debug_toolbar.urls')),
-    # path('accounts/', include('django.contrib.auth.urls')),
+    path("__reload__/", include("django_browser_reload.urls")),
+
     path('', include('django_sso.sso_gateway.urls')),
     path('api/lead-webhook/', create_or_update_lead_webhook),
 

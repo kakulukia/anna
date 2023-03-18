@@ -1,10 +1,13 @@
 from django.contrib import admin, messages
+from django.contrib.admin.utils import quote
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.decorators import login_required
 from django.db.models import OuterRef, Subquery, F, Value
 from django.db.models.functions import Concat
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, QueryDict
 from django.shortcuts import get_object_or_404
+from django.utils.html import format_html
+from django.utils.http import urlencode
 from django.utils.safestring import mark_safe
 
 from .models import *
@@ -221,8 +224,25 @@ class PageAdmin(admin.ModelAdmin):
 
 
 @admin.register(Appointment)
-class EventAdmin(admin.ModelAdmin):
-    ...
+class AppointmentAdmin(admin.ModelAdmin):
+    list_display = ['name', 'date', 'clone_button']
+
+    @admin.display(description='')
+    def clone_button(self, appointment: Appointment):
+        data = QueryDict('', mutable=True)
+        data.update({
+            'name': appointment.name,
+            # 'date': appointment.date,
+            'start_time': appointment.start_time,
+            'description': appointment.description,
+            'link': appointment.link,
+        })
+
+        # Construct the add URL with initial data
+        add_url = reverse('admin:application_appointment_add')
+        add_url += f'?{data.urlencode()}'
+
+        return format_html(f'<a class="button" href="{add_url}">Klonen</a>')
 
 
 @admin.register(Product)

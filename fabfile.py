@@ -82,7 +82,7 @@ def update_static():
     with cd(env.path):
 
         # print(green("compressing files .."))
-        # manage("compress -e pug,html --force")
+        manage("compress")
         # manage("compilescss")
 
         print(green("collecting static files .."))

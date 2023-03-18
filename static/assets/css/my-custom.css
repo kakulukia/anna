@@ -433,6 +433,13 @@ body {
 body.forum {
     grid-template-rows: 69px 1fr;
 }
+body.login {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  justify-content: center;
+  margin-top: -50px;
+}
 
 .btn.start-media {
   min-width: 133px;

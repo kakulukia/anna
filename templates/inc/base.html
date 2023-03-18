@@ -22,7 +22,7 @@
               background-color: #f6f8fa;
           }
 
-          div,
+          {#div,#}
           input,
 
           button.btn {
@@ -53,7 +53,7 @@
           }
       </style>
   </head>
-  <body>
+  <body class="{% block bodyclass %}{% endblock bodyclass %}">
       <div class="text-center py-4 mt-4">
           <img class="appLogo" src="{% if STAGE %}{% static 'img/mylogoneu-test.png' %}{% else %}{% static 'img/mylogoneu.png' %}{% endif %}" style="width:190px" alt="Logo">
           <!-- <i class="material-icons theme-primary-text" style="font-size: 80px; user-select: auto;">local_library</i> -->

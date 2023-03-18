@@ -5,8 +5,12 @@
 {% bootstrap_css %}
 {% bootstrap_messages %}
 {% bootstrap_javascript %}
+
 {% block title %}Login{% endblock title %}
+{% block bodyclass %}login{% endblock bodyclass %}
 {% block form_title %}Bitte einloggen{% endblock form_title %}
+
+
 
 {% block content %}
   {% include 'login.pug' %}

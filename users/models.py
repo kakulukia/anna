@@ -117,6 +117,9 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         if medias and completed:
             self.progress = completed / medias * 100
             self.save()
+        elif self.progress:
+            self.progress = 0
+            self.save()
 
     @property
     def active_member(self):

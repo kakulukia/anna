@@ -123,6 +123,9 @@ class Training(BaseModel):
     ordering = models.IntegerField("Sortierung", default=0)
 
     stick_to_the_plan = models.BooleanField('Reihenfolge einhalten', default=False)
+    assign_after_days = models.IntegerField(
+        help_text="Wird nach der eingestellten Anzahl an Tagen in der Mitgliedschaft autmatisch freigegeben.",
+        verbose_name="Automatisch freigeben", default=0)  # used to grant access for users automatically after some time
 
     class Meta(BaseModel.Meta):
         verbose_name = "Kurs"

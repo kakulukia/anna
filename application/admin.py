@@ -38,7 +38,8 @@ class TrainingAdmin(admin.ModelAdmin):
                     "description",
                     "thumbnail",
                     "stick_to_the_plan",
-                    "ordering"
+                    "ordering",
+                    "assign_after_days",
                 )
             },
         ),

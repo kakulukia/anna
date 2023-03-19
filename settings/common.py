@@ -355,15 +355,6 @@ SSO = {
     ]
 }
 
-HUEY = {
-    'name': 'my-app',
-
-    # To run Huey in "immediate" mode with a live storage API, specify
-    'immediate_use_memory': False,
-    # To run Huey in "live" mode regardless of whether DEBUG is enabled,
-    'immediate': False,
-}
-
 X_FRAME_OPTIONS = 'ALLOWALL'
 COMPRESS_PRECOMPILERS = (("text/x-sass", "sass {infile} {outfile}"),)
 STATICFILES_FINDERS = (
@@ -373,3 +364,15 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 COMPRESS_OFFLINE = True
+
+HUEY = {
+    # To run Huey in "immediate" mode with a live storage API, specify
+    'immediate_use_memory': False,
+    # To run Huey in "live" mode regardless of whether DEBUG is enabled,
+    'immediate': False,
+    'connection': {
+        'host': 'localhost',
+        'port': 6379,
+        'db': 0,
+    },
+}

@@ -1,4 +1,4 @@
-from .settings import *
+from .common import *  # nopq
 
 STAGE = True
 
@@ -9,3 +9,15 @@ JAZZMIN_SETTINGS["topmenu_links"] = [
     {"name": f"Seite Anzeigen ({'STAGE' if STAGE else 'LIVE'})", "url": "index", "permissions": []},
     {"model": "users.User"},
 ]
+
+HUEY = {
+    # To run Huey in "immediate" mode with a live storage API, specify
+    'immediate_use_memory': False,
+    # To run Huey in "live" mode regardless of whether DEBUG is enabled,
+    'immediate': False,
+    'connection': {
+        'host': 'localhost',
+        'port': 6379,
+        'db': 2,  # different DB for stage
+    },
+}

@@ -1,10 +1,22 @@
+import pendulum
 import requests
-from huey.contrib.djhuey import task
+from django.db.models import Q
+from huey import crontab
+from huey.contrib.djhuey import task, db_task, db_periodic_task
+
+from application.models import Training, Access
+from users.models import User
+
+
+@task()
+def test():
+    ic('testerei')
 
 
 @task()
 def update_close(lead_id: str, data: dict):
-    ic(data)
+    """ updates the given close lead with the given data """
+    ic(lead_id, data)
     headers = {
         "Authorization": "Basic YXBpXzNQM1ZIbnVua0preHVSdGV5UmMxN2suM2xySHg1SmJIaHhhSTNVekpWM09JNDo6",
         "Content-Type": "application/json"
@@ -14,10 +26,30 @@ def update_close(lead_id: str, data: dict):
     ic(response.content)
 
 
-def test_task():
-    lead_id = "lead_t0UL605Vh3qZWgSQOPOw5nCI0XxRTwiBn61OyIhRyDC"
+def init_close_user(user: User):
+
+    url = f"https://anna.liebendgern.de/admin/users/user/{user.id}/change/"
+    ac_email_status_field = 'custom.cf_79mOR5o3dSep8ug5RbeFRriZZlCkLURC3yutNXy2L8a'
+
     data = {
-        "url": "https://anna.liebendgern.de/",
-        "custom.cf_Ps3oP5tcq7QwWgOPzsFdaDBK9zDC4Gpga4ozsh0xXQb": 17
+        'url': url,
+        ac_email_status_field: 'Ja',
     }
-    update_close(lead_id, data)
+
+    update_close(user.lead_id, data)
+
+
+@db_periodic_task(crontab(minute='12', hour='3'))
+def check_trainings():
+    trainings = Training.data.filter(assign_after_days__gt=0)
+    for training in trainings:
+        check_date = pendulum.now().subtract(days=training.assign_after_days)
+        users = User.data.filter(start_date__lt=check_date).filter(~Q(access__training=training))
+
+        if not users:
+            ic("heute gibt's niemanden anzupassen")
+
+        for user in users:
+            access = user.access_set.create(training=training)
+            ic(access.user, access)
+

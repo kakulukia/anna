@@ -12,6 +12,7 @@ from prodict import Prodict
 from application.models import Product
 from my_secrets import secrets
 from users.models import User
+from webapp.tasks import init_close_user
 
 
 class Email(Prodict):
@@ -92,6 +93,8 @@ def create_or_update_lead_webhook(request):
                 # new users get a default password
                 user.set_password(secrets.DEFAULT_USER_PASSWORD)
                 user.save()
+
+                init_close_user(user)
 
                 users.append(user)
 

@@ -232,7 +232,6 @@ class AppointmentAdmin(admin.ModelAdmin):
         data = QueryDict('', mutable=True)
         data.update({
             'name': appointment.name,
-            # 'date': appointment.date,
             'start_time': appointment.start_time,
             'description': appointment.description,
             'link': appointment.link,

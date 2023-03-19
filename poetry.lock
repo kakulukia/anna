@@ -310,16 +310,23 @@ future = ">=0.18.2,<0.19.0"
 six = ">=1.11,<2.0"
 
 [[package]]
-name = "django-sso"
+name = "django_sso"
 version = "3.0.1"
-description = "Django Single Sign-On implementation"
+description = ""
 category = "main"
 optional = false
 python-versions = ">=3"
+develop = false
 
 [package.dependencies]
 django = "*"
 requests = "*"
+
+[package.source]
+type = "git"
+url = "https://github.com/kakulukia/django-sso"
+reference = "HEAD"
+resolved_reference = "f98dd16ef11ab34f9e658db907f9664a244c7964"
 
 [[package]]
 name = "django-storages"
@@ -1058,7 +1065,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10.4"
-content-hash = "302b71c89f8e6154bf6ca3eab5e06aed0f0cb5acb6ca0c6c5bec2e87f139aac7"
+content-hash = "b93f57a983e1de9948517dae8cb7f7398b98e488205210a993cf197c01c6757d"
 
 [metadata.files]
 appnope = [
@@ -1363,9 +1370,7 @@ django-secrets = [
     {file = "django_secrets-1.2.4-py3-none-any.whl", hash = "sha256:2aae6e0c70464599f7f2838945908bd249cac80593c0e3320a17634047f90213"},
     {file = "django_secrets-1.2.4.tar.gz", hash = "sha256:383631c60e1d33ab202c3c96e8709f583135b954783dccb2223db4d729412584"},
 ]
-django-sso = [
-    {file = "django_sso-3.0.1.tar.gz", hash = "sha256:20b6890bc01b3ef21913a1da20077f17a786dde4530498ed572e07bd5db84b59"},
-]
+django_sso = []
 django-storages = [
     {file = "django-storages-1.13.2.tar.gz", hash = "sha256:cbadd15c909ceb7247d4ffc503f12a9bec36999df8d0bef7c31e57177d512688"},
     {file = "django_storages-1.13.2-py3-none-any.whl", hash = "sha256:31dc5a992520be571908c4c40d55d292660ece3a55b8141462b4e719aa38eab3"},

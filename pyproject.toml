@@ -32,7 +32,7 @@ mutagen = "^1.45.1"
 opencv-python = "^4.6.0.66"
 django-debug-toolbar = "^3.4.0"
 requests = "^2.28.1"
-django-sso = "^3.0.0"
+django-sso = {git = "https://github.com/kakulukia/django-sso"}
 prodict = "^0.8.18"
 pendulum = "^2.1.2"
 huey = "^2.4.5"

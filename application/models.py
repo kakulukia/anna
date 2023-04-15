@@ -45,7 +45,6 @@ class Device(models.Model):
 
     # Function for checking the browser, IP-address, and device info of the user
     def set_browser_info(self, request):
-
         # status of mobile, pc or tablet
         is_mobile = request.user_agent.is_mobile
         is_tablet = request.user_agent.is_tablet
@@ -122,10 +121,12 @@ class Training(BaseModel):
     modified = models.DateTimeField(auto_now=True, editable=False, null=True)
     ordering = models.IntegerField("Sortierung", default=0)
 
-    stick_to_the_plan = models.BooleanField('Reihenfolge einhalten', default=False)
+    stick_to_the_plan = models.BooleanField("Reihenfolge einhalten", default=False)
     assign_after_days = models.IntegerField(
         help_text="Wird nach der eingestellten Anzahl an Tagen in der Mitgliedschaft autmatisch freigegeben.",
-        verbose_name="Automatisch freigeben", default=0)  # used to grant access for users automatically after some time
+        verbose_name="Automatisch freigeben",
+        default=0,
+    )  # used to grant access for users automatically after some time
 
     class Meta(BaseModel.Meta):
         verbose_name = "Kurs"
@@ -161,7 +162,7 @@ class Training(BaseModel):
         from html2text import html2text
 
         text = html2text(self.description.html, bodywidth=400)
-        text = re.sub('\n\n', '\n', text)
+        text = re.sub("\n\n", "\n", text)
         return text
 
 
@@ -208,7 +209,7 @@ class Module(BaseModel):
         return all_media
 
     def get_progress(self, completed_ids):
-        """ used to get the progress for a different user """
+        """used to get the progress for a different user"""
         completed = self.media_set.filter(id__in=completed_ids).count()
         if completed:
             return int(completed / self.media_set.count() * 100)
@@ -216,8 +217,10 @@ class Module(BaseModel):
 
     @cached_property
     def progress(self):
-        if not hasattr(self, 'completed_count'):
-            raise Exception('progress darf hier nicht aufgerufen werden - es fehlt eine Annotation')
+        if not hasattr(self, "completed_count"):
+            raise Exception(
+                "progress darf hier nicht aufgerufen werden - es fehlt eine Annotation"
+            )
         if not self.completed_count:
             return 0
         return int((self.completed_count / self.media_set.count()) * 100)
@@ -227,7 +230,7 @@ class AttachmentStorage(FileSystemStorage):
     location = "media/attachments"
 
     def url(self, name):
-        return '/media/attachments/' + name
+        return "/media/attachments/" + name
 
 
 class Media(BaseModel):
@@ -246,7 +249,9 @@ class Media(BaseModel):
         blank=True,
         verbose_name="Nächstes",
     )
-    attachment = models.FileField(verbose_name="Anhang", null=True, storage=AttachmentStorage, blank=True)
+    attachment = models.FileField(
+        verbose_name="Anhang", null=True, storage=AttachmentStorage, blank=True
+    )
 
     modified = models.DateTimeField(auto_now=True, editable=False, null=True)
 
@@ -258,9 +263,7 @@ class Media(BaseModel):
     def __str__(self):
         return self.name
 
-    def save(
-        self, force_insert=False, force_update=False, using=None, update_fields=None
-    ):
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         super().save(force_insert, force_update, using, update_fields)
         # length must be saved after uploading the file since x3 will handle umlauts
         # and duplicated file names ..ergo the filename will likely change
@@ -272,6 +275,7 @@ class Media(BaseModel):
     def get_length(self):
         if self.get_file_type() == "audio":
             from mutagen.mp3 import MP3
+
             audio = MP3(self.file)
             length = audio.info.length
         else:
@@ -287,8 +291,8 @@ class Media(BaseModel):
 
     @cached_property
     def progress(self):
-        if not hasattr(self, 'is_completed'):
-            raise Exception('Annotation fehlt!')
+        if not hasattr(self, "is_completed"):
+            raise Exception("Annotation fehlt!")
         if self.is_completed:
             return 100
         return 0
@@ -331,7 +335,7 @@ class Completed(BaseModel):
         verbose_name = "Abgeschlossen"
 
     def __str__(self):
-        return f'{self.media.name} ({self.media.id})'
+        return f"{self.media.name} ({self.media.id})"
 
 
 class Page(BaseModel):
@@ -366,22 +370,22 @@ class Appointment(BaseModel):
     class Meta(BaseModel.Meta):
         verbose_name = "Termin"
         verbose_name_plural = "Termine"
-        ordering = ['date', 'start_time']
+        ordering = ["date", "start_time"]
 
     def __str__(self):
-        return f'{self.name } ({self.date})'
+        return f"{self.name } ({self.date})"
 
 
 class Product(BaseModel):
-    name = models.CharField(verbose_name='Name', max_length=100)
+    name = models.CharField(verbose_name="Name", max_length=100)
     courses = models.ManyToManyField(Training, verbose_name="Kurse")
-    free = models.BooleanField('unbeschränkt', default=False)
+    free = models.BooleanField("unbeschränkt", default=False)
     teaser = models.BooleanField(verbose_name="Beziehungs1x1", default=False)
     membership = models.BooleanField(verbose_name="Akademie Beziehungskit", default=False)
 
     class Meta(BaseModel.Meta):
-        verbose_name = 'Produkt'
-        verbose_name_plural = 'Produkte'
+        verbose_name = "Produkt"
+        verbose_name_plural = "Produkte"
 
     def __str__(self):
         return self.name

@@ -80,7 +80,6 @@ def migrate():
 
 def update_static():
     with cd(env.path):
-
         # print(green("compressing files .."))
         manage("compress")
         # manage("compilescss")

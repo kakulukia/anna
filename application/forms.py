@@ -48,10 +48,9 @@ class LoginForm(forms.Form):
 
 
 class ForumNameForm(ModelForm):
-
     class Meta:
         model = User
-        fields = ('forum_name',)
+        fields = ("forum_name",)
 
     @staticmethod
     def does_name_exist(name):

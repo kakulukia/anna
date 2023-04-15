@@ -31,7 +31,12 @@ def remove_other_sessions(sender, user, request, **kwargs):
                 return
 
         if new_device.limit_is_nearly_reached():
-            messages.warning(request, mark_safe("Du hast bereits 4 Geräte angemeldet, bitte lösche ein Gerät <a href='/profile/#devices'>hier >>></a>."))
+            messages.warning(
+                request,
+                mark_safe(
+                    "Du hast bereits 4 Geräte angemeldet, bitte lösche ein Gerät <a href='/profile/#devices'>hier >>></a>."
+                ),
+            )
 
     new_device.save()
 
@@ -55,7 +60,6 @@ def reset_password(request):
 
 @login_required
 def profile(request):
-
     def get_initial_value():
         if request.user.forum_name:
             return request.user.forum_name
@@ -63,11 +67,13 @@ def profile(request):
         name = request.user.get_full_name()
 
         while User.data.filter(forum_name=name).exists():
-            name = name + '1'
+            name = name + "1"
 
         return name
 
-    forum_name_form = ForumNameForm(instance=request.user, initial={'forum_name': get_initial_value()})
+    forum_name_form = ForumNameForm(
+        instance=request.user, initial={"forum_name": get_initial_value()}
+    )
     password_form = ResetPasswordForm()
 
     if request.method == "POST":
@@ -111,7 +117,6 @@ def signout(request):
 
 # Function for checking the browser, IP-address, and device info of the user
 def get_browser_info(request):
-
     # status of mobile, pc or tablet
     is_mobile = request.user_agent.is_mobile
     is_tablet = request.user_agent.is_tablet
@@ -203,18 +208,17 @@ def progress(request):
     all_users = User.data.filter(is_superuser=False)
     search_text = ""
     if request.method == "POST" and "filter" in request.POST:
-        search_text = request.POST['filter']
-        all_users = all_users.filter(Q(first_name__icontains=search_text) | Q(last_name__icontains=search_text))
+        search_text = request.POST["filter"]
+        all_users = all_users.filter(
+            Q(first_name__icontains=search_text) | Q(last_name__icontains=search_text)
+        )
     updated_users = []
     for user in all_users:
         access_objects = get_accessed_training(user)
         updated_users.append({"user": user, "count": access_objects.count()})
 
-    context = {
-        "users": updated_users,
-        "search_text": search_text
-    }
-    return render(request, "progress/index.html", context )
+    context = {"users": updated_users, "search_text": search_text}
+    return render(request, "progress/index.html", context)
 
 
 @login_required
@@ -257,9 +261,15 @@ def all_modules(request, training_id):
         messages.error(request, "Du hast keinen Zugriff auf diesen Kurs.")
         return redirect("trainings")
 
-    modules = Module.data.filter(training=training).annotate(
-        completed_count=Count('media__completed', filter=Q(media__completed__user=request.user))
-    ).order_by('ordering')
+    modules = (
+        Module.data.filter(training=training)
+        .annotate(
+            completed_count=Count(
+                "media__completed", filter=Q(media__completed__user=request.user)
+            )
+        )
+        .order_by("ordering")
+    )
     context = {"training": training, "modules": modules}
     return render(request, "all_modules.html", context)
 
@@ -267,8 +277,14 @@ def all_modules(request, training_id):
 @login_required
 def all_medias(request, training_id, module_id):
     training = get_object_or_404(Training, id=training_id)
-    module = get_object_or_404(Module.data.all().annotate(completed_count=Count(
-        'media__completed', filter=Q(media__completed__user=request.user))), id=module_id)
+    module = get_object_or_404(
+        Module.data.all().annotate(
+            completed_count=Count(
+                "media__completed", filter=Q(media__completed__user=request.user)
+            )
+        ),
+        id=module_id,
+    )
 
     if not Access.objects.filter(user=request.user, training=training).exists():
         messages.error(request, "Du hast keinen Zugriff auf diesen Kurs.")
@@ -302,7 +318,9 @@ def progress_modules(request, id, training_id):
         module.user_progress = module.get_progress(completed_media_ids)
 
     # Fetching completed medias
-    completed_media_ids = Completed.data.filter(user=current_user).values_list("media_id", flat=True)
+    completed_media_ids = Completed.data.filter(user=current_user).values_list(
+        "media_id", flat=True
+    )
 
     context = {
         "completed_media": completed_media_ids,
@@ -370,24 +388,30 @@ def get_remaining_media_id(all_media_ids_list, completed_media_ids_list):
 @login_required
 def media(request, training_id, module_id, media_id=None):
     module = Module.data.annotate(
-        completed_count=Count('media__completed', filter=Q(media__completed__user=request.user))).get(id=module_id)
+        completed_count=Count(
+            "media__completed", filter=Q(media__completed__user=request.user)
+        )
+    ).get(id=module_id)
 
     if not Access.objects.filter(user=request.user, training=module.training).exists():
         messages.error(request, "Du hast keinen Zugriff auf diesen Kurs.")
         return redirect("trainings")
 
     media_set = Media.data.filter(module=module).annotate(
-        is_completed=Count('completed', filter=Q(completed__user=request.user)))
+        is_completed=Count("completed", filter=Q(completed__user=request.user))
+    )
     # annotate the previous media if any for reference in the next step
-    previous = Media.data.filter(next=OuterRef('pk')).values('id')[:1]
+    previous = Media.data.filter(next=OuterRef("pk")).values("id")[:1]
     media_set = media_set.annotate(previous=Subquery(previous))
 
-    previous_completed = Completed.data.filter(media=OuterRef('previous'), user=request.user)
-    media_set = media_set.annotate(previous_completed=Subquery(previous_completed.values('id')))
+    previous_completed = Completed.data.filter(media=OuterRef("previous"), user=request.user)
+    media_set = media_set.annotate(
+        previous_completed=Subquery(previous_completed.values("id"))
+    )
 
     context = {
         "module": module,
-        "media_set": media_set.order_by('ordering', 'name'),
+        "media_set": media_set.order_by("ordering", "name"),
     }
     return render(request, "all_media.html", context)
 
@@ -436,7 +460,9 @@ def mark_as_done(request, media_id):
 def single_media(request, training_id, module_id, media_id):
     training = Training.objects.get(id=training_id)
     module = Module.objects.get(id=module_id)
-    media = Media.objects.annotate(is_completed=Count('completed', filter=Q(completed__user=request.user))).get(id=media_id)
+    media = Media.objects.annotate(
+        is_completed=Count("completed", filter=Q(completed__user=request.user))
+    ).get(id=media_id)
     medias = Media.objects.filter(module=module)
     context = {
         "module": module,
@@ -444,7 +470,9 @@ def single_media(request, training_id, module_id, media_id):
         "training": training,
         "medias": medias,
     }
-    template = "single_media_content.html" if "video-only" in request.GET else "single_media.html"
+    template = (
+        "single_media_content.html" if "video-only" in request.GET else "single_media.html"
+    )
     return render(request, template, context)
 
 
@@ -459,9 +487,7 @@ def render_flatpage(request, url):
 
 @login_required
 def appointments(request):
-    context = {
-        "appointments": Appointment.data.upcoming()
-    }
+    context = {"appointments": Appointment.data.upcoming()}
     return render(request, "appointments.html", context)
 
 

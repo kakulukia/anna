@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     "django_quill",
     "django_secrets",
     "django_user_agents",
-    'huey.contrib.djhuey',
+    "huey.contrib.djhuey",
     "debug_toolbar",
     "django_sso.sso_gateway",
     "webapp",
@@ -80,32 +80,34 @@ MIDDLEWARE = [
     # middleware for django-agents
     "django_user_agents.middleware.UserAgentMiddleware",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
-
 ]
 
 ROOT_URLCONF = "webapp.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
                 "application.context_processors.aws_media",
             ],
             # PyPugJS part:
-            'loaders': [
-                ('pypugjs.ext.django.Loader', (
-                    'django.template.loaders.filesystem.Loader',
-                    'django.template.loaders.app_directories.Loader',
-                ))
+            "loaders": [
+                (
+                    "pypugjs.ext.django.Loader",
+                    (
+                        "django.template.loaders.filesystem.Loader",
+                        "django.template.loaders.app_directories.Loader",
+                    ),
+                )
             ],
-            'builtins': [
-                'pypugjs.ext.django.templatetags',
+            "builtins": [
+                "pypugjs.ext.django.templatetags",
             ],
         },
     },
@@ -161,7 +163,7 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = False
 
-LANGUAGES = (('de', 'de'),)
+LANGUAGES = (("de", "de"),)
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -183,7 +185,7 @@ BOOTSTRAP5 = {
 
 # --------------------- media files configuration for development-----------------#
 # MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # -------------------------AWS S3 CONFIGURATION---------------------------#
 AWS_ACCESS_KEY_ID = secrets.AWS_ACCESS_KEY_ID
@@ -243,8 +245,11 @@ JAZZMIN_SETTINGS = {
     "topmenu_links": [
         # Url that gets reversed (Permissions can be added)
         {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
-
-        {"name": f"Seite Anzeigen ({'STAGE' if STAGE else 'LIVE'})", "url": "index", "permissions": []},
+        {
+            "name": f"Seite Anzeigen ({'STAGE' if STAGE else 'LIVE'})",
+            "url": "index",
+            "permissions": [],
+        },
         # model admin to link to (Permissions checked against model)
         {"model": "users.User"},
     ],
@@ -252,8 +257,7 @@ JAZZMIN_SETTINGS = {
     # User Menu #
     #############
     # Additional links to include in the user menu on the top right ("app" url type is not allowed)
-    "usermenu_links": [
-    ],
+    "usermenu_links": [],
     #############
     # Side Menu #
     #############
@@ -267,12 +271,14 @@ JAZZMIN_SETTINGS = {
         "auth",
     ],
     "custom_links": {
-        "application": [{
-            "name": "Seite anzeigen",
-            "url": "index",
-            "icon": "fas fa-globe",
-            "permissions": []
-        }]
+        "application": [
+            {
+                "name": "Seite anzeigen",
+                "url": "index",
+                "icon": "fas fa-globe",
+                "permissions": [],
+            }
+        ]
     },
     # Hide these models when generating side menu (e.g auth.user)
     "hide_models": ["application.Completed", "application.access"],
@@ -332,10 +338,10 @@ QUILL_CONFIGS = {
         "modules": {
             "syntax": True,
             "toolbar": [
-                [{'header': 1}, {'header': 2}],
-                ['bold', 'italic', 'underline', 'strike', {"color": []}, {"align": []}],
-                [{'list': 'ordered'}, {'list': 'bullet'}],
-                ['clean', 'link'],
+                [{"header": 1}, {"header": 2}],
+                ["bold", "italic", "underline", "strike", {"color": []}, {"align": []}],
+                [{"list": "ordered"}, {"list": "bullet"}],
+                ["clean", "link"],
             ],
         },
     },
@@ -349,31 +355,31 @@ EMAIL_HOST_PASSWORD = secrets.EMAIL_PASSWORD
 EMAIL_USE_SSL = True
 
 SSO = {
-    'ADDITIONAL_FIELDS': [
-        'forum_name:full_name',
-        'email:delivery_email',
-        'role',
+    "ADDITIONAL_FIELDS": [
+        "forum_name:full_name",
+        "email:delivery_email",
+        "role",
     ]
 }
 
-X_FRAME_OPTIONS = 'ALLOWALL'
+X_FRAME_OPTIONS = "ALLOWALL"
 COMPRESS_PRECOMPILERS = (("text/x-sass", "sass {infile} {outfile}"),)
 STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
     # other finders..
-    'compressor.finders.CompressorFinder',
+    "compressor.finders.CompressorFinder",
 )
 COMPRESS_OFFLINE = True
 
 HUEY = {
     # To run Huey in "immediate" mode with a live storage API, specify
-    'immediate_use_memory': False,
+    "immediate_use_memory": False,
     # To run Huey in "live" mode regardless of whether DEBUG is enabled,
-    'immediate': False,
-    'connection': {
-        'host': 'localhost',
-        'port': 6379,
-        'db': 0,
+    "immediate": False,
+    "connection": {
+        "host": "localhost",
+        "port": 6379,
+        "db": 0,
     },
 }

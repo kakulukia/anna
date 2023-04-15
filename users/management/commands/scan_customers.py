@@ -9,7 +9,6 @@ class Command(BaseCommand):
     help = "My shiny new management command."
 
     def handle(self, *args, **options):
-
         url = "https://api.close.com/api/v1/data/search/"
 
         payload = {
@@ -17,11 +16,7 @@ class Command(BaseCommand):
             "query": {
                 "negate": False,
                 "queries": [
-                    {
-                        "negate": False,
-                        "object_type": "lead",
-                        "type": "object_type"
-                    },
+                    {"negate": False, "object_type": "lead", "type": "object_type"},
                     {
                         "negate": False,
                         "queries": [
@@ -30,26 +25,28 @@ class Command(BaseCommand):
                                 "queries": [
                                     {
                                         "condition": {
-                                            "object_ids": ["stat_tTavpuXAKbYABanvJFHnbpQmTY4LloW2nmSl74RU8hr"],
+                                            "object_ids": [
+                                                "stat_tTavpuXAKbYABanvJFHnbpQmTY4LloW2nmSl74RU8hr"
+                                            ],
                                             "reference_type": "status.lead",
-                                            "type": "reference"
+                                            "type": "reference",
                                         },
                                         "field": {
                                             "field_name": "status_id",
                                             "object_type": "lead",
-                                            "type": "regular_field"
+                                            "type": "regular_field",
                                         },
                                         "negate": False,
-                                        "type": "field_condition"
+                                        "type": "field_condition",
                                     }
                                 ],
-                                "type": "and"
+                                "type": "and",
                             }
                         ],
-                        "type": "and"
-                    }
+                        "type": "and",
+                    },
                 ],
-                "type": "and"
+                "type": "and",
             },
             "results_limit": 50,
             "sort": [
@@ -58,21 +55,21 @@ class Command(BaseCommand):
                     "field": {
                         "field_name": "date_created",
                         "object_type": "lead",
-                        "type": "regular_field"
-                    }
+                        "type": "regular_field",
+                    },
                 }
             ],
             "include_counts": True,
-            "_limit": 200
+            "_limit": 200,
         }
         headers = {
             "Authorization": "Basic YXBpXzNQM1ZIbnVua0preHVSdGV5UmMxN2suM2xySHg1SmJIaHhhSTNVekpWM09JNDo6",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         }
 
         response = requests.request("POST", url, json=payload, headers=headers)
 
-        data = response.json()['data']
+        data = response.json()["data"]
         # ic(data)
 
         for lead in data:
@@ -81,15 +78,14 @@ class Command(BaseCommand):
             response = requests.request("GET", url, headers=headers)
 
             lead_data = response.json()
-            for contact in lead_data['contacts']:
+            for contact in lead_data["contacts"]:
                 email_filter = Q()
 
-                if not len(contact['emails']):
+                if not len(contact["emails"]):
                     continue
 
-                for email in contact['emails']:
-                    email_filter |= Q(email__iexact=email['email'])
+                for email in contact["emails"]:
+                    email_filter |= Q(email__iexact=email["email"])
 
                 qs = User.data.filter(email_filter)
                 ic(qs)
-

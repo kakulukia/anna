@@ -1,3 +1,3 @@
-from .stage import *  #noqa
+from .stage import *  # noqa
 
 DEBUG = True

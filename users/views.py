@@ -29,12 +29,10 @@ class Contact(Prodict):
 
 @csrf_exempt
 def create_or_update_lead_webhook(request):
-
     def get_contact_data(contact_ids):
-
         headers = {
             "Authorization": "Basic YXBpXzNQM1ZIbnVua0preHVSdGV5UmMxN2suM2xySHg1SmJIaHhhSTNVekpWM09JNDo6",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         }
         url = "https://api.close.com/api/v1/contact/"
         data = []
@@ -44,12 +42,12 @@ def create_or_update_lead_webhook(request):
         return data
 
     def parse_duration(string: str):
-        parts = string.split('-')
+        parts = string.split("-")
         end = dateutil.parser.parse(parts[1], dayfirst=True)
-        start_string = parts[0] + (str(end.year) if not parts[0].split('.')[-1] else '')
+        start_string = parts[0] + (str(end.year) if not parts[0].split(".")[-1] else "")
         start = dateutil.parser.parse(start_string, dayfirst=True)
         if start > end:
-            start = pendulum.instance(start, tz='local').subtract(years=1)
+            start = pendulum.instance(start, tz="local").subtract(years=1)
         return start, end
 
     def get_users(lead_id: str, contact_ids: list) -> List[User]:
@@ -73,7 +71,7 @@ def create_or_update_lead_webhook(request):
                     user = qs.get()
                 else:
                     # try to find an existing contact via email
-                    names = contact.display_name.split(' ')
+                    names = contact.display_name.split(" ")
                     email = contact.emails[0].email
 
                     qs = User.data.filter(email__iexact=email)
@@ -83,7 +81,7 @@ def create_or_update_lead_webhook(request):
                         # otherwise crate a new user
                         user = User.data.create(
                             email=email,
-                            first_name=' '.join(names[:-1]),
+                            first_name=" ".join(names[:-1]),
                             last_name=names[-1],
                             username=email,
                         )
@@ -100,7 +98,7 @@ def create_or_update_lead_webhook(request):
 
         return users
 
-    if request.content_type == 'application/json':
+    if request.content_type == "application/json":
         data = json.loads(request.body)
 
         event = Prodict.from_dict(data).event
@@ -115,14 +113,12 @@ def create_or_update_lead_webhook(request):
             users = get_users(event.lead_id, event.data.contact_ids)
 
             for user in users:
-
                 if zoom_link in event.data:
                     user.zoom_link = event.data[zoom_link]
                     user.save()
 
                 # now lets set or update the duration
                 if duration_field in event.data:
-
                     start, end = parse_duration(event.data[duration_field])
 
                     user.start_date = start
@@ -132,7 +128,6 @@ def create_or_update_lead_webhook(request):
                 # for all listed products -> add access
                 for product in Product.data.all():
                     if product.name in options or product.free:
-
                         if not user.bought_teaser and product.teaser:
                             user.bought_teaser = True
                             user.save()
@@ -146,4 +141,3 @@ def create_or_update_lead_webhook(request):
         return HttpResponse(status=202)
     else:
         return HttpResponse(status=400, content="Content-Type must be application/json")
-

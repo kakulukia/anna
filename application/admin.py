@@ -25,7 +25,7 @@ class MediaInline(admin.StackedInline):
 
 @admin.register(Training)
 class TrainingAdmin(admin.ModelAdmin):
-    list_display = ['name', 'ordering']
+    list_display = ["name", "ordering"]
     inlines = [ModuleInline]
     actions = None
 
@@ -50,20 +50,20 @@ class TrainingAdmin(admin.ModelAdmin):
 class ModuleAdmin(admin.ModelAdmin):
     inlines = [MediaInline]
     actions = None
-    list_display = ['name', 'ordering', 'next']
-    list_filter = ['training']
+    list_display = ["name", "ordering", "next"]
+    list_filter = ["training"]
 
 
 @admin.register(Media)
 class MediaAdmin(admin.ModelAdmin):
     actions = None
-    list_display = ['name', 'ordering', 'length', 'next', 'attachment']
-    list_filter = ['module']
-    search_fields = ['name']
+    list_display = ["name", "ordering", "length", "next", "attachment"]
+    list_filter = ["module"]
+    search_fields = ["name"]
 
     def save_model(self, request, obj, form, change):
-        if 'file' in form.changed_data:
-            obj.length = ''
+        if "file" in form.changed_data:
+            obj.length = ""
         super().save_model(request, obj, form, change)
 
 
@@ -84,20 +84,20 @@ class DeviceInline(admin.StackedInline):
 
 
 class MembershipFilter(admin.SimpleListFilter):
-    title = 'Aktiv/Passiv'
-    parameter_name = 'membership'
+    title = "Aktiv/Passiv"
+    parameter_name = "membership"
 
     def lookups(self, request, model_admin):
         return (
-            ('active', 'Aktiv'),
-            ('inactive', 'Passiv'),
+            ("active", "Aktiv"),
+            ("inactive", "Passiv"),
         )
 
     def queryset(self, request, queryset):
         now = timezone.now()
-        if self.value() == 'active':
+        if self.value() == "active":
             return queryset.filter(start_date__lte=now, end_date__gte=now)
-        if self.value() == 'inactive':
+        if self.value() == "inactive":
             return queryset.exclude(start_date__lte=now, end_date__gte=now)
 
 
@@ -106,7 +106,7 @@ class UserAdmin(BaseUserAdmin):
     inlines = [AccessInline, DeviceInline]
     list_display = (
         "email",
-        'forum_name',
+        "forum_name",
         "first_or_username",
         "last_name",
         "other_user_name_display",
@@ -116,11 +116,11 @@ class UserAdmin(BaseUserAdmin):
         "status",
         "option",
     )
-    list_display_links = ['email', 'first_or_username']
+    list_display_links = ["email", "first_or_username"]
     list_filter = ["is_superuser", ("zoom_link", admin.EmptyFieldListFilter), MembershipFilter]
     actions = None
     ordering = ("-created",)
-    readonly_fields = ["customer_link", 'option', "partner_link"]
+    readonly_fields = ["customer_link", "option", "partner_link"]
     fieldsets = (
         (
             "Stammdaten",
@@ -157,9 +157,12 @@ class UserAdmin(BaseUserAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        subquery = User.objects.filter(lead_id=OuterRef('lead_id')).exclude(id=OuterRef('pk')).annotate(
-            other_user_name=Concat(F('first_name'), Value(" "), F('last_name')))
-        qs = qs.annotate(other_user_name=Subquery(subquery.values('other_user_name')))
+        subquery = (
+            User.objects.filter(lead_id=OuterRef("lead_id"))
+            .exclude(id=OuterRef("pk"))
+            .annotate(other_user_name=Concat(F("first_name"), Value(" "), F("last_name")))
+        )
+        qs = qs.annotate(other_user_name=Subquery(subquery.values("other_user_name")))
         return qs
 
     @admin.display(description="Partner")
@@ -168,22 +171,23 @@ class UserAdmin(BaseUserAdmin):
 
     def first_or_username(self, user: User):
         return user.first_name if user.first_name else user.username
-    first_or_username.short_description = "Vorname"
-    first_or_username.admin_order_field = 'first_name'
 
-    @admin.display(description='Zoom', boolean=True)
+    first_or_username.short_description = "Vorname"
+    first_or_username.admin_order_field = "first_name"
+
+    @admin.display(description="Zoom", boolean=True)
     def zoom(self, user: User):
         return bool(user.zoom_link)
 
-    @admin.display(description='Status')
+    @admin.display(description="Status")
     def status(self, user: User):
         if user.bought_membership and user.active_member:
-            return 'Aktiv'
+            return "Aktiv"
         if user.bought_membership:
-            return 'Passiv'
+            return "Passiv"
         if user.bought_teaser:
-            return '1x1'
-        return '-'
+            return "1x1"
+        return "-"
 
     def option(self, obj):
         # or anything you prefer e.g. an edit button
@@ -199,15 +203,15 @@ class UserAdmin(BaseUserAdmin):
 
     option.short_description = "Fortschritt"
 
-    @admin.display(description='Lead')
+    @admin.display(description="Lead")
     def customer_link(self, user: User):
         if user.customer_url:
             link = f'<a href="{user.customer_url}" target="_blank">In Close anzeigen</a>'
             return mark_safe(link)
         else:
-            return '-'
+            return "-"
 
-    @admin.display(description='Partner')
+    @admin.display(description="Partner")
     def partner_link(self, user: User):
         if user.contact_id and user.lead_id:
             partner = User.data.filter(lead_id=user.lead_id).exclude(id=user.id)
@@ -215,7 +219,7 @@ class UserAdmin(BaseUserAdmin):
                 partner = partner.get()
                 link = f'<a href="{reverse("admin:users_user_change", args=[partner.id])}" >{partner.full_name}</a>'
                 return mark_safe(link)
-        return 'unbekannt'
+        return "unbekannt"
 
 
 @admin.register(Page)
@@ -226,33 +230,34 @@ class PageAdmin(admin.ModelAdmin):
 
 @admin.register(Appointment)
 class AppointmentAdmin(admin.ModelAdmin):
-    list_display = ['name', 'date', 'clone_button']
+    list_display = ["name", "date", "clone_button"]
 
-    @admin.display(description='')
+    @admin.display(description="")
     def clone_button(self, appointment: Appointment):
-        data = QueryDict('', mutable=True)
-        data.update({
-            'name': appointment.name,
-            'start_time': appointment.start_time,
-            'description': appointment.description,
-            'link': appointment.link,
-        })
+        data = QueryDict("", mutable=True)
+        data.update(
+            {
+                "name": appointment.name,
+                "start_time": appointment.start_time,
+                "description": appointment.description,
+                "link": appointment.link,
+            }
+        )
 
         # Construct the add URL with initial data
-        add_url = reverse('admin:application_appointment_add')
-        add_url += f'?{data.urlencode()}'
+        add_url = reverse("admin:application_appointment_add")
+        add_url += f"?{data.urlencode()}"
 
         return format_html(f'<a class="button" href="{add_url}">Klonen</a>')
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'free', 'list_courses']
+    list_display = ["name", "free", "list_courses"]
     actions = None
 
     def list_courses(self, product: Product):
+        course_names = product.courses.values_list("name", flat=True)
+        return ", ".join(course_names)
 
-        course_names = product.courses.values_list('name', flat=True)
-        return ', '.join(course_names)
-
-    list_courses.short_description = 'Kurse'
+    list_courses.short_description = "Kurse"

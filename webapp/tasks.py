@@ -10,16 +10,16 @@ from users.models import User
 
 @task()
 def test():
-    ic('testerei')
+    ic("testerei")
 
 
 @task()
 def update_close(lead_id: str, data: dict):
-    """ updates the given close lead with the given data """
+    """updates the given close lead with the given data"""
     ic(lead_id, data)
     headers = {
         "Authorization": "Basic YXBpXzNQM1ZIbnVua0preHVSdGV5UmMxN2suM2xySHg1SmJIaHhhSTNVekpWM09JNDo6",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
     }
     url = f"https://api.close.com/api/v1/lead/{lead_id}/"
     response = requests.put(url, headers=headers, json=data)
@@ -27,24 +27,25 @@ def update_close(lead_id: str, data: dict):
 
 
 def init_close_user(user: User):
-
     url = f"https://anna.liebendgern.de/admin/users/user/{user.id}/change/"
-    ac_email_status_field = 'custom.cf_79mOR5o3dSep8ug5RbeFRriZZlCkLURC3yutNXy2L8a'
+    ac_email_status_field = "custom.cf_79mOR5o3dSep8ug5RbeFRriZZlCkLURC3yutNXy2L8a"
 
     data = {
-        'url': url,
-        ac_email_status_field: 'Ja',
+        "url": url,
+        ac_email_status_field: "Ja",
     }
 
     update_close(user.lead_id, data)
 
 
-@db_periodic_task(crontab(minute='12', hour='3'))
+@db_periodic_task(crontab(minute="12", hour="3"))
 def check_trainings():
     trainings = Training.data.filter(assign_after_days__gt=0)
     for training in trainings:
         check_date = pendulum.now().subtract(days=training.assign_after_days)
-        users = User.data.filter(start_date__lt=check_date).filter(~Q(access__training=training))
+        users = User.data.filter(start_date__lt=check_date).filter(
+            ~Q(access__training=training)
+        )
 
         if not users:
             ic("heute gibt's niemanden anzupassen")
@@ -52,4 +53,3 @@ def check_trainings():
         for user in users:
             access = user.access_set.create(training=training)
             ic(access.user, access)
-

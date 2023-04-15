@@ -52,12 +52,16 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
 
     start_date = models.DateField("Start-Datum", blank=True, null=True)
     end_date = models.DateField("Ablauf-Datum", blank=True, null=True)
-    bought_teaser = models.BooleanField(verbose_name='Beziehungs1x1', default=False)
-    bought_membership = models.BooleanField(verbose_name='Akademie Beziehungskit', default=False)
+    bought_teaser = models.BooleanField(verbose_name="Beziehungs1x1", default=False)
+    bought_membership = models.BooleanField(
+        verbose_name="Akademie Beziehungskit", default=False
+    )
 
     zoom_link = models.URLField("Zoom-Link", blank=True, null=True)
     progress = models.FloatField(default=0)
-    forum_name = models.CharField(verbose_name="Forumname", max_length=40, null=True, blank=True)
+    forum_name = models.CharField(
+        verbose_name="Forumname", max_length=40, null=True, blank=True
+    )
 
     # CLOSE CMS STUFF - two contacts will share the same lead
     lead_id = models.CharField(max_length=70, null=True)
@@ -72,9 +76,7 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     # basic model stuff
     ############################################
     data = UserDataManager()
-    objects = (
-        UserDataManager()
-    )
+    objects = UserDataManager()
 
     EMAIL_FIELD = "email"
     USERNAME_FIELD = "username"
@@ -86,7 +88,7 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
 
     @property
     def full_name(self):
-        return f'{self.first_name} {self.last_name}'
+        return f"{self.first_name} {self.last_name}"
 
     def clean(self):
         super(AbstractBaseUser, self).clean()
@@ -112,7 +114,9 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     def update_progress(self):
         from application.models import Media
 
-        medias = Media.data.filter(module__training__in=self.access_set.values('training')).count()
+        medias = Media.data.filter(
+            module__training__in=self.access_set.values("training")
+        ).count()
         completed = self.completed_set.all().count()
         if medias and completed:
             self.progress = completed / medias * 100
@@ -123,13 +127,12 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
 
     @property
     def active_member(self):
-        if self.start_date and self. end_date:
+        if self.start_date and self.end_date:
             return self.start_date <= now().date() <= self.end_date
         return False
 
     @property
     def customer_url(self):
-
         if not self.lead_id:
             return None
 
@@ -145,7 +148,7 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         if self.forum_name:
             return "https://akademie.libendgern.de"
         else:
-            return reverse('profile')
+            return reverse("profile")
 
     # def email_user(
     #     self, subject, message, from_email=settings.DEFAULT_FROM_EMAIL, **kwargs

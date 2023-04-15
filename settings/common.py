@@ -3,10 +3,10 @@ import pathlib
 
 from icecream import install
 
+from my_secrets import secrets
+
 install()
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-from my_secrets import secrets
 
 BASE_DIR = pathlib.Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -217,18 +217,18 @@ PRIVATE_FILE_STORAGE = "webapp.storages.PrivateMediaStorage"
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
     "site_title": "Kurs Admin",
-    # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    # Title on the login screen (19 chars max)
     "site_header": "",
-    # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    # Title on the brand (19 chars max)
     "site_brand": "",
     # Logo to use for your site, must be present in static files, used for brand on top left
     # "site_logo": "books/img/logo.png",
     # CSS classes that are applied to the logo above
     "site_logo_classes": "none",
     "site_logo": "img/mylogo-test-login.png" if STAGE else "img/mylogo-gruen-login.png",
-    # Logo to use for your site, must be present in static files, used for login form logo (defaults to site_logo)
+    # Logo to use for your site, must be present in static files, used for login form logo
     "login_logo": None,
-    # Relative path to a favicon for your site, will default to site_logo if absent (ideally 32x32 px)
+    # Relative path to a favicon for your site, will default to site_logo if absent
     "site_icon": "assets/img/favicon-test.png" if STAGE else "assets/img/favicon.png",
     # Welcome text on the login screen
     "welcome_sign": "",
@@ -236,7 +236,8 @@ JAZZMIN_SETTINGS = {
     "copyright": "Anna Holfeld",
     # The model admin to search from the search bar, search bar omitted if excluded
     "search_model": "users.User",
-    # Field name on user model that contains avatar ImageField/URLField/Charfield or a callable that receives the user
+    # Field name on user model that contains avatar ImageField/URLField/Charfield
+    # or a callable that receives the user
     "user_avatar": None,
     ############
     # Top Menu #
@@ -282,7 +283,7 @@ JAZZMIN_SETTINGS = {
     },
     # Hide these models when generating side menu (e.g auth.user)
     "hide_models": ["application.Completed", "application.access"],
-    # List of apps (and/or models) to base side menu ordering off of (does not need to contain all apps/models)
+    # List of apps (and/or models) to base side menu ordering off of
     "order_with_respect_to": [
         "application.training",
         "application.module",
@@ -312,7 +313,6 @@ JAZZMIN_SETTINGS = {
     # UI Tweaks #
     #############
     # Relative paths to custom CSS/JS scripts (must be present in static files)
-    "custom_css": None,
     "custom_css": "assets/css/admin.css",
     "custom_js": None,
     # Whether to show the UI customizer on the sidebar

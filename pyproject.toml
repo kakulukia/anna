@@ -27,7 +27,6 @@ fabric3 = {git = "https://github.com/kakulukia/fabric3.git"}
 icecream = "^2.1.2"
 django-undeletable = "^1.1.2"
 black = "^23.1.0"
-isort = "^5.10.1"
 mutagen = "^1.45.1"
 opencv-python = "^4.6.0.66"
 django-debug-toolbar = "^3.4.0"
@@ -40,7 +39,8 @@ redis = "^4.5.1"
 django-browser-reload = "^1.7.0"
 pypugjs = "^5.9.12"
 django-compressor = "^4.3.1"
-
+ruff = "^0.0.261"
+pre-commit = "^3.2.2"
 
 [build-system]
 requires = ["poetry-core"]
@@ -56,5 +56,19 @@ exclude = '''
 )/
 '''
 
-[tool.isort]
-profile = "black"
+[tool.ruff]
+line-length = 99
+exclude = [
+    "migrations",
+    "node_modules",
+    ".venv",
+]
+select = [
+    # Pyflakes
+    "F",
+    # Pycodestyle
+    "E",
+    "W",
+    # isort
+    "I001"
+]

@@ -1,14 +1,28 @@
+import re
 import uuid
 
 from django.contrib import messages
-from django.contrib.auth import login, logout, user_logged_in
+from django.contrib.auth import logout, user_logged_in
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count, Q, OuterRef, Subquery
+from django.db.models import Count, OuterRef, Q, Subquery
+from django.dispatch import receiver
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 
-from .forms import *
+from application.forms import ForumNameForm, ResetPasswordForm
+from application.models import (
+    Access,
+    Appointment,
+    Completed,
+    Device,
+    Media,
+    Module,
+    Page,
+    Training,
+)
+from users.models import User
 
 
 # Signals to add device in logged in device
@@ -34,7 +48,8 @@ def remove_other_sessions(sender, user, request, **kwargs):
             messages.warning(
                 request,
                 mark_safe(
-                    "Du hast bereits 4 Geräte angemeldet, bitte lösche ein Gerät <a href='/profile/#devices'>hier >>></a>."
+                    "Du hast bereits 4 Geräte angemeldet."
+                    "Bitte lösche ein Gerät <a href='/profile/#devices'>hier >>></a>."
                 ),
             )
 
@@ -132,11 +147,20 @@ def get_browser_info(request):
 
     # fetching the device info
     device_name = request.user_agent.device.family
-    ip = get_client_ip(request)
+    ip = Device.get_client_ip(request)
 
     test = ":".join(re.findall("..", "%012x" % uuid.getnode()))
 
-    str = f"The {request.user.last_name} is on the Mobile: {is_mobile}\nThe {request.user.last_name} is on the Tablet: {is_tablet}\nThe {request.user.last_name} is on the PC: {is_pc}\nThe {request.user.last_name} Browser is: {browser_family}\nThe {request.user.last_name} Browser Version is: {browser_version}\nThe {request.user.last_name} OS is: {os_family}\nThe {request.user.last_name} OS Version is: {os_version}\nThe {request.user.last_name} Device is: {device_name}\n\n{test}"
+    str = (
+        f"The {request.user.last_name} is on the Mobile: {is_mobile}\n"
+        f"The {request.user.last_name} is on the Tablet: {is_tablet}\n"
+        f"The {request.user.last_name} is on the PC: {is_pc}\n"
+        f"The {request.user.last_name} Browser is: {browser_family}\n"
+        f"The {request.user.last_name} Browser Version is: {browser_version}\n"
+        f"The {request.user.last_name} OS is: {os_family}\n"
+        f"The {request.user.last_name} OS Version is: {os_version}\n"
+        f"The {request.user.last_name} Device is: {device_name}\n\n{test}"
+    )
     # print(test)
     # print(type(test))
 

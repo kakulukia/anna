@@ -2,28 +2,29 @@ import pendulum
 import requests
 from django.db.models import Q
 from huey import crontab
-from huey.contrib.djhuey import task, db_task, db_periodic_task
+from huey.contrib.djhuey import db_periodic_task, task
 
-from application.models import Training, Access
+from application.models import Training
 from users.models import User
 
 
 @task()
 def test():
-    ic("testerei")
+    ic("testerei")  # noqa
 
 
 @task()
 def update_close(lead_id: str, data: dict):
     """updates the given close lead with the given data"""
-    ic(lead_id, data)
+    ic(lead_id, data)  # noqa
+    auth_token = "YXBpXzNQM1ZIbnVua0preHVSdGV5UmMxN2suM2xySHg1SmJIaHhhSTNVekpWM09JNDo6"
     headers = {
-        "Authorization": "Basic YXBpXzNQM1ZIbnVua0preHVSdGV5UmMxN2suM2xySHg1SmJIaHhhSTNVekpWM09JNDo6",
+        "Authorization": f"Basic {auth_token}",
         "Content-Type": "application/json",
     }
     url = f"https://api.close.com/api/v1/lead/{lead_id}/"
     response = requests.put(url, headers=headers, json=data)
-    ic(response.content)
+    ic(response.content)  # noqa
 
 
 def init_close_user(user: User):
@@ -48,8 +49,8 @@ def check_trainings():
         )
 
         if not users:
-            ic("heute gibt's niemanden anzupassen")
+            ic("heute gibt's niemanden anzupassen")  # noqa
 
         for user in users:
             access = user.access_set.create(training=training)
-            ic(access.user, access)
+            ic(access.user, access)  # noqa

@@ -35,7 +35,8 @@ class Device(models.Model):
         verbose_name_plural = "Geräte"
 
     # method to fetch the ip of client
-    def get_client_ip(self, request):
+    @staticmethod
+    def get_client_ip(request):
         x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
         if x_forwarded_for:
             ip = x_forwarded_for.split(",")[0]
@@ -62,12 +63,10 @@ class Device(models.Model):
         # fetching the browser info
         browser_family = request.user_agent.browser.family
         self.browser = browser_family
-        browser_version = request.user_agent.browser.version
 
         # fetching the os info
         os_family = request.user_agent.os.family
         self.os = os_family
-        os_version = request.user_agent.os.version
 
         # fetching the device info
         device_name = request.user_agent.device.family
@@ -105,7 +104,10 @@ class Device(models.Model):
         super(Device, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.user} - ({self.os}, {self.browser}, {self.device_type}, {self.ip}, {self.session.session_key})"
+        return (
+            f"{self.user} - ({self.os}, {self.browser}, "
+            f"{self.device_type}, {self.ip}, {self.session.session_key})"
+        )
 
 
 # signal to remove session from DB after deleting the device
@@ -123,7 +125,8 @@ class Training(BaseModel):
 
     stick_to_the_plan = models.BooleanField("Reihenfolge einhalten", default=False)
     assign_after_days = models.IntegerField(
-        help_text="Wird nach der eingestellten Anzahl an Tagen in der Mitgliedschaft autmatisch freigegeben.",
+        help_text="Wird nach der eingestellten Anzahl an Tagen in der "
+        "Mitgliedschaft automatisch freigegeben.",
         verbose_name="Automatisch freigeben",
         default=0,
     )  # used to grant access for users automatically after some time

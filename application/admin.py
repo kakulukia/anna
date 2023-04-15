@@ -1,16 +1,24 @@
-from django.contrib import admin, messages
-from django.contrib.admin.utils import quote
+from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.decorators import login_required
-from django.db.models import OuterRef, Subquery, F, Value
+from django.db.models import F, OuterRef, Subquery, Value
 from django.db.models.functions import Concat
-from django.http import HttpResponseRedirect, QueryDict
-from django.shortcuts import get_object_or_404
+from django.http import QueryDict
+from django.urls import reverse
+from django.utils import timezone
 from django.utils.html import format_html
-from django.utils.http import urlencode
 from django.utils.safestring import mark_safe
 
-from .models import *
+from application.models import (
+    Access,
+    Appointment,
+    Device,
+    Media,
+    Module,
+    Page,
+    Product,
+    Training,
+)
+from users.models import User
 
 
 class ModuleInline(admin.StackedInline):
@@ -198,7 +206,10 @@ class UserAdmin(BaseUserAdmin):
             return None
         user_id = obj.id
         url = reverse("progress-training", args=[user_id])
-        element = f'<a href = "{url}" target="_blank" title="Fortschritt anzeigen"><i class="far fa-chart-bar"></i></a>'
+        element = (
+            f'<a href = "{url}" target="_blank" title="Fortschritt anzeigen">'
+            f'<i class="far fa-chart-bar"></i></a>'
+        )
         return mark_safe(element)
 
     option.short_description = "Fortschritt"
@@ -217,7 +228,10 @@ class UserAdmin(BaseUserAdmin):
             partner = User.data.filter(lead_id=user.lead_id).exclude(id=user.id)
             if partner:
                 partner = partner.get()
-                link = f'<a href="{reverse("admin:users_user_change", args=[partner.id])}" >{partner.full_name}</a>'
+                link = (
+                    f'<a href="{reverse("admin:users_user_change", args=[partner.id])}" >'
+                    f"{partner.full_name}</a>"
+                )
                 return mark_safe(link)
         return "unbekannt"
 

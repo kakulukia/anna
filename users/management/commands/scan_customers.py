@@ -62,8 +62,9 @@ class Command(BaseCommand):
             "include_counts": True,
             "_limit": 200,
         }
+        auth_token = "YXBpXzNQM1ZIbnVua0preHVSdGV5UmMxN2suM2xySHg1SmJIaHhhSTNVekpWM09JNDo6"
         headers = {
-            "Authorization": "Basic YXBpXzNQM1ZIbnVua0preHVSdGV5UmMxN2suM2xySHg1SmJIaHhhSTNVekpWM09JNDo6",
+            "Authorization": f"Basic {auth_token}",
             "Content-Type": "application/json",
         }
 
@@ -88,4 +89,4 @@ class Command(BaseCommand):
                     email_filter |= Q(email__iexact=email["email"])
 
                 qs = User.data.filter(email_filter)
-                ic(qs)
+                ic(qs)  # noqa

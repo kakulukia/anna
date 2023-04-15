@@ -1,14 +1,12 @@
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.validators import UnicodeUsernameValidator
-from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.timezone import now
 from django.utils.translation import gettext as _
-from django_quill.fields import QuillField
 from django_undeletable.models import BaseModel, UserDataManager
 
 
@@ -44,7 +42,8 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     ############################################
     phone_regex = RegexValidator(
         regex=r"^\+?1?\d{9,15}$",
-        message="Die Telefonnummer muss in folgendem Format eingegeben werden: '+999999999'. Bis zu 15 Zeichen sind erlaubt.",
+        message="Die Telefonnummer muss in folgendem Format eingegeben werden: '+999999999'. "
+        "Bis zu 15 Zeichen sind erlaubt.",
     )
     phone_number = models.CharField(
         "Telefonnummer", validators=[phone_regex], max_length=16, blank=True, null=True
@@ -155,8 +154,8 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     # ):
     #     """
     #      Sends an email to this User.
-    #      If settings.EMAIL_OVERRIDE_ADDRESS is set, this mail will be redirected to the alternate mail address.
-    #
+    #      If settings.EMAIL_OVERRIDE_ADDRESS is set, this mail will be redirected
+    #      to the alternate mail address.
     #     """
     #     receiver = self.email
     #     if settings.EMAIL_OVERRIDE_ADDRESS:

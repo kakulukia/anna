@@ -1,14 +1,14 @@
-from .common import *  # nopq
+from .common import *  # noqa
 
 STAGE = True
 
-JAZZMIN_SETTINGS["site_logo"] = (
+JAZZMIN_SETTINGS["site_logo"] = (  # noqa
     "img/mylogo-test-login.png" if STAGE else "img/mylogo-gruen-login.png"
 )
-JAZZMIN_SETTINGS["site_icon"] = (
+JAZZMIN_SETTINGS["site_icon"] = (  # noqa
     "assets/img/favicon-test.png" if STAGE else "assets/img/favicon.png"
 )
-JAZZMIN_SETTINGS["topmenu_links"] = [
+JAZZMIN_SETTINGS["topmenu_links"] = [  # noqa
     {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
     {
         "name": f"Seite Anzeigen ({'STAGE' if STAGE else 'LIVE'})",

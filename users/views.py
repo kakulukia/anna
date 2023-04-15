@@ -1,5 +1,4 @@
 import json
-from datetime import datetime
 from typing import List
 
 import dateutil.parser
@@ -30,8 +29,9 @@ class Contact(Prodict):
 @csrf_exempt
 def create_or_update_lead_webhook(request):
     def get_contact_data(contact_ids):
+        auth_token = "YXBpXzNQM1ZIbnVua0preHVSdGV5UmMxN2suM2xySHg1SmJIaHhhSTNVekpWM09JNDo6"
         headers = {
-            "Authorization": "Basic YXBpXzNQM1ZIbnVua0preHVSdGV5UmMxN2suM2xySHg1SmJIaHhhSTNVekpWM09JNDo6",
+            "Authorization": f"Basic {auth_token}",
             "Content-Type": "application/json",
         }
         url = "https://api.close.com/api/v1/contact/"
@@ -102,7 +102,7 @@ def create_or_update_lead_webhook(request):
         data = json.loads(request.body)
 
         event = Prodict.from_dict(data).event
-        ic(event)
+        ic(event)  # noqa
         duration_field = "custom.cf_8zV6c7eijjmYfIbl1w1vfLzZunknUoLs4sb13uoOubp"
         purchase_options = "custom.cf_0eKueP25HDy5wnHDeZXB7ySzrlx3JhiQXjaczfIx2a1"
         zoom_link = "custom.cf_fsbXp5btDzxOJqP9QKmCNa62vc4MnHevvpXnkMkWMB8"

@@ -1,27 +1,6 @@
-# from django import forms
-# from django.
-
-# class UserForm(forms.Form):
-#     first_name = forms.CharField(max_length = 50)
-#     last_name = forms.CharField(max_length = 50)
-#     email  = forms.EmailField()
-#     password = forms.CharField(max_length=20, widget=forms.PasswordInput)
-#     confirm_password = forms.CharField(max_length=20, widget=forms.PasswordInput)
-
-import re
-
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django.contrib.auth.password_validation import validate_password
-from django.core import validators
-from django.core.exceptions import ValidationError
 from django.forms import ModelForm
-
-from .models import *
-
-# Make a regular expression
-# for validating an Email
 
 
 class LoginForm(forms.Form):

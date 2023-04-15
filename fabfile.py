@@ -1,6 +1,6 @@
 from fabric.colors import green
 from fabric.context_managers import cd
-from fabric.operations import local, run
+from fabric.operations import run
 from fabric.state import env
 
 env.shell = "/bin/zsh -c"
@@ -12,13 +12,13 @@ APP_NAME = "anna"
 # ####################
 def stage():
     env.environment = "stage"
-    env.path = f"/opt/www/test-anna"
+    env.path = "/opt/www/test-anna"
     env.hosts = ["andy@test-anna.liebendgern.de"]
 
 
 def live():
     env.environment = "live"
-    env.path = f"/opt/www/anna"
+    env.path = "/opt/www/anna"
     env.hosts = ["andy@anna.liebendgern.de"]
 
 
@@ -42,7 +42,7 @@ def restart():
     """Restart nginx and the backend worker."""
     print(green("restarting server .."))
     if env.environment == "stage":
-        run(f"pm2 restart test-anna")
+        run("pm2 restart test-anna")
     else:
         run(f"pm2 restart {APP_NAME}")
 

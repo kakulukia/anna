@@ -634,9 +634,9 @@ future = ">=0.18.2,<0.19.0"
 six = ">=1.11,<2.0"
 
 [[package]]
-name = "django-sso"
+name = "django_sso"
 version = "3.0.1"
-description = "Django Single Sign-On implementation"
+description = ""
 category = "main"
 optional = false
 python-versions = ">=3"

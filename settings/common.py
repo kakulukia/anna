@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.forms",
     "django_bootstrap5",
     "django_extensions",
     "storages",
@@ -85,7 +86,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "webapp.urls"
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -114,6 +114,7 @@ TEMPLATES = [
         },
     },
 ]
+FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
 WSGI_APPLICATION = "webapp.wsgi.application"
 

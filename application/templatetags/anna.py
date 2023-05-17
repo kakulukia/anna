@@ -19,3 +19,8 @@ def previous_module_completed(module, user):
         if qs.first().progress <= 99:
             return False
     return True
+
+
+@register.filter(name="endswith")
+def endswith(string, suffix):
+    return string.endswith(suffix)

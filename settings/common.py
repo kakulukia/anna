@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.forms",
     "django_bootstrap5",
     "django_extensions",
     "storages",
@@ -51,6 +52,7 @@ INSTALLED_APPS = [
     "webapp",
     "django_browser_reload",
     "compressor",
+    "s3file",
 ]
 
 AUTH_USER_MODEL = "users.User"
@@ -80,10 +82,10 @@ MIDDLEWARE = [
     # middleware for django-agents
     "django_user_agents.middleware.UserAgentMiddleware",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
+    "s3file.middleware.S3FileMiddleware",
 ]
 
 ROOT_URLCONF = "webapp.urls"
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -112,6 +114,7 @@ TEMPLATES = [
         },
     },
 ]
+FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
 WSGI_APPLICATION = "webapp.wsgi.application"
 
@@ -208,8 +211,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 # --------------------- media files configuration for production-----------------#
 MEDIA_LOCATION = "media"
 MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/"
-DEFAULT_FILE_STORAGE = "webapp.storages.MediaStore"
-
+DEFAULT_FILE_STORAGE = "webapp.storages.PrivateMediaStorage"
+S3FILE_UPLOAD_PATH = "private/tmp/s3file"
+AWS_LOCATION = "private"
 
 PRIVATE_MEDIA_LOCATION = "private"
 PRIVATE_FILE_STORAGE = "webapp.storages.PrivateMediaStorage"

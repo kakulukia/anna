@@ -41,6 +41,7 @@ django-compressor = "^4.3.1"
 ruff = "^0.0.261"
 pre-commit = "^3.2.2"
 django-sso = {git = "https://github.com/kakulukia/django-sso"}
+django-s3file = "^5.5.3"
 
 [build-system]
 requires = ["poetry-core"]

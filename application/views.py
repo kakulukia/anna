@@ -1,5 +1,6 @@
 import re
 import uuid
+from datetime import datetime, timedelta
 
 from django.contrib import messages
 from django.contrib.auth import logout, user_logged_in
@@ -432,6 +433,12 @@ def media(request, training_id, module_id, media_id=None):
     media_set = media_set.annotate(
         previous_completed=Subquery(previous_completed.values("id"))
     )
+
+    # if the video is older than 90 days hide it
+    if module.training.hide_after_x_days:
+        today = datetime.now().date()
+        refercens_day = today - timedelta(days=90)
+        media_set = media_set.filter(created__gt=refercens_day)
 
     context = {
         "module": module,

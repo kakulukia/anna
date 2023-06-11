@@ -46,6 +46,7 @@ class TrainingAdmin(admin.ModelAdmin):
                     "description",
                     "thumbnail",
                     "stick_to_the_plan",
+                    "hide_after_x_days",
                     "ordering",
                     "assign_after_days",
                 )

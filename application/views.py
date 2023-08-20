@@ -529,4 +529,21 @@ def forum(request):
 
 @login_required
 def copy_media(request, media_id, module_id):
-    return HttpResponseRedirect(reverse("admin:application_media_change", args=[media_id]))
+    old_media = get_object_or_404(Media, pk=media_id)
+    module = get_object_or_404(Module, pk=module_id)
+
+    new_media = old_media
+    new_media.pk = None
+    new_media.ordering = module.media_set.count()
+    new_media.module = module
+    new_media.next = None
+
+    last_item = module.media_set.last()
+
+    new_media.save()
+
+    if last_item:
+        last_item.next = new_media
+        last_item.save()
+
+    return HttpResponseRedirect(reverse("admin:application_media_change", args=[new_media.pk]))

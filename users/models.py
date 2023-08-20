@@ -56,6 +56,15 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         verbose_name="Akademie Beziehungskit", default=False
     )
 
+    def active_member_default(self):
+        if self.start_date and self.end_date:
+            return self.start_date <= now().date() <= self.end_date
+        return False
+
+    active_member = models.BooleanField(
+        verbose_name="Aktive Mitgliedschaft", null=False, blank=False
+    )
+
     zoom_link = models.URLField("Zoom-Link", blank=True, null=True)
     progress = models.FloatField(default=0)
     forum_name = models.CharField(
@@ -123,12 +132,6 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         elif self.progress:
             self.progress = 0
             self.save()
-
-    @property
-    def active_member(self):
-        if self.start_date and self.end_date:
-            return self.start_date <= now().date() <= self.end_date
-        return False
 
     @property
     def customer_url(self):

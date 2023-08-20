@@ -140,7 +140,12 @@ class UserAdmin(BaseUserAdmin):
     list_filter = ["is_superuser", ("zoom_link", admin.EmptyFieldListFilter), MembershipFilter]
     actions = None
     ordering = ("-created",)
-    readonly_fields = ["customer_link", "option", "partner_link"]
+    readonly_fields = [
+        "customer_link",
+        "option",
+        "partner_link",
+        # "active_member_display"
+    ]
     fieldsets = (
         (
             "Stammdaten",
@@ -154,6 +159,7 @@ class UserAdmin(BaseUserAdmin):
                     "zoom_link",
                     "start_date",
                     "end_date",
+                    "active_member",
                     "username",
                     "forum_name",
                     "password",
@@ -184,6 +190,10 @@ class UserAdmin(BaseUserAdmin):
         )
         qs = qs.annotate(other_user_name=Subquery(subquery.values("other_user_name")))
         return qs
+
+    # @admin.display(description="Aktives Mitglied")
+    # def active_member_display(self, user: User):
+    #     return user.active_member
 
     @admin.display(description="Partner")
     def other_user_name_display(self, user: User):

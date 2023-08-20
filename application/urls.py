@@ -45,6 +45,10 @@ urlpatterns = [
         views.copy_media,
         name="copy_media",
     ),
+    path(
+        "admin_copy_media/<int:media_id>/<int:module_id>",
+        views.copy_media,
+    ),
 ]
 
 urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -528,5 +528,5 @@ def forum(request):
 
 
 @login_required
-def copy_media(request, media_id):
+def copy_media(request, media_id, module_id):
     return HttpResponseRedirect(reverse("admin:application_media_change", args=[media_id]))

@@ -525,3 +525,8 @@ def appointments(request):
 @login_required
 def forum(request):
     return render(request, "forum.html")
+
+
+@login_required
+def copy_media(request, media_id):
+    return HttpResponseRedirect(reverse("admin:application_media_change", args=[media_id]))

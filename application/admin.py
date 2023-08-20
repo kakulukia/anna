@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.db.models import F, OuterRef, Subquery, Value
 from django.db.models.functions import Concat
 from django.http import QueryDict
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.html import format_html
@@ -69,6 +70,16 @@ class MediaAdmin(admin.ModelAdmin):
     list_display = ["name", "ordering", "length", "next", "attachment"]
     list_filter = ["module"]
     search_fields = ["name"]
+    readonly_fields = ["copy"]
+    actions = ["copy_action"]
+
+    @admin.display(description="Kopieren")
+    def copy(self, media: Media):
+        chapter_list = Module.data.all().order_by("name")
+        template = render_to_string(
+            "inc/copy.pug", {"chapter_list": chapter_list, "media_id": media.id}
+        )
+        return template
 
     def save_model(self, request, obj, form, change):
         if "file" in form.changed_data:

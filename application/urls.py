@@ -40,6 +40,11 @@ urlpatterns = [
         views.progress_modules,
         name="progress-module",
     ),
+    path(
+        "admin_copy_media/<int:media_id>/",
+        views.copy_media,
+        name="copy_media",
+    ),
 ]
 
 urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

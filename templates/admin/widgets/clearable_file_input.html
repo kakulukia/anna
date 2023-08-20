@@ -15,7 +15,6 @@
       var form = document.getElementById('media_form')
       var progressBar = document.getElementById("progress-{{ widget.name }}")
 
-      console.log(form, progressBar)
       form.addEventListener('progress', function (event) {
         console.log(event.detail)
           // event.detail.progress is a value between 0 and 1

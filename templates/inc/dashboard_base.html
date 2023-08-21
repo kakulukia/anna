@@ -128,7 +128,8 @@
     </footer>
   {% endblock footer %}
   <script type="text/javascript">
-    document.getElementById('copyright-year').innerText = new Date().getFullYear().toString()
+    let elem = document.getElementById('copyright-year')
+    if (elem) {elem.innerText = new Date().getFullYear().toString()}
   </script>
 </body>
 </html>

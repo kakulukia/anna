@@ -67,7 +67,15 @@ class ModuleAdmin(admin.ModelAdmin):
 @admin.register(Media)
 class MediaAdmin(admin.ModelAdmin):
     actions = None
-    list_display = ["name", "ordering", "length", "next", "attachment", "view_count"]
+    list_display = [
+        "created",
+        "name",
+        "ordering",
+        "length",
+        "next",
+        "attachment",
+        "view_count",
+    ]
     list_filter = ["module"]
     search_fields = ["name"]
     readonly_fields = ["copy"]

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.db.models import F, OuterRef, Subquery, Value
+from django.db.models import Count, F, OuterRef, Subquery, Value
 from django.db.models.functions import Concat
 from django.http import QueryDict
 from django.template.loader import render_to_string
@@ -67,7 +67,7 @@ class ModuleAdmin(admin.ModelAdmin):
 @admin.register(Media)
 class MediaAdmin(admin.ModelAdmin):
     actions = None
-    list_display = ["name", "ordering", "length", "next", "attachment"]
+    list_display = ["name", "ordering", "length", "next", "attachment", "view_count"]
     list_filter = ["module"]
     search_fields = ["name"]
     readonly_fields = ["copy"]
@@ -81,10 +81,19 @@ class MediaAdmin(admin.ModelAdmin):
         )
         return template
 
+    @admin.display(description="Views")
+    def view_count(self, media: Media):
+        return media.view_count
+
     def save_model(self, request, obj, form, change):
         if "file" in form.changed_data:
             obj.length = ""
         super().save_model(request, obj, form, change)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        qs = qs.annotate(view_count=Count("completed"))
+        return qs
 
 
 class AccessInline(admin.StackedInline):

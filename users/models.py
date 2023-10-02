@@ -62,7 +62,7 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         return False
 
     active_member = models.BooleanField(
-        verbose_name="Aktive Mitgliedschaft", null=False, blank=False
+        verbose_name="Aktive Mitgliedschaft", null=False, blank=False, default=False
     )
 
     zoom_link = models.URLField("Zoom-Link", blank=True, null=True)

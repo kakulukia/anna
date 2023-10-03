@@ -104,12 +104,18 @@ def create_or_update_lead_webhook(request):
         event = Prodict.from_dict(data).event
         ic(event)  # noqa
         duration_field = "custom.cf_8zV6c7eijjmYfIbl1w1vfLzZunknUoLs4sb13uoOubp"
-        purchase_options = "custom.cf_0eKueP25HDy5wnHDeZXB7ySzrlx3JhiQXjaczfIx2a1"
+        purchase_options = (
+            "custom.cf_0eKueP25HDy5wnHDeZXB7ySzrlx3JhiQXjaczfIx2a1"  # Feld Kaufaktionen
+        )
         zoom_link = "custom.cf_fsbXp5btDzxOJqP9QKmCNa62vc4MnHevvpXnkMkWMB8"
 
-        # only listen for customers and ignore the rest
-        if purchase_options in event.data:
-            options = event.data[purchase_options]
+        # only listen for Kaufaktionen being added or removed
+        if (purchase_options in event.data) or (
+            purchase_options not in event.data
+            and "previous_data" in event
+            and purchase_options in event.previous_data
+        ):
+            options = event.data[purchase_options] if purchase_options in event.data else []
             users = get_users(event.lead_id, event.data.contact_ids)
 
             for user in users:
@@ -127,7 +133,9 @@ def create_or_update_lead_webhook(request):
 
                 # for all listed products -> add access
                 for product in Product.data.all():
+                    # add access for all listed products
                     if product.name in options or product.free:
+                        ic(f"adding {product.name}")  # noqa
                         if not user.bought_teaser and product.teaser:
                             user.bought_teaser = True
                             user.save()
@@ -137,6 +145,12 @@ def create_or_update_lead_webhook(request):
 
                         for course in product.courses.all():
                             user.access_set.get_or_create(training=course)
+
+                    # remove access for all products not listed
+                    elif product.name not in options and not product.free:
+                        ic(f"removing {product.name}")  # noqa
+                        for course in product.courses.all():
+                            user.access_set.filter(training=course).delete()
 
         return HttpResponse(status=202)
     else:

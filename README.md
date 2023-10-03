@@ -21,3 +21,10 @@ pm2 logs anna > zeigt die letzten Logs (und folgende an)
 
 # install pre-commit hooks
 pre-commit install
+
+
+# Close Webhook updaten
+ HTTPie App hat die entsprechenden Anfragen bereits gespeichert:
+1. Lokalen Server starten und mit ngrok von extern erreichbar machen.
+2. Via update Webhook die URL ändern, sodass Anfragen jetzt bei mir landen
+3. Wenn alles fertig ist: Updates bei live einspielen und Webhook wieder zurück ändern

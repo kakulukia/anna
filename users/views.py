@@ -85,11 +85,11 @@ def create_or_update_lead_webhook(request):
                             last_name=names[-1],
                             username=email,
                         )
+                        # new users get a default password
+                        user.set_password(secrets.DEFAULT_USER_PASSWORD)
 
                 user.contact_id = contact.id
                 user.lead_id = contact.lead_id
-                # new users get a default password
-                user.set_password(secrets.DEFAULT_USER_PASSWORD)
                 user.save()
 
                 init_close_user(user)

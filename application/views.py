@@ -187,7 +187,7 @@ def delete_user_device(request, device_id):
 
 
 def get_accessed_training_objects(user):
-    return Access.objects.filter(user=user)
+    return Access.data.filter(user=user)
 
 
 def get_accessed_training(user):
@@ -197,7 +197,7 @@ def get_accessed_training(user):
 
 @login_required
 def all_trainings(request):
-    trainings = Training.objects.filter(access__user=request.user)
+    trainings = Training.data.filter(access__in=Access.data.filter(user=request.user))
     accessed_training = get_accessed_training(request.user)
 
     expand_id = request.GET.get("expand")

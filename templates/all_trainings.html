@@ -105,7 +105,7 @@
                         <div id="all-modules">
                             {% for module in all_modules %}
                             <div class="card mb-2">
-                                <a class="text-left text-decoration-none collapsed" data-bs-toggle="collapse" href="#module-{{ module.id }}">
+                                <a class="text-left text-decoration-none" data-bs-toggle="collapse" href="#module-{{ module.id }}">
                                     <div class="card-header text-left">
                                     <div class="row">
                                         <div class="col-sm-8">
@@ -120,7 +120,7 @@
 
                                     </div>
                                 </a>
-                                <div id="module-{{ module.id }}" class="collapse" data-bs-parent="#all-modules">
+                                <div id="module-{{ module.id }}" class="collapse show" data-bs-parent="#all-modules">
                                     <div class="card-body lektionen">
                                     {% for media in module.media_set.all %}
                                         <div class="d-flex align-items-center mb-2">

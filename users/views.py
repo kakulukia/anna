@@ -144,7 +144,8 @@ def create_or_update_lead_webhook(request):
                             user.save()
 
                         for course in product.courses.all():
-                            user.access_set.get_or_create(training=course)
+                            access, new = user.access_set.get_or_create(training=course)
+                            ic(f"adding {access, new}")  # noqa
 
                     # remove access for all products not listed
                     elif product.name not in options and not product.free:

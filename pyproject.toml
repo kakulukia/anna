@@ -48,7 +48,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.black]
-line-length = 95
+line-length = 120
 exclude = '''
 /(
   \.direnv
@@ -58,7 +58,7 @@ exclude = '''
 '''
 
 [tool.ruff]
-line-length = 99
+line-length = 120
 exclude = [
     "migrations",
     "node_modules",

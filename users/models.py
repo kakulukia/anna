@@ -32,8 +32,7 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         _("active"),
         default=True,
         help_text=_(
-            "Designates whether this user should be treated as active. "
-            "Unselect this instead of deleting accounts."
+            "Designates whether this user should be treated as active. " "Unselect this instead of deleting accounts."
         ),
     )
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
@@ -45,22 +44,20 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         message="Die Telefonnummer muss in folgendem Format eingegeben werden: '+999999999'. "
         "Bis zu 15 Zeichen sind erlaubt.",
     )
-    phone_number = models.CharField(
-        "Telefonnummer", validators=[phone_regex], max_length=16, blank=True, null=True
-    )
+    phone_number = models.CharField("Telefonnummer", validators=[phone_regex], max_length=16, blank=True, null=True)
 
     start_date = models.DateField("Start-Datum", blank=True, null=True)
     end_date = models.DateField("Ablauf-Datum", blank=True, null=True)
     bought_teaser = models.BooleanField(verbose_name="Beziehungs1x1", default=False)
-    bought_membership = models.BooleanField(
-        verbose_name="Akademie Beziehungskit", default=False
-    )
+    bought_membership = models.BooleanField(verbose_name="Akademie Beziehungskit", default=False)
 
     zoom_link = models.URLField("Zoom-Link", blank=True, null=True)
     progress = models.FloatField(default=0)
-    forum_name = models.CharField(
-        verbose_name="Forumname", max_length=40, null=True, blank=True
-    )
+    forum_name = models.CharField(verbose_name="Forumname", max_length=40, null=True, blank=True)
+
+    can_view_zoom_link = models.BooleanField(verbose_name="Zoom Link wird angezeigt", default=False)
+    can_view_appointments = models.BooleanField(verbose_name="Termine werden angezeigt", default=False)
+    can_view_forum = models.BooleanField(verbose_name="Forum wird angezeigt", default=False)
 
     # CLOSE CMS STUFF - two contacts will share the same lead
     lead_id = models.CharField(max_length=70, null=True)
@@ -120,9 +117,7 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     def update_progress(self):
         from application.models import Media
 
-        medias = Media.data.filter(
-            module__training__in=self.access_set.values("training")
-        ).count()
+        medias = Media.data.filter(module__training__in=self.access_set.values("training")).count()
         completed = self.completed_set.all().count()
         if medias and completed:
             self.progress = completed / medias * 100

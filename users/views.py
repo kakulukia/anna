@@ -104,19 +104,26 @@ def create_or_update_lead_webhook(request):
         event = Prodict.from_dict(data).event
         ic(event)  # noqa
         duration_field = "custom.cf_8zV6c7eijjmYfIbl1w1vfLzZunknUoLs4sb13uoOubp"
-        purchase_options = (
-            "custom.cf_0eKueP25HDy5wnHDeZXB7ySzrlx3JhiQXjaczfIx2a1"  # Feld Kaufaktionen
-        )
+        purchase_options = "custom.cf_0eKueP25HDy5wnHDeZXB7ySzrlx3JhiQXjaczfIx2a1"  # Feld Kaufaktionen
         zoom_link = "custom.cf_fsbXp5btDzxOJqP9QKmCNa62vc4MnHevvpXnkMkWMB8"
 
         # only listen for Kaufaktionen being added or removed
         if (purchase_options in event.data) or (
-            purchase_options not in event.data
-            and "previous_data" in event
-            and purchase_options in event.previous_data
+            purchase_options not in event.data and "previous_data" in event and purchase_options in event.previous_data
         ):
             options = event.data[purchase_options] if purchase_options in event.data else []
             users = get_users(event.lead_id, event.data.contact_ids)
+
+            to_remove = []
+            to_add = []
+
+            # for all listed products -> add access
+            for product in Product.data.all():
+                # add access for all listed products
+                if product.name in options or product.free:
+                    to_add.append(product)
+                else:
+                    to_remove.append(product)
 
             for user in users:
                 if zoom_link in event.data:
@@ -131,27 +138,30 @@ def create_or_update_lead_webhook(request):
                     user.end_date = end
                     user.save()
 
-                # for all listed products -> add access
-                for product in Product.data.all():
-                    # add access for all listed products
-                    if product.name in options or product.free:
-                        ic(f"adding {product.name}")  # noqa
-                        if not user.bought_teaser and product.teaser:
-                            user.bought_teaser = True
-                            user.save()
-                        if not user.bought_membership and product.membership:
-                            user.bought_membership = True
-                            user.save()
+                # remove access for all products not listed
+                for product in to_remove:
+                    ic(f"removing {product.name}")  # noqa
+                    for course in product.courses.all():
+                        user.access_set.filter(training=course).delete()
 
-                        for course in product.courses.all():
-                            access, new = user.access_set.get_or_create(training=course)
-                            ic(f"adding {access, new}")  # noqa
+                # add products afterward to avoid removing access granted by another product
+                for product in to_add:
+                    ic(f"adding {product.name}")  # noqa
+                    for course in product.courses.all():
+                        access, new = user.access_set.get_or_create(training=course)
 
-                    # remove access for all products not listed
-                    elif product.name not in options and not product.free:
-                        ic(f"removing {product.name}")  # noqa
-                        for course in product.courses.all():
-                            user.access_set.filter(training=course).delete()
+                # set permissions
+                product_ids = [p.id for p in to_add]
+                products = Product.data.filter(id__in=product_ids)
+                user.can_view_zoom_link = products.filter(can_view_zoom_link=True).exists()
+                user.can_view_appointments = products.filter(can_view_appointments=True).exists()
+                user.can_view_forum = products.filter(can_view_forum=True).exists()
+
+                # set membership state
+                user.bought_teaser = products.filter(teaser=True).exists()
+                user.bought_membership = products.filter(membership=True).exists()
+
+                user.save()
 
         return HttpResponse(status=202)
     else:

@@ -105,8 +105,7 @@ class Device(models.Model):
 
     def __str__(self):
         return (
-            f"{self.user} - ({self.os}, {self.browser}, "
-            f"{self.device_type}, {self.ip}, {self.session.session_key})"
+            f"{self.user} - ({self.os}, {self.browser}, " f"{self.device_type}, {self.ip}, {self.session.session_key})"
         )
 
 
@@ -125,8 +124,7 @@ class Training(BaseModel):
 
     stick_to_the_plan = models.BooleanField("Reihenfolge einhalten", default=False)
     assign_after_days = models.IntegerField(
-        help_text="Wird nach der eingestellten Anzahl an Tagen in der "
-        "Mitgliedschaft automatisch freigegeben.",
+        help_text="Wird nach der eingestellten Anzahl an Tagen in der " "Mitgliedschaft automatisch freigegeben.",
         verbose_name="Automatisch freigeben",
         default=0,
     )  # used to grant access for users automatically after some time
@@ -149,9 +147,7 @@ class Training(BaseModel):
     def get_progress(self, completed_ids):
         completed = 0
         module_ids = Module.objects.filter(training=self).values_list("id", flat=True)
-        all_medias = Media.objects.filter(module_id__in=module_ids).values_list(
-            "id", flat=True
-        )
+        all_medias = Media.objects.filter(module_id__in=module_ids).values_list("id", flat=True)
         for i in completed_ids:
             if i in all_medias:
                 completed += 1
@@ -221,9 +217,7 @@ class Module(BaseModel):
     @cached_property
     def progress(self):
         if not hasattr(self, "completed_count"):
-            raise Exception(
-                "progress darf hier nicht aufgerufen werden - es fehlt eine Annotation"
-            )
+            raise Exception("progress darf hier nicht aufgerufen werden - es fehlt eine Annotation")
         if not self.completed_count:
             return 0
         return int((self.completed_count / self.media_set.count()) * 100)
@@ -252,9 +246,7 @@ class Media(BaseModel):
         blank=True,
         verbose_name="Nächstes",
     )
-    attachment = models.FileField(
-        verbose_name="Anhang", null=True, storage=AttachmentStorage, blank=True
-    )
+    attachment = models.FileField(verbose_name="Anhang", null=True, storage=AttachmentStorage, blank=True)
 
     modified = models.DateTimeField(auto_now=True, editable=False, null=True)
 
@@ -305,11 +297,7 @@ class Media(BaseModel):
 
     def get_file_type(self):
         file_name = self.file.name
-        if (
-            file_name.endswith(".mp3")
-            or file_name.endswith(".wav")
-            or file_name.endswith(".wma")
-        ):
+        if file_name.endswith(".mp3") or file_name.endswith(".wav") or file_name.endswith(".wma"):
             return "audio"
         return "video"
 
@@ -384,7 +372,11 @@ class Product(BaseModel):
     courses = models.ManyToManyField(Training, verbose_name="Kurse")
     free = models.BooleanField("unbeschränkt", default=False)
     teaser = models.BooleanField(verbose_name="Beziehungs1x1", default=False)
-    membership = models.BooleanField(verbose_name="Akademie Beziehungskit", default=False)
+    membership = models.BooleanField(verbose_name="Intensivzeit", default=False)
+
+    can_view_zoom_link = models.BooleanField(verbose_name="Zoom-Link wird angezeigt", default=False)
+    can_view_appointments = models.BooleanField(verbose_name="Termine werden angezeigt", default=False)
+    can_view_forum = models.BooleanField(verbose_name="Forum wird angezeigt", default=False)
 
     class Meta(BaseModel.Meta):
         verbose_name = "Produkt"

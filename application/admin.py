@@ -161,12 +161,15 @@ class UserAdmin(BaseUserAdmin):
             },
         ),
         (
-            "Fortschritt",
+            "Mitgliedschaft",
             {
                 "fields": (
                     "option",
                     "bought_teaser",
                     "bought_membership",
+                    "can_view_zoom_link",
+                    "can_view_appointments",
+                    "can_view_forum",
                 )
             },
         ),
@@ -198,10 +201,8 @@ class UserAdmin(BaseUserAdmin):
 
     @admin.display(description="Status")
     def status(self, user: User):
-        if user.bought_membership and user.active_member:
-            return "Aktiv"
         if user.bought_membership:
-            return "Passiv"
+            return "intensiv"
         if user.bought_teaser:
             return "1x1"
         return "-"
@@ -216,8 +217,7 @@ class UserAdmin(BaseUserAdmin):
         user_id = obj.id
         url = reverse("progress-training", args=[user_id])
         element = (
-            f'<a href = "{url}" target="_blank" title="Fortschritt anzeigen">'
-            f'<i class="far fa-chart-bar"></i></a>'
+            f'<a href = "{url}" target="_blank" title="Fortschritt anzeigen">' f'<i class="far fa-chart-bar"></i></a>'
         )
         return mark_safe(element)
 
@@ -237,10 +237,7 @@ class UserAdmin(BaseUserAdmin):
             partner = User.data.filter(lead_id=user.lead_id).exclude(id=user.id)
             if partner:
                 partner = partner.get()
-                link = (
-                    f'<a href="{reverse("admin:users_user_change", args=[partner.id])}" >'
-                    f"{partner.full_name}</a>"
-                )
+                link = f'<a href="{reverse("admin:users_user_change", args=[partner.id])}" >' f"{partner.full_name}</a>"
                 return mark_safe(link)
         return "unbekannt"
 

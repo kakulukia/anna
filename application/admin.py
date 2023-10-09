@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.db.models import Count, F, OuterRef, Subquery, Value
 from django.db.models.functions import Concat
 from django.http import QueryDict
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.html import format_html
@@ -46,6 +47,7 @@ class TrainingAdmin(admin.ModelAdmin):
                     "description",
                     "thumbnail",
                     "stick_to_the_plan",
+                    "hide_after_x_days",
                     "ordering",
                     "assign_after_days",
                 )
@@ -65,9 +67,25 @@ class ModuleAdmin(admin.ModelAdmin):
 @admin.register(Media)
 class MediaAdmin(admin.ModelAdmin):
     actions = None
-    list_display = ["name", "ordering", "length", "next", "attachment", "view_count"]
+    list_display = [
+        "created",
+        "name",
+        "ordering",
+        "length",
+        "next",
+        "attachment",
+        "view_count",
+    ]
     list_filter = ["module"]
     search_fields = ["name"]
+    readonly_fields = ["copy"]
+    actions = ["copy_action"]
+
+    @admin.display(description="Kopieren")
+    def copy(self, media: Media):
+        chapter_list = Module.data.all().order_by("name")
+        template = render_to_string("inc/copy.pug", {"chapter_list": chapter_list, "media_id": media.id})
+        return template
 
     @admin.display(description="Views")
     def view_count(self, media: Media):
@@ -137,7 +155,12 @@ class UserAdmin(BaseUserAdmin):
     list_filter = ["is_superuser", ("zoom_link", admin.EmptyFieldListFilter), MembershipFilter]
     actions = None
     ordering = ("-created",)
-    readonly_fields = ["customer_link", "option", "partner_link"]
+    readonly_fields = [
+        "customer_link",
+        "option",
+        "partner_link",
+        # "active_member_display"
+    ]
     fieldsets = (
         (
             "Stammdaten",
@@ -184,6 +207,10 @@ class UserAdmin(BaseUserAdmin):
         )
         qs = qs.annotate(other_user_name=Subquery(subquery.values("other_user_name")))
         return qs
+
+    # @admin.display(description="Aktives Mitglied")
+    # def active_member_display(self, user: User):
+    #     return user.active_member
 
     @admin.display(description="Partner")
     def other_user_name_display(self, user: User):

@@ -122,9 +122,10 @@ class Training(BaseModel):
     modified = models.DateTimeField(auto_now=True, editable=False, null=True)
     ordering = models.IntegerField("Sortierung", default=0)
 
+    hide_after_x_days = models.BooleanField("Nach 90 Tagen löschen", default=False)
     stick_to_the_plan = models.BooleanField("Reihenfolge einhalten", default=False)
     assign_after_days = models.IntegerField(
-        help_text="Wird nach der eingestellten Anzahl an Tagen in der " "Mitgliedschaft automatisch freigegeben.",
+        help_text="Wird nach der eingestellten Anzahl an Tagen in der Mitgliedschaft automatisch freigegeben.",
         verbose_name="Automatisch freigeben",
         default=0,
     )  # used to grant access for users automatically after some time

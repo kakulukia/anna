@@ -1,5 +1,6 @@
 import re
 import uuid
+from datetime import datetime, timedelta
 
 from django.contrib import messages
 from django.contrib.auth import logout, user_logged_in
@@ -86,9 +87,7 @@ def profile(request):
 
         return name
 
-    forum_name_form = ForumNameForm(
-        instance=request.user, initial={"forum_name": get_initial_value()}
-    )
+    forum_name_form = ForumNameForm(instance=request.user, initial={"forum_name": get_initial_value()})
     password_form = ResetPasswordForm()
 
     if request.method == "POST":
@@ -100,9 +99,7 @@ def profile(request):
     device_sessions = Device.objects.filter(user=request.user)
     all_trainings = Access.objects.filter(user=request.user)
 
-    completed_media_ids = Completed.data.filter(user=request.user).values_list(
-        "media_id", flat=True
-    )
+    completed_media_ids = Completed.data.filter(user=request.user).values_list("media_id", flat=True)
 
     for access in all_trainings:
         training = access.training
@@ -206,9 +203,7 @@ def all_trainings(request):
     else:
         training = trainings.first()
     allowed = training and training.id in accessed_training
-    completed_media_ids = Completed.data.filter(user=request.user).values_list(
-        "media_id", flat=True
-    )
+    completed_media_ids = Completed.data.filter(user=request.user).values_list("media_id", flat=True)
 
     for single_training in trainings:
         if single_training.id in accessed_training:
@@ -233,9 +228,7 @@ def progress(request):
     search_text = ""
     if request.method == "POST" and "filter" in request.POST:
         search_text = request.POST["filter"]
-        all_users = all_users.filter(
-            Q(first_name__icontains=search_text) | Q(last_name__icontains=search_text)
-        )
+        all_users = all_users.filter(Q(first_name__icontains=search_text) | Q(last_name__icontains=search_text))
     updated_users = []
     for user in all_users:
         access_objects = get_accessed_training(user)
@@ -254,9 +247,7 @@ def progress_trainings(request, id):
     all_users = User.objects.filter(is_superuser=False)[1:]
     current_user = User.objects.get(id=id)
     current_user_trainings = get_accessed_training_objects(current_user)
-    completed_media_ids = Completed.data.filter(user=current_user).values_list(
-        "media_id", flat=True
-    )
+    completed_media_ids = Completed.data.filter(user=current_user).values_list("media_id", flat=True)
     current_user_trainings_updated = []
     for access in current_user_trainings:
         my_training = access.training
@@ -287,11 +278,7 @@ def all_modules(request, training_id):
 
     modules = (
         Module.data.filter(training=training)
-        .annotate(
-            completed_count=Count(
-                "media__completed", filter=Q(media__completed__user=request.user)
-            )
-        )
+        .annotate(completed_count=Count("media__completed", filter=Q(media__completed__user=request.user)))
         .order_by("ordering")
     )
     context = {"training": training, "modules": modules}
@@ -303,9 +290,7 @@ def all_medias(request, training_id, module_id):
     training = get_object_or_404(Training, id=training_id)
     module = get_object_or_404(
         Module.data.all().annotate(
-            completed_count=Count(
-                "media__completed", filter=Q(media__completed__user=request.user)
-            )
+            completed_count=Count("media__completed", filter=Q(media__completed__user=request.user))
         ),
         id=module_id,
     )
@@ -326,9 +311,7 @@ def progress_modules(request, id, training_id):
 
     all_users = User.objects.filter(is_superuser=False)
     current_user = User.objects.get(id=id)
-    completed_media_ids = Completed.data.filter(user=current_user).values_list(
-        "media_id", flat=True
-    )
+    completed_media_ids = Completed.data.filter(user=current_user).values_list("media_id", flat=True)
     current_training = get_object_or_404(Training, id=training_id)
     current_training.progress = current_training.get_progress(completed_media_ids)
     updated_users = []
@@ -342,9 +325,7 @@ def progress_modules(request, id, training_id):
         module.user_progress = module.get_progress(completed_media_ids)
 
     # Fetching completed medias
-    completed_media_ids = Completed.data.filter(user=current_user).values_list(
-        "media_id", flat=True
-    )
+    completed_media_ids = Completed.data.filter(user=current_user).values_list("media_id", flat=True)
 
     context = {
         "completed_media": completed_media_ids,
@@ -361,12 +342,10 @@ def resume_all_modules(request, training_id):
     training = Training.objects.get(id=training_id)
     modules = Module.objects.filter(training=training)
     modules_ids = modules.values_list("id", flat=True)
-    all_media_ids = Media.objects.filter(module_id__in=modules_ids).values_list(
-        "id", flat=True
+    all_media_ids = Media.objects.filter(module_id__in=modules_ids).values_list("id", flat=True)
+    completed_media_ids = Completed.data.filter(media_id__in=all_media_ids, user=request.user).values_list(
+        "media_id", flat=True
     )
-    completed_media_ids = Completed.data.filter(
-        media_id__in=all_media_ids, user=request.user
-    ).values_list("media_id", flat=True)
     # all media objects ids list
     all_media_ids_list = list(all_media_ids)
     # all compeleted objects ids list
@@ -377,10 +356,7 @@ def resume_all_modules(request, training_id):
     if len(completed_media_ids_list) == 0:
         return main_media(request, redirected_media_id)
 
-    if (
-        len(all_media_ids_list) != len(completed_media_ids_list)
-        and len(completed_media_ids_list) != 0
-    ):
+    if len(all_media_ids_list) != len(completed_media_ids_list) and len(completed_media_ids_list) != 0:
         return main_media(request, redirected_media_id)
 
     for module in modules:
@@ -396,9 +372,7 @@ def main_media(request, media_id):
 
     module_id = media.module.id
     training_id = media.module.training.id
-    return redirect(
-        "single_media", training_id=training_id, module_id=module_id, media_id=media_id
-    )
+    return redirect("single_media", training_id=training_id, module_id=module_id, media_id=media_id)
 
 
 def get_remaining_media_id(all_media_ids_list, completed_media_ids_list):
@@ -412,9 +386,7 @@ def get_remaining_media_id(all_media_ids_list, completed_media_ids_list):
 @login_required
 def media(request, training_id, module_id, media_id=None):
     module = Module.data.annotate(
-        completed_count=Count(
-            "media__completed", filter=Q(media__completed__user=request.user)
-        )
+        completed_count=Count("media__completed", filter=Q(media__completed__user=request.user))
     ).get(id=module_id)
 
     if not Access.objects.filter(user=request.user, training=module.training).exists():
@@ -429,9 +401,13 @@ def media(request, training_id, module_id, media_id=None):
     media_set = media_set.annotate(previous=Subquery(previous))
 
     previous_completed = Completed.data.filter(media=OuterRef("previous"), user=request.user)
-    media_set = media_set.annotate(
-        previous_completed=Subquery(previous_completed.values("id"))
-    )
+    media_set = media_set.annotate(previous_completed=Subquery(previous_completed.values("id")))
+
+    # if the video is older than 90 days hide it
+    if module.training.hide_after_x_days:
+        today = datetime.now().date()
+        refercens_day = today - timedelta(days=90)
+        media_set = media_set.filter(created__gt=refercens_day)
 
     context = {
         "module": module,
@@ -462,9 +438,7 @@ def mark_as_done(request, media_id):
         training_id = media.module.training.id
         module_id = media.module.id
         media_id = media.id
-        return redirect(
-            "single_media", training_id=training_id, module_id=module_id, media_id=media_id
-        )
+        return redirect("single_media", training_id=training_id, module_id=module_id, media_id=media_id)
 
     if media.module.next:
         messages.success(request, "Kapitel als abgeschlossen markiert")
@@ -484,9 +458,9 @@ def mark_as_done(request, media_id):
 def single_media(request, training_id, module_id, media_id):
     training = Training.objects.get(id=training_id)
     module = Module.objects.get(id=module_id)
-    media = Media.objects.annotate(
-        is_completed=Count("completed", filter=Q(completed__user=request.user))
-    ).get(id=media_id)
+    media = Media.objects.annotate(is_completed=Count("completed", filter=Q(completed__user=request.user))).get(
+        id=media_id
+    )
     medias = Media.objects.filter(module=module)
     context = {
         "module": module,
@@ -494,9 +468,7 @@ def single_media(request, training_id, module_id, media_id):
         "training": training,
         "medias": medias,
     }
-    template = (
-        "single_media_content.html" if "video-only" in request.GET else "single_media.html"
-    )
+    template = "single_media_content.html" if "video-only" in request.GET else "single_media.html"
     return render(request, template, context)
 
 
@@ -518,3 +490,25 @@ def appointments(request):
 @login_required
 def forum(request):
     return render(request, "forum.html")
+
+
+@login_required
+def copy_media(request, media_id, module_id):
+    old_media = get_object_or_404(Media, pk=media_id)
+    module = get_object_or_404(Module, pk=module_id)
+
+    new_media = old_media
+    new_media.pk = None
+    new_media.ordering = module.media_set.count()
+    new_media.module = module
+    new_media.next = None
+
+    last_item = module.media_set.last()
+
+    new_media.save()
+
+    if last_item:
+        last_item.next = new_media
+        last_item.save()
+
+    return HttpResponseRedirect(reverse("admin:application_media_change", args=[new_media.pk]))

@@ -1,0 +1,22 @@
+select#chapters
+    option(value="") -------
+    for chapter in chapter_list
+        option(value=chapter.id)= chapter
+
+a.btn.btn-info#copy-button(style="margin-left: 10px" href="{% url 'copy_media' media_id %}") Lektion kopieren
+
+script.
+    document.addEventListener("DOMContentLoaded", function () {
+        var chaptersDropdown = document.getElementById("chapters");
+        var copyButton = document.getElementById("copy-button");
+
+        copyButton.addEventListener("click", function (event) {
+            event.preventDefault()
+            var selectedChapter = chaptersDropdown.value;
+            if (selectedChapter) {
+                var url = "{% url 'copy_media' media_id %}" + selectedChapter;
+                window.location = url;
+            }
+        });
+
+    });

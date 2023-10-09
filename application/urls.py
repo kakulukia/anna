@@ -38,4 +38,13 @@ urlpatterns = [
         views.progress_modules,
         name="progress-module",
     ),
+    path(
+        "admin_copy_media/<int:media_id>/",
+        views.copy_media,
+        name="copy_media",
+    ),
+    path(
+        "admin_copy_media/<int:media_id>/<int:module_id>",
+        views.copy_media,
+    ),
 ]

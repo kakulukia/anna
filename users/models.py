@@ -49,7 +49,12 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     start_date = models.DateField("Start-Datum", blank=True, null=True)
     end_date = models.DateField("Ablauf-Datum", blank=True, null=True)
     bought_teaser = models.BooleanField(verbose_name="Beziehungs1x1", default=False)
-    bought_membership = models.BooleanField(verbose_name="Akademie Beziehungskit", default=False)
+    bought_membership = models.BooleanField(verbose_name="Intensivzeit", default=False)
+
+    def active_member_default(self):
+        if self.start_date and self.end_date:
+            return self.start_date <= now().date() <= self.end_date
+        return False
 
     zoom_link = models.URLField("Zoom-Link", blank=True, null=True)
     progress = models.FloatField(default=0)
@@ -125,12 +130,6 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         elif self.progress:
             self.progress = 0
             self.save()
-
-    @property
-    def active_member(self):
-        if self.start_date and self.end_date:
-            return self.start_date <= now().date() <= self.end_date
-        return False
 
     @property
     def customer_url(self):

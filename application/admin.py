@@ -119,21 +119,21 @@ class DeviceInline(admin.StackedInline):
 
 
 class MembershipFilter(admin.SimpleListFilter):
-    title = "Aktiv/Passiv"
+    title = "Status"
     parameter_name = "membership"
 
     def lookups(self, request, model_admin):
         return (
-            ("active", "Aktiv"),
-            ("inactive", "Passiv"),
+            ("teaser", "1x1"),
+            ("intense", "intensiv"),
         )
 
     def queryset(self, request, queryset):
-        now = timezone.now()
-        if self.value() == "active":
-            return queryset.filter(start_date__lte=now, end_date__gte=now)
-        if self.value() == "inactive":
-            return queryset.exclude(start_date__lte=now, end_date__gte=now)
+        timezone.now()
+        if self.value() == "teaser":
+            return queryset.filter(bought_teaser=True, bought_membership=False)
+        if self.value() == "intense":
+            return queryset.filter(bought_membership=True)
 
 
 @admin.register(User)

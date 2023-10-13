@@ -300,7 +300,7 @@ class AppointmentAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ["name", "free", "list_courses"]
+    list_display = ["name", "free", "teaser", "membership", "list_courses"]
     actions = None
 
     def list_courses(self, product: Product):

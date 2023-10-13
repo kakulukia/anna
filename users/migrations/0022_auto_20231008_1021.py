@@ -15,7 +15,6 @@ def update_active_member_new(apps, schema_editor):
 
     for user in User.data.all():
         show_links = is_active(user)
-        ic(user, show_links)
         user.can_view_zoom_link = show_links
         user.can_view_appointments = show_links
         user.can_view_forum = show_links

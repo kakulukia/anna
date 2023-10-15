@@ -28,3 +28,8 @@ pre-commit install
 1. Lokalen Server starten und mit ngrok von extern erreichbar machen.
 2. Via update Webhook die URL ändern, sodass Anfragen jetzt bei mir landen
 3. Wenn alles fertig ist: Updates bei live einspielen und Webhook wieder zurück ändern
+
+
+# Worker auf live starten
+
+pm2 start --name live-worker "manage.py run_huey"

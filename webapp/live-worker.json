@@ -1,0 +1,18 @@
+{
+  "apps": [
+    {
+      "name": "anna-huey-worker",
+      "script": "/opt/www/anna/.direnv/python-3.10.4/bin/python",
+      "args": "manage.py run_huey",
+      "cwd": "/opt/www/anna",
+      "interpreter": "python",
+      "interpreter_args": "manage.py run_huey",
+      "exec_mode": "fork",
+      "instances": 1,
+      "autorestart": true,
+      "max_memory_restart": "100M",
+      "log_date_format": "YYYY-MM-DD HH:mm Z",
+      "log_file": "logs/huey-worker.log"
+    }
+  ]
+}

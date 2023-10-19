@@ -1,5 +1,6 @@
 import pendulum
 import requests
+from django.conf import settings
 from django.db.models import Q
 from huey import crontab
 from huey.contrib.djhuey import db_periodic_task, task
@@ -16,6 +17,10 @@ def test():
 @task()
 def update_close(lead_id: str, data: dict):
     """updates the given close lead with the given data"""
+    if settings.STAGE:
+        ic("keine Tasks für dev/stage")  # noqa
+        return
+
     ic(lead_id, data)  # noqa
     auth_token = "YXBpXzNQM1ZIbnVua0preHVSdGV5UmMxN2suM2xySHg1SmJIaHhhSTNVekpWM09JNDo6"
     headers = {
@@ -44,9 +49,7 @@ def check_trainings():
     trainings = Training.data.filter(assign_after_days__gt=0)
     for training in trainings:
         check_date = pendulum.now().subtract(days=training.assign_after_days)
-        users = User.data.filter(start_date__lt=check_date).filter(
-            ~Q(access__training=training)
-        )
+        users = User.data.filter(start_date__lt=check_date).filter(~Q(access__training=training))
 
         if not users:
             ic("heute gibt's niemanden anzupassen")  # noqa

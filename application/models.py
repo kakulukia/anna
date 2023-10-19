@@ -129,6 +129,7 @@ class Training(BaseModel):
         verbose_name="Automatisch freigeben",
         default=0,
     )  # used to grant access for users automatically after some time
+    track_progress = models.BooleanField(default=False, verbose_name="Fortschritt zu Close übertragen")
 
     class Meta(BaseModel.Meta):
         verbose_name = "Kurs"

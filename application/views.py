@@ -24,6 +24,7 @@ from application.models import (
     Training,
 )
 from users.models import User
+from webapp.tasks import update_close
 
 
 # Signals to add device in logged in device
@@ -278,7 +279,12 @@ def all_modules(request, training_id):
 
     modules = (
         Module.data.filter(training=training)
-        .annotate(completed_count=Count("media__completed", filter=Q(media__completed__user=request.user)))
+        .annotate(
+            completed_count=Count(
+                "media__completed",
+                filter=Q(media__completed__user=request.user, media__completed__deleted__isnull=True),
+            )
+        )
         .order_by("ordering")
     )
     context = {"training": training, "modules": modules}
@@ -290,7 +296,10 @@ def all_medias(request, training_id, module_id):
     training = get_object_or_404(Training, id=training_id)
     module = get_object_or_404(
         Module.data.all().annotate(
-            completed_count=Count("media__completed", filter=Q(media__completed__user=request.user))
+            completed_count=Count(
+                "media__completed",
+                filter=Q(media__completed__user=request.user, media__completed__deleted__isnull=True),
+            )
         ),
         id=module_id,
     )
@@ -394,13 +403,13 @@ def media(request, training_id, module_id, media_id=None):
         return redirect("trainings")
 
     media_set = Media.data.filter(module=module).annotate(
-        is_completed=Count("completed", filter=Q(completed__user=request.user))
+        is_completed=Count("completed", filter=Q(completed__user=request.user, completed__deleted__isnull=True))
     )
     # annotate the previous media if any for reference in the next step
     previous = Media.data.filter(next=OuterRef("pk")).values("id")[:1]
     media_set = media_set.annotate(previous=Subquery(previous))
 
-    previous_completed = Completed.data.filter(media=OuterRef("previous"), user=request.user)
+    previous_completed = Completed.data.filter(media=OuterRef("previous"), user=request.user, deleted__isnull=True)
     media_set = media_set.annotate(previous_completed=Subquery(previous_completed.values("id")))
 
     # if the video is older than 90 days hide it
@@ -445,22 +454,38 @@ def mark_as_done(request, media_id):
         next_module = media.module.next
         training_id = next_module.training.id
         module_id = next_module.id
+
+        if training.track_progress:
+            completed_modules = 0
+            for module in training.module_set.all():
+                media_count = Media.data.filter(module=module).count()
+                completed_count = Completed.data.filter(user=request.user, media__module=module).count()
+                if media_count == completed_count:
+                    completed_modules += 1
+            track_progres(request.user, completed_modules * 25)
+
         return redirect("media", training_id=training_id, module_id=module_id)
 
     messages.success(request, "Kurs wurde abgeschlossen")
+    if training.track_progress:
+        track_progres(request.user, 100)
     return redirect("trainings")
 
 
+def track_progres(user: User, percent):
+    if user.lead_id:
+        data = {"custom.cf_Ps3oP5tcq7QwWgOPzsFdaDBK9zDC4Gpga4ozsh0xXQb": percent}
+        update_close(user.lead_id, data)
+
+
 # Function to render the single_media page
-
-
 @login_required
 def single_media(request, training_id, module_id, media_id):
     training = Training.objects.get(id=training_id)
     module = Module.objects.get(id=module_id)
-    media = Media.objects.annotate(is_completed=Count("completed", filter=Q(completed__user=request.user))).get(
-        id=media_id
-    )
+    media = Media.objects.annotate(
+        is_completed=Count("completed", filter=Q(completed__user=request.user, completed__deleted__isnull=True))
+    ).get(id=media_id)
     medias = Media.objects.filter(module=module)
     context = {
         "module": module,

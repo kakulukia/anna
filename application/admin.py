@@ -50,6 +50,7 @@ class TrainingAdmin(admin.ModelAdmin):
                     "hide_after_x_days",
                     "ordering",
                     "assign_after_days",
+                    "track_progress",
                 )
             },
         ),

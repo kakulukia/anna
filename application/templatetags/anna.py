@@ -11,7 +11,9 @@ def previous_module_completed(module, user):
     qs = (
         Module.data.filter(next=module.id)
         .annotate(
-            completed_count=Count("media__completed", filter=Q(media__completed__user=user))
+            completed_count=Count(
+                "media__completed", filter=Q(media__completed__user=user, media__completed__deleted__isnull=True)
+            )
         )
         .order_by("ordering")
     )

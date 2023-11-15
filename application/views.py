@@ -351,13 +351,17 @@ def resume_all_modules(request, training_id):
     training = Training.objects.get(id=training_id)
     modules = Module.objects.filter(training=training)
     modules_ids = modules.values_list("id", flat=True)
-    all_media_ids = Media.objects.filter(module_id__in=modules_ids).values_list("id", flat=True)
+    all_media_ids = (
+        Media.objects.filter(module_id__in=modules_ids)
+        .order_by("module__ordering", "ordering")
+        .values_list("id", flat=True)
+    )
     completed_media_ids = Completed.data.filter(media_id__in=all_media_ids, user=request.user).values_list(
         "media_id", flat=True
     )
     # all media objects ids list
     all_media_ids_list = list(all_media_ids)
-    # all compeleted objects ids list
+    # all completed objects ids list
     completed_media_ids_list = list(completed_media_ids)
     # if not
     redirected_media_id = get_remaining_media_id(all_media_ids_list, completed_media_ids_list)

@@ -85,6 +85,9 @@ class MediaAdmin(admin.ModelAdmin):
     @admin.display(description="Kopieren")
     def copy(self, media: Media):
         chapter_list = Module.data.all().order_by("name")
+        if not media.id:
+            return "noch nicht möglich .."
+
         template = render_to_string("inc/copy.pug", {"chapter_list": chapter_list, "media_id": media.id})
         return template
 

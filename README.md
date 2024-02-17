@@ -29,7 +29,21 @@ pre-commit install
 2. Via update Webhook die URL ändern, sodass Anfragen jetzt bei mir landen
 3. Wenn alles fertig ist: Updates bei live einspielen und Webhook wieder zurück ändern
 
-
+Da gerade eben erst die neue Version von httpie nicht funktioniert hat:
+curl --request PUT \
+  --url https://api.close.com/api/v1/webhook/whsub_01k1xBUfygLcpJEF33T7xT \
+  --header 'Authorization: Basic close_api_token_siehe_secrets' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "url": "https://anna.liebendgern.de/api/lead-webhook/"
+}'
+curl --request PUT \
+  --url https://api.close.com/api/v1/webhook/whsub_01k1xBUfygLcpJEF33T7xT \
+  --header 'Authorization: Basic close_api_token_siehe_secrets' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "url": "https://693f-2a0a-2782-3f3-400-4466-e686-6924-a92a.ngrok-free.app/api/lead-webhook/"
+}'
 # Worker auf live starten
 
 pm2 start --name live-worker "manage.py run_huey"

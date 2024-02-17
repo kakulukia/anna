@@ -15,10 +15,14 @@ class NonStrippingTextField(TextField):
 class EmailOrUsernameModelBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         UserModel = get_user_model()
+        user = None
         try:
             user = UserModel.objects.get(email=username)
         except UserModel.DoesNotExist:
-            user = UserModel.objects.get(username=username)
+            try:
+                user = UserModel.objects.get(username=username)
+            except UserModel.DoesNotExist:
+                ...
 
-        if user.check_password(password):
+        if user and user.check_password(password):
             return user

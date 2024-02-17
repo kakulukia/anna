@@ -89,12 +89,10 @@ class Device(models.Model):
 
     def is_limit_reached(self, limit=5):
         devices = Device.objects.filter(user=self.user)
-        print(devices.count())
         return not devices.count() < limit
 
     def limit_is_nearly_reached(self, limit=3):
         devices = Device.objects.filter(user=self.user)
-        print(devices.count())
         return not devices.count() < limit
 
     def save(self, *args, **kwargs):

@@ -29,7 +29,7 @@ class Contact(Prodict):
 @csrf_exempt
 def create_or_update_lead_webhook(request):
     def get_contact_data(contact_ids):
-        auth_token = "YXBpXzNQM1ZIbnVua0preHVSdGV5UmMxN2suM2xySHg1SmJIaHhhSTNVekpWM09JNDo6"
+        auth_token = secrets.CLOSE_API_KEY
         headers = {
             "Authorization": f"Basic {auth_token}",
             "Content-Type": "application/json",
@@ -59,6 +59,7 @@ def create_or_update_lead_webhook(request):
         else:
             # contacts not present > create user objects
             contacts = get_contact_data(contact_ids)
+            ic("found contacts: ", contacts)  # noqa
 
             for contact in contacts:
                 if not contact.emails:
@@ -107,12 +108,16 @@ def create_or_update_lead_webhook(request):
         purchase_options = "custom.cf_0eKueP25HDy5wnHDeZXB7ySzrlx3JhiQXjaczfIx2a1"  # Feld Kaufaktionen
         zoom_link = "custom.cf_fsbXp5btDzxOJqP9QKmCNa62vc4MnHevvpXnkMkWMB8"
 
-        # only listen for Kaufaktionen being added or removed
-        if (purchase_options in event.data) or (
+        activity_check = (purchase_options in event.data) or (
             purchase_options not in event.data and "previous_data" in event and purchase_options in event.previous_data
-        ):
+        )
+        ic("Wir werden aktiv", activity_check)  # noqa
+
+        # only listen for Kaufaktionen being added or removed
+        if activity_check:
             options = event.data[purchase_options] if purchase_options in event.data else []
             users = get_users(event.lead_id, event.data.contact_ids)
+            ic("found user: ", users)  # noqa
 
             to_remove = []
             to_add = []
@@ -122,8 +127,10 @@ def create_or_update_lead_webhook(request):
                 # add access for all listed products
                 if product.name in options or product.free:
                     to_add.append(product)
+                    ic("adding", product)  # noqa
                 else:
                     to_remove.append(product)
+                    ic("removing", product)  # noqa
 
             for user in users:
                 if zoom_link in event.data:

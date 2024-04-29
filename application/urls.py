@@ -7,6 +7,7 @@ urlpatterns = [
     # path('search', views.search, name="search"),
     path("termine", views.appointments, name="appointments"),
     path("forum", views.forum, name="forum"),
+    path("datenschutz", views.data_security, name="datenschutz"),
     path("profile/", views.profile, name="profile"),
     path("reset-password", views.reset_password, name="reset-password"),
     path("logout/", views.signout, name="logout"),
@@ -20,9 +21,7 @@ urlpatterns = [
     path("kurse/<int:training_id>/kapitel/", views.all_modules, name="all_modules"),
     path("kurse/<int:training_id>/", views.resume_all_modules, name="resume_all_modules"),
     # Path to (Single training - with single module - with all videos) Page
-    path(
-        "kurse/<int:training_id>/kapitel/<int:module_id>/lektionen/", views.media, name="media"
-    ),
+    path("kurse/<int:training_id>/kapitel/<int:module_id>/lektionen/", views.media, name="media"),
     # Path to (Single training - with single module - with single media) Page
     path(
         "kurse/<int:training_id>/kapitel/<int:module_id>/lektionen/<int:media_id>/",
@@ -30,9 +29,7 @@ urlpatterns = [
         name="single_media",
     ),
     path("progress/", views.progress, name="progress"),
-    path(
-        "progress/customer/<id>/trainings/", views.progress_trainings, name="progress-training"
-    ),
+    path("progress/customer/<id>/trainings/", views.progress_trainings, name="progress-training"),
     path(
         "progress/customer/<id>/trainings/<training_id>/modules/",
         views.progress_modules,

@@ -541,3 +541,7 @@ def copy_media(request, media_id, module_id):
         last_item.save()
 
     return HttpResponseRedirect(reverse("admin:application_media_change", args=[new_media.pk]))
+
+
+def data_security(request):
+    return render(request, "data_security.html")

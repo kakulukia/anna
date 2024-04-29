@@ -82,7 +82,7 @@
 
 
                 {% if training %}
-                <div class="card">
+                  <div class="card">
                     <div class="card-header bg-white ">
                         <h4 class="my-2 py-0">{{ training.name }}</h4>
                     </div>
@@ -148,21 +148,35 @@
                         {% endif %}
                     </div>
                 </div>
-                {% else %}
 
-                <div class="card">
-                    <div class="card-body text-center d-flex align-items-center justify-content-center" style="height: 300px;">
-                        <div>
-                            <img src="{% static 'img/notfound.png' %}" style="width: 150px;" alt="">
-                            <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">Keinen Kurs ausgewählt</h4>
-                        </div>
+                  <div class="card my-2" id="auszeit" style="display: none;">
+                    <img src="{% static 'img/auszeit.png' %}" alt="Empfehlt mich weiter und genießt eine traumhafte Auszeit!" width="100%">
+                    <div class="card-body">
+                      Seid Ihr begeistert von meiner Arbeit? Dann erzählt es weiter! Für jede erfolgreiche Vermittlung einer
+                      Intensivzeit - Paartherapie durch Eure Empfehlung, beschenke ich Euch mit einer wunderbaren Auszeit.
+                      Verbringt ein Wochenende im malerischen Hotel Berlin Berlin – natürlich inklusive Frühstück! Genießt
+                      die Zeit zu zweit in einem der schönsten Hotels der Stadt und lasst Euch verwöhnen. Ich freue mich darauf,
+                      auch Euren Freunden, Familienmitgliedern oder Kolleg*innen zu helfen, ihre Beziehung auf liebevolle Weise zu stärken.
                     </div>
-                </div>
+                  </div>
+                  <script>
+                    const currentDate = new Date();
+                    const cutoffDate = new Date('2024-05-15');
 
-
-
-
-
+                    if (currentDate > cutoffDate) {
+                        // Wenn das aktuelle Datum größer als der 15.5.24 ist, setze #auszeit auf display: block
+                        document.getElementById('auszeit').style.display = 'block';
+                    }
+                  </script>
+                {% else %}
+                  <div class="card mt-5">
+                      <div class="card-body text-center d-flex align-items-center justify-content-center" style="height: 300px;">
+                          <div>
+                              <img src="{% static 'img/notfound.png' %}" style="width: 150px;" alt="">
+                              <h4 class="text-secondary display-3 mt-3" style="font-size: 25px;">Keinen Kurs ausgewählt</h4>
+                          </div>
+                      </div>
+                  </div>
                 {% endif %}
             </div>
         </div>

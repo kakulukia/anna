@@ -67,7 +67,6 @@ class ModuleAdmin(admin.ModelAdmin):
 
 @admin.register(Media)
 class MediaAdmin(admin.ModelAdmin):
-    actions = None
     list_display = [
         "created",
         "name",

@@ -51,9 +51,7 @@ class ResetPasswordForm(forms.Form):
         max_length=20,
         widget=forms.PasswordInput(),
     )
-    confirm_password = forms.CharField(
-        label="Passwort wiederholen", max_length=20, widget=forms.PasswordInput()
-    )
+    confirm_password = forms.CharField(label="Passwort wiederholen", max_length=20, widget=forms.PasswordInput())
 
     def clean(self):
         cleaned_data = super().clean()

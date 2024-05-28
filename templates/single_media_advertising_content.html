@@ -57,6 +57,13 @@
     player.play()
   }
 
+  // Neuen Event-Listener hinzufügen
+  const videoElement = document.getElementById('videoDings');
+  videoElement.addEventListener('loadeddata', () => {
+    videoElement.style.display = 'block'; // Player sichtbar machen, wenn das Video geladen ist
+  });
+
+
   function makeGetRequest(url) {
     // Create an XMLHttpRequest object
     const xhr = new XMLHttpRequest();
@@ -103,6 +110,7 @@
   #videoDings {
     width: 100%;
     height: auto;
+    display: none;
   }
   .plyr--video {
       aspect-ratio: auto;

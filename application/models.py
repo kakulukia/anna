@@ -87,11 +87,11 @@ class Device(models.Model):
 
         return device_queryset.first()
 
-    def is_limit_reached(self, limit=5):
+    def is_limit_reached(self, limit=11):
         devices = Device.objects.filter(user=self.user)
         return not devices.count() < limit
 
-    def limit_is_nearly_reached(self, limit=3):
+    def limit_is_nearly_reached(self, limit=9):
         devices = Device.objects.filter(user=self.user)
         return not devices.count() < limit
 

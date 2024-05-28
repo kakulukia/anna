@@ -1,0 +1,118 @@
+{% load static %}
+
+
+<div id="my-content">
+  <video id="videoDings" playsinline controls data-poster="{{ current_media.thumbnail.url }}">
+      <source src="{{ media.file.url }}" type="video/mp4" />
+  </video>
+  <script>
+    hasNext = {% if media.next %}true{% else %}false{% endif %};
+    {% if media.next %}
+    nextMedia = {{ media.next.id }};
+    url = "/lektion/{{ media.next.id }}/";
+    {% endif %}
+  </script>
+</div>
+
+<script src="https://cdn.plyr.io/3.7.2/plyr.js"></script>
+{% if not media.progress == 100 %}
+  <!-- script for resume video function  -->
+  <script src="{% static 'assets/js/videoResume.js' %}"></script>
+{% endif %}
+<script>
+  let playing = false;
+  const player = new Plyr('#videoDings');
+  autoplay = 'true';
+
+  var content = document.getElementById("media-content");
+
+  function loadNext() {
+      if (hasNext) {
+        content.innerHTML = httpGet(url + "?video-only");
+        history.replaceState({}, "", url);
+
+        let mediaName = document.getElementById("media-name");
+        reloadScripts()
+      }
+    }
+  function reloadScripts () {
+    const scripts = content.querySelectorAll("script");
+    for (const script of scripts) {
+      eval(script.textContent);
+    }
+  }
+
+  player.on('ended', () => {
+    let autoplay = true;
+    if (playing) {
+        loadNext();
+    }
+
+  });
+  player.on('playing', () => {
+    playing = true;
+  });
+
+  if (autoplay) {
+    player.play()
+  }
+
+  // Neuen Event-Listener hinzufügen
+  const videoElement = document.getElementById('videoDings');
+  videoElement.addEventListener('loadeddata', () => {
+    videoElement.style.display = 'block'; // Player sichtbar machen, wenn das Video geladen ist
+  });
+
+
+  function makeGetRequest(url) {
+    // Create an XMLHttpRequest object
+    const xhr = new XMLHttpRequest();
+
+    // Set the response type to JSON
+    xhr.responseType = 'json';
+
+    // Set up an event listener to receive the response
+    xhr.onload = function() {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        // If the request was successful, parse the response as JSON
+        const data = xhr.response;
+        console.log(data);
+      } else {
+        // If the request was not successful, log the error
+        console.error(xhr.statusText);
+      }
+    };
+
+    // Set up an event listener to handle any errors that occur
+    xhr.onerror = function() {
+      console.error(xhr.statusText);
+    };
+
+    // Set the method to GET and make the request
+    xhr.open('GET', url);
+    xhr.send();
+  }
+
+</script>
+<style>
+  .header-container, footer {
+    display: none;
+  }
+  #media-content {
+    margin-top: 0;
+    padding: 0;
+  }
+  .container {
+    width: 100%;
+    max-width: 100%;
+
+  }
+  #videoDings {
+    width: 100%;
+    height: auto;
+    display: none;
+  }
+  .plyr--video {
+      aspect-ratio: auto;
+  }
+</style>

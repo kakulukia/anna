@@ -28,6 +28,11 @@ urlpatterns = [
         views.single_media,
         name="single_media",
     ),
+    path(
+        "lektion/<int:media_id>/",
+        views.single_media_advertising,
+        name="single_media_advertising",
+    ),
     path("progress/", views.progress, name="progress"),
     path("progress/customer/<id>/trainings/", views.progress_trainings, name="progress-training"),
     path(

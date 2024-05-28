@@ -501,6 +501,18 @@ def single_media(request, training_id, module_id, media_id):
     return render(request, template, context)
 
 
+@login_required
+def single_media_advertising(request, media_id):
+    media = Media.objects.annotate(
+        is_completed=Count("completed", filter=Q(completed__user=request.user, completed__deleted__isnull=True))
+    ).get(id=media_id)
+    context = {
+        "media": media,
+    }
+    template = "single_media_advertising.html"
+    return render(request, template, context)
+
+
 def render_flatpage(request, url):
     page = get_object_or_404(Page, url=url)
 

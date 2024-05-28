@@ -1,0 +1,27 @@
+{% extends 'inc/dashboard_base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_messages %}
+{% bootstrap_javascript %}
+{% block title %}{{ media.name }}{% endblock title %}
+{% block content %}
+
+  <style>
+    body {
+      background-color: #000;
+    }
+  </style>
+
+  <div class="container" id="media-content">
+    {% include 'single_media_advertising_content.html' %}
+  </div>
+  <script>
+    function httpGet(url) {
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("GET", url, false); // false bedeutet, dass die Anfrage synchron ausgeführt wird
+      xmlHttp.send(null);
+      return xmlHttp.responseText;
+    }
+  </script>
+{% endblock content %}

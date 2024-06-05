@@ -50,7 +50,7 @@ def remove_other_sessions(sender, user, request, **kwargs):
             messages.warning(
                 request,
                 mark_safe(
-                    "Du hast bereits 4 Geräte angemeldet."
+                    "Du hast bereits 10 Geräte angemeldet."
                     "Bitte lösche ein Gerät <a href='/profile/#devices'>hier >>></a>."
                 ),
             )

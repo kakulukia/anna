@@ -43,17 +43,15 @@
             <a class="nav-link p-2 align-items-center bg-white theme-secondary-text"
               href="{% url 'appointments' %}" rel="noopener" style="user-select: auto;">
               <i class="material-icons" style="font-size: 25px; margin-right: 10px;">calendar_month</i>
-              Termine
+              Gruppentermine
             </a>
           {% endif %}
 
-          {% if user.zoom_link and user.can_view_zoom_link %}
-            <a class="nav-link p-2 align-items-center bg-white theme-secondary-text"
-              target="_blank" href="{{ user.zoom_link }}" rel="noopener" style="user-select: auto;">
-              <i class="material-icons" style="font-size: 25px; margin-right: 10px;">video_camera_back</i>
-              Unser ZOOM
-            </a>
-          {% endif %}
+          <a class="nav-link p-2 align-items-center bg-white theme-secondary-text"
+            target="_blank" href="https://us06web.zoom.us/j/4995522154 " rel="noopener" style="user-select: auto;">
+            <i class="material-icons" style="font-size: 25px; margin-right: 10px;">video_camera_back</i>
+            Unser ZOOM
+          </a>
 
           <a class="nav-link p-2 align-items-center bg-white theme-secondary-text" href="{% url 'profile' %}" rel="noopener"
             style="user-select: auto;">

@@ -36,6 +36,7 @@
       }
     }
   function reloadScripts () {
+    console.log("Reloading scripts");
     const scripts = content.querySelectorAll("script");
     for (const script of scripts) {
       eval(script.textContent);

@@ -374,6 +374,7 @@ STATICFILES_FINDERS = (
     "compressor.finders.CompressorFinder",
 )
 COMPRESS_OFFLINE = True
+COMPRESS_ENABLED = True
 
 HUEY = {
     # To run Huey in "immediate" mode with a live storage API, specify

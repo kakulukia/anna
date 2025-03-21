@@ -17,28 +17,33 @@
       <hr class="my-5">
 
       {% if appointments %}
-        <h4>{{ appointments.0.name }}</h4><br>
-        <br>
-        {{ appointments.0.description }}<br>
+        {% for appointment in appointments|slice:":4" %}
+          <h4>{{ appointment.name }}</h4><br>
+          <br>
+          {{ appointment.description }}<br>
 
-        <div class="row justify-content-start align-items-end">
-          <div class="col-md-8">
-            <div class="d-grid gap-2 d-md-block">
-              <button class="appointment-details px-3 disabled mt-3">
-                <i class="icon material-icons">calendar_month</i>{{ appointments.0.date | date:"l, d.m.y"}}, {{ appointments.0.start_time }} Uhr
-              </button>
+          <div class="row justify-content-start align-items-end">
+            <div class="col-md-8">
+              <div class="d-grid gap-2 d-md-block">
+                <button class="appointment-details px-3 disabled mt-3">
+                  <i class="icon material-icons">calendar_month</i>{{ appointment.date | date:"l, d.m.y"}}, {{ appointment.start_time }} Uhr
+                </button>
+              </div>
+            </div>
+            <div class="col-md-4 text-md-end">
+              <div class="d-grid gap-2 d-md-block">
+                <button class="btn btn-primary px-3 mt-3" type="button">
+                  <a href="{{ appointment.link }}" target="_blank">
+                    Live-Call beitreten
+                  </a>
+                </button>
+              </div>
             </div>
           </div>
-          <div class="col-md-4 text-md-end">
-            <div class="d-grid gap-2 d-md-block">
-              <button class="btn btn-primary px-3 mt-3" type="button">
-                <a href="{{ appointments.0.link }}" target="_blank">
-                  Live-Call beitreten
-                </a>
-              </button>
-            </div>
-          </div>
-        </div>
+          {% if not forloop.last %}
+            <hr class="my-4">
+          {% endif %}
+        {% endfor %}
       {% else %}
         <div class="mb-5">
           Im Moment gibt es keine aktuellen Termine. <br>
